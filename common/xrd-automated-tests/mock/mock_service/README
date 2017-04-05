@@ -1,0 +1,5 @@
+mockservice.crt - Mock Service certificate
+mockservice.key - Mock Service key
+mockservice.keystore - Mock Service keystore
+
+mockservice.keystore password: password
