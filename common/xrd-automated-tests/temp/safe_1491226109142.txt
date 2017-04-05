@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 90, in test_case
-    client_certification_2_1_3.test(client_code=ss_1_client['code'], client_class=ss_1_client['class'])(self)
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_ss_client_sertification_213\client_certification_2_1_3.py", line 29, in test_case
-    generate_csr(self, client_code, client_class, server_name)
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_ss_client_sertification_213\client_certification_2_1_3.py", line 482, in generate_csr
-    assert len(filter(lambda x: self.config.get('ca.ssh_host').upper() in x, options)) == 1
-AssertionError

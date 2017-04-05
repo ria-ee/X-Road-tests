@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 136, in test_case
-    'SOMETHING WENT WRONG, WITH TEST, PLEASE CHECK THAT ALL PREVIOUSLY CLIENTS HAVE BEEN DELETED!')
-RuntimeError: SOMETHING WENT WRONG, WITH TEST, PLEASE CHECK THAT ALL PREVIOUSLY CLIENTS HAVE BEEN DELETED!

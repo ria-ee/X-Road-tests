@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 86, in test_case
-    wait_input=wait_input, step='2.2.1-2: ')
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 222, in add_client_to_ss
-    members_table.get_row_by_columns(table, [client['name'], client['class'], client['code']]).click()
-AttributeError: 'NoneType' object has no attribute 'click'

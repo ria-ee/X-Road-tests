@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 96, in test_case
-    step='2.2.1-4: ')
-  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 387, in add_sub_as_client_to_member
-  File "D:\SORTS\PyCharm\xrd-automated-tests\main\assert_helper.py", line 7, in is_true
-    self.case.assertTrue(con1, msg)
-  File "C:\Python27\lib\unittest\case.py", line 422, in assertTrue
-    raise self.failureException(msg)
-AssertionError: 2.2.1-4: CHECKING FOR "SUBMITTED FOR APPROVAL" FROM THE LATEST REQUEST ROW FAILED"
