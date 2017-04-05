@@ -18,7 +18,7 @@ from main.assert_helper import AssertHelper
 
 class MainController(AssertHelper):
     # Default configuration file, relative to our current script
-    configuration = 'config_ria.ini'
+    configuration = 'config.ini'
 
     # Log in by default when opening the browser
     log_in = False
