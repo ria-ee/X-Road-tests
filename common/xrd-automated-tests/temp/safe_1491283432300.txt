@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 134, in test_case
+    check_expected_result_cs(self, ss_1_client, ss_2_client, ss_2_client_2)
+  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 493, in check_expected_result_cs
+    open_servers_clients(self, self.config.get('ss1.server_name'))
+  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 643, in open_servers_clients
+    self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.SECURITY_SERVERS_CSS).click()
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webelement.py", line 72, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webelement.py", line 461, in _execute
+    return self._parent.execute(command, params)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+WebDriverException: Message: Element is not clickable at point (69, 136.3333282470703). Other element would receive the click: <div style="z-index: 1000;" class="ui-widget-overlay ui-front"></div>
+

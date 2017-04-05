@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 86, in test_case
+    wait_input=wait_input, step='2.2.1-2: ')
+  File "D:\SORTS\PyCharm\xrd-automated-tests\tests\xroad_client_registration_in_ss_221\client_registration_in_ss_2_2_1.py", line 224, in add_client_to_ss
+    members_table.get_row_by_columns(table, [client['name'], client['class'], client['code']]).click()
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webelement.py", line 72, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webelement.py", line 461, in _execute
+    return self._parent.execute(command, params)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 236, in execute
+    self.error_handler.check_response(response)
+  File "C:\Python27\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 192, in check_response
+    raise exception_class(message, screen, stacktrace)
+WebDriverException: Message: Element is not clickable at point (624.6666870117188, 339.33331298828125). Other element would receive the click: <div style="z-index: 1002;" class="ui-widget-overlay ui-front"></div>
+
