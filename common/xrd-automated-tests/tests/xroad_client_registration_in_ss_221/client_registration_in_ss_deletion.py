@@ -1,0 +1,48 @@
+from __future__ import absolute_import
+
+import unittest
+
+from tests.xroad_client_registration_in_ss_221 import client_registration_in_ss_2_2_1
+from main.maincontroller import MainController
+from helpers import xroad
+
+
+class XroadSecurityServerClientDeletion(unittest.TestCase):
+    def test_client_deletion(self):
+        main = MainController(self)
+        main.url = main.config.get('cs.host')
+        main.username = main.config.get('cs.user')
+        main.password = main.config.get('cs.pass')
+        main.close_webdriver = True
+        main.tear_down = True
+        main.reset_webdriver(url=main.url, username=main.username, password=main.password, close_previous=False,
+                             init_new_webdriver=False)
+
+        main.management_services = xroad.split_xroad_subsystem(main.config.get('ss1.management_id'))
+        cs_member = xroad.split_xroad_id(main.config.get('ss1.client_id'))
+        ss1_client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
+        ss2_client = xroad.split_xroad_id(main.config.get('ss2.client_id'))
+        ss2_client_2 = xroad.split_xroad_id(main.config.get('ss2.client2_id'))
+
+        cs_member_name = main.config.get('ss1.client_name')
+        ss1_client_name = main.config.get('ss1.client_name')
+        ss2_client_name = main.config.get('ss2.client_name')
+        ss2_client_2_name = main.config.get('ss2.client2_name')
+
+        main.log('Removing added data from 2.2.1')
+        test_func = client_registration_in_ss_2_2_1.test_remove(main.config.get('cs.host'),
+                                                                main.config.get('cs.user'),
+                                                                main.config.get('cs.pass'),
+                                                                main.config.get('ss1.host'),
+                                                                main.config.get('ss1.user'),
+                                                                main.config.get('ss1.pass'),
+                                                                main.config.get('ss2.host'),
+                                                                main.config.get('ss2.user'),
+                                                                main.config.get('ss2.pass'),
+                                                                cs_new_member=cs_member, cs_member_name=cs_member_name,
+                                                                ss1_client=ss1_client, ss1_client_name=ss1_client_name,
+                                                                ss2_client=ss2_client, ss2_client_name=ss2_client_name,
+                                                                ss2_client_2=ss2_client_2,
+                                                                ss2_client_2_name=ss2_client_2_name)
+        test_func(main)
+        main.tearDown()
