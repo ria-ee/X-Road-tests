@@ -1,0 +1,3 @@
+mock.crt - Test (Mock) Client certificate
+mock.key - Test Client key
+mockservice.crt - Mock Service certificate, used for verification
