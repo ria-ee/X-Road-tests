@@ -8,9 +8,11 @@ from helpers import xroad
 
 class XroadRefreshWsdl(unittest.TestCase):
     def test_refresh_wsdl(self):
-        MainController.close_webdriver = True
-        MainController.driver_autostart = False
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.2.5'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -30,7 +32,6 @@ class XroadRefreshWsdl(unittest.TestCase):
         wsdl_url = wsdl_remote_path.format(wsdl_filename)
 
         wsdl_correct = main.config.get('wsdl.service_correct_filename')
-        # wsdl_missing_service = main.config.get('wsdl.service_commented_out_filename')
         wsdl_missing_service = main.config.get('wsdl.service_single_service_filename')
         wsdl_error = main.config.get('wsdl.service_wsdl_error_filename')
         wsdl_warning = main.config.get('wsdl.service_wsdl_warning_filename')
@@ -64,12 +65,14 @@ class XroadRefreshWsdl(unittest.TestCase):
             test_refresh_wsdl()
         except:
             main.log('XroadRefreshWsdl: Failed to refresh WSDL')
+            main.save_exception_data()
             try:
                 test_reset_wsdl()
             except:
                 main.log('XroadRefreshWsdl: Failed to reset WSDL to original file')
+                main.save_exception_data()
             raise
         finally:
             # Test teardown
-            main.tearDown()
+            main.tearDown(save_exception=False)
 

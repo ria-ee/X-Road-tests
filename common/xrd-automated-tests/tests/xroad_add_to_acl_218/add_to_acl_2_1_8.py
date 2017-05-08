@@ -190,10 +190,8 @@ def verify_added_subjects(self, current_subjects, added_subjects, strict_check_d
     else:
         # We used list(set(list_variable)) because we check if the unique values match. The testing database contained
         # a few elements with duplicate XRoad IDs but we cannot check which is which so we fall back to unique values.
-        # In real life system, no duplicates should be allowed. The test itself should run on a clean system anyway.
+        # In real life system, no duplicates should be allowed.
         all_subjects_added = (sorted(list(set(added_subjects))) == sorted(list(set(new_subjects_in_list))))
-
-    # print 'all_subjects_added:', all_subjects_added, 'original_list_restored:', original_list_restored
 
     return all_subjects_added, len(new_subjects_in_list)
 
@@ -297,17 +295,16 @@ def test_add_subjects(case, client=None, client_name=None, client_id=None, wsdl_
         ''"""
 
         # TEST PLAN 2.1.8
-        # self.log('*** add_to_acl')
-        self.log('2.1.8 helper. Add access from service view.')
+        self.log('*** 2.1.8 / XT-462 / helper. Add access from service view.')
 
         # Select duplicate elements (if database, for some reason, contains duplicate IDs). Not actually configurable
         # but can be moved to parameters if necessary.
         select_duplicate = True
 
         #
-        # TEST PLAN 2.1.8 step 1 Security server clients view: choose a client and open their Services tab.
+        # TEST PLAN 2.1.8-1 Security server clients view: choose a client and open their Services tab.
         #
-        self.log('2.1.8 step 1 Security server clients view: choose a client and open their Services tab.')
+        self.log('2.1.8-1 Security server clients view: choose a client and open their Services tab.')
 
         # Open client popup using shortcut button to open it directly at Services tab.
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
@@ -334,24 +331,24 @@ def test_add_subjects(case, client=None, client_name=None, client_id=None, wsdl_
         self.log('Current ACL subjects: {0}'.format(', '.join(current_subjects)))
 
         #
-        # TEST PLAN 2.1.8 step 2. Do an empty search to show all subjects that are registered in the system.
+        # TEST PLAN 2.1.8-2. Do an empty search to show all subjects that are registered in the system.
         #
-        self.log('2.1.8 step 2 Do an empty search to show all subjects that are registered in the system.')
+        self.log('2.1.8-2 Do an empty search to show all subjects that are registered in the system.')
         search_all_subjects(self)
 
         #
-        # TEST PLAN 2.1.8 step 3. Select subjects from search results and click "Add Selected to ACL" button to add them.
+        # TEST PLAN 2.1.8-3. Select subjects from search results and click "Add Selected to ACL" button to add them.
         #
 
         self.log(
-            '2.1.8 step 3. Select subjects from search results and click "Add Selected to ACL" button to add them.')
+            '2.1.8-3. Select subjects from search results and click "Add Selected to ACL" button to add them.')
         self.added_subjects = add_subjects_to_acl(self, service_subjects, select_duplicate=select_duplicate)
 
         # Wait until ajax query that adds the subjects finishes.
         self.wait_jquery()
 
-        # TEST PLAN 2.1.8 step 4. Check if ACL list has been updated and only the subjects we selected have been added.
-        self.log('2.1.8 step 4. Check if ACL list has been updated and only the subjects we selected have been added.')
+        # TEST PLAN 2.1.8-4. Check if ACL list has been updated and only the subjects we selected have been added.
+        self.log('2.1.8-4. Check if ACL list has been updated and only the subjects we selected have been added.')
         all_subjects_added, added_subjects_count = verify_added_subjects(self, current_subjects, self.added_subjects,
                                                                          strict_check_duplicates=True)
 
@@ -364,14 +361,14 @@ def test_add_subjects(case, client=None, client_name=None, client_id=None, wsdl_
             restore_original_subject_list(self, current_subjects, self.added_subjects, allow_remove_all,
                                           remove_duplicates=select_duplicate)
         else:
-            self.log('Not restoring original ACL subject list')
+            self.log('2.1.8 Not restoring original ACL subject list')
 
         # Close all open dialogs (pre-logout, not essential)
         popups.close_all_open_dialogs(self)
 
         # Assertion if all selected subjects were added and found in the new subject list.
         self.is_true(all_subjects_added,
-                      msg='Some subjects were not added, tried to add {0}, succeeded {1}'.format(
+                      msg='2.1.8 Some subjects were not added, tried to add {0}, succeeded {1}'.format(
                           len(self.added_subjects), added_subjects_count))
 
     return add_to_acl
@@ -401,14 +398,14 @@ def test_add_all_subjects(case, client=None, client_name=None, client_id=None, w
         :return: None
         ''"""
 
-        self.log('*** add_all_to_acl')
+        self.log('2.1.8 add all to ACL')
 
         # Select duplicate elements (if database, for some reason, contains duplicate IDs). Not actually configurable
         # but can be moved to parameters if necessary.
         select_duplicate = True
 
         #
-        # TEST PLAN 2.1.8.1 Security server clients view: choose a client and open their Services tab.
+        # TEST PLAN 2.1.8-1 Security server clients view: choose a client and open their Services tab.
         #
 
         # Open client popup using shortcut button to open it directly at Services tab.
@@ -436,12 +433,12 @@ def test_add_all_subjects(case, client=None, client_name=None, client_id=None, w
         self.log('Current ACL subjects: {0}'.format(', '.join(current_subjects)))
 
         #
-        # TEST PLAN 2.1.8.2 Do an empty search to show all subjects that are registered in the system.
+        # TEST PLAN 2.1.8-2 Do an empty search to show all subjects that are registered in the system.
         #
         search_all_subjects(self)
 
         #
-        # TEST PLAN 2.1.8.3. Click "Add All to ACL" button to add all listed subjects to ACL.
+        # TEST PLAN 2.1.8-3. Click "Add All to ACL" button to add all listed subjects to ACL.
         #
 
         self.added_subjects = add_all_subjects_to_acl(self)
@@ -450,7 +447,7 @@ def test_add_all_subjects(case, client=None, client_name=None, client_id=None, w
         self.wait_jquery()
 
         #
-        # TEST PLAN 2.1.8.4. Check if ACL list has been updated and only the subjects we selected have been added.
+        # TEST PLAN 2.1.8-4. Check if ACL list has been updated and only the subjects we selected have been added.
         #
         all_subjects_added, added_subjects_count = verify_added_subjects(self, current_subjects, self.added_subjects,
                                                                          strict_check_duplicates=True)

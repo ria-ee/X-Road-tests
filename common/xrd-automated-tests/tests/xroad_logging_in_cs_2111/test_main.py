@@ -8,19 +8,17 @@ from tests.xroad_logging_in_cs_2111 import logging_in_cs_2_11_1
 
 class XroadLoggingInCentralServer(unittest.TestCase):
     def test_loggin_in_central_server_2_11_1(self):
-        MainController.close_webdriver = True
-        MainController.tear_down = True
-        MainController.log_in = False
-
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.11.1'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
         main.password = main.config.get('cs.pass')
         if main.driver is None:
             main.reset_webdriver(main.url, username=main.username, password=main.password, init_new_webdriver=False)
-
-        # group = 'GLOB1'
-        # server_id = 'TS1'
 
         group = main.config.get('cs.global_group')
         server_id = main.config.get('ss1.server_name')
@@ -28,7 +26,6 @@ class XroadLoggingInCentralServer(unittest.TestCase):
         client_name = main.config.get('ss1.client2_name')
         client_name2 = main.config.get('ss1.client2_name2')
 
-        # server_groups = 'xroad-registration-officer,xroad-system-administrator,xroad-security-officer'
         server_groups = '{0},{1},{2}'.format(main.config.get('xroad.registration_officer_group'),
                                              main.config.get('xroad.system_administrator_group'),
                                              main.config.get('xroad.security_officer_group'))

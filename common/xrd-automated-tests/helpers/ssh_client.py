@@ -98,8 +98,8 @@ class SSHClient:
             command = 'echo "' + self.server_password + '" | sudo -S ' + command
         if self.debug:
             print 'Execute', command
+
         # Execute command, read output (stdout, stderr)
-        # print 'execute command'
         stdin, stdout, stderr = self.client.exec_command(command)
 
         self.stdin = stdin
@@ -123,8 +123,7 @@ class SSHClient:
                 out_error.append(ln)
 
             if self.debug:
-                print out_clean
-                print out_error
+                print out_clean, out_error
         else:
             # Set channel timeout
             stdout.channel.settimeout(timeout)

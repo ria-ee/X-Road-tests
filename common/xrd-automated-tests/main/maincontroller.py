@@ -20,8 +20,6 @@ class MainController(AssertHelper):
     # Default configuration file, relative to our current script
     configuration = 'config.ini'
 
-    # Log in by default when opening the browser
-    log_in = False
     close_webdriver = True  # Close webdriver in tearDown
     driver = None  # Init webdriver variable
     driver_type = webdriver.Firefox  # Webdriver type, currently only Firefox is supported
@@ -47,6 +45,7 @@ class MainController(AssertHelper):
     # Init config
     config = confreader.ConfReader(ini_path=configuration, init_command_line=True)
 
+    # Default settings
     save_exceptions = True
     save_screenshots = True
     temp_dir = 'temp'
@@ -60,6 +59,9 @@ class MainController(AssertHelper):
     empty_download_directory = True
     create_directories = True
 
+    test_number = ''  # Test number (eg 2.2.1)
+    test_name = ''  # Test name (eg "System test")
+
     def __init__(self, case):
         '''
         Initialize the class.
@@ -68,6 +70,9 @@ class MainController(AssertHelper):
         '''
         # Init AssertHelper
         AssertHelper.__init__(self, case)
+
+        # Set debug; if not set, use default value
+        self.debug = self.config.get_bool('config.debug', self.debug)
 
         # Save exception data and tracebacks as text files to 'temp/'
         self.save_exceptions = self.config.get_bool('config.save_exceptions', self.save_exceptions)
@@ -104,7 +109,6 @@ class MainController(AssertHelper):
                         raise
 
         if self.debug:
-            # print self.config.config
             self.log('Default configuration: {0}'.format(self.configuration))
             self.log('INI file: {0}'.format(self.config.get('ini')))
             self.log('JSON file: {0}'.format(self.config.get('json')))
@@ -136,9 +140,10 @@ class MainController(AssertHelper):
         if self.mock_service_autostart:
             self.start_mock_service()
 
-    def tearDown(self):
+    def tearDown(self, save_exception=True):
         '''
         Test tearDown method, used for closing the test environment after successful or failed tests.
+        :param save_exception: bool - True to save exception data; False otherwise
         :return: None
         '''
 
@@ -146,44 +151,63 @@ class MainController(AssertHelper):
         if self.mock_service is not None:
             self.mock_service.stop()
 
-        # Check if WebDriver was up and running
+        if save_exception:
+            # Save exception data if there is any
+            self.save_exception_data()
+
+        # If WebDriver instance exists
         if self.driver is not None:
-            # Do we need to save anything about errors?
-            if self.save_exceptions or self.save_screenshots:
-                # Is there an error at all?
-                if sys.exc_info()[0]:
-                    # Get exception type, textual value and traceback
-                    exctype, value, trace = sys.exc_info()
-
-                    # Get the test method name that was running
-                    # test_method_name = self._testMethodName
-                    test_method_name = ''
-
-                    # Create timestamp YYYYMMDDHHmmss
-                    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-
-                    # Save screenshot
-                    if self.save_screenshots:
-                        screenshot_filename = 'error_{0}_{1}.png'.format(test_method_name, timestamp)
-                        screenshot_fullpath = self.save_screenshot(screenshot_filename)
-                        self.log('Error in {0}, screenshot saved to: {1}'.format(test_method_name, screenshot_fullpath))
-                    # Save exception data with traceback to text file
-                    if self.save_exceptions:
-                        exception_filename = 'error_{0}_{1}.txt'.format(test_method_name, timestamp)
-
-                        # Create string to be saved to the file, use exception class, value and traceback as text
-                        exception_data = '{0}: {1}\n{2}'.format(exctype.__name__, value, traceback.format_exc())
-
-                        text_fullpath = self.save_text_data(exception_filename, exception_data)
-
-                        self.log('Error in {0}, data saved to: {1}'.format(test_method_name, text_fullpath))
-
-                        # self.logout()
-                        # self.driver.close()
             # Close the driver
             if self.close_webdriver:
                 # self.driver.close()
                 self.driver.quit()
+
+    def save_exception_data(self, exctype=None, excvalue=None, exctrace=None):
+        '''
+        Saves the exception screenshot and traceback if set in configuration.
+        :return: None
+        '''
+
+        # Do we need to save anything about errors?
+        if self.save_exceptions or self.save_screenshots:
+            if exctype is None and excvalue is None and exctrace is None:
+                # Is there an error at all?
+                if sys.exc_info()[0]:
+                    # Get exception type, textual value and traceback
+                    exctype, excvalue, exctrace = sys.exc_info()
+                    exctype = exctype.__name__
+                    exctrace = traceback.format_exc()
+
+            if exctype is not None or excvalue is not None or exctrace is not None:
+                # Test method name can be set to reflect the test.
+                test_method_name = self.test_name
+
+                # Create timestamp YYYYMMDDHHmmss
+                timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+
+                # Check if WebDriver was up and running
+                if self.driver is not None:
+                    # Save screenshot
+                    if self.save_screenshots:
+                        screenshot_filename = 'error_{0}_{1}.png'.format(test_method_name, timestamp)
+                        screenshot_fullpath = self.save_screenshot(screenshot_filename)
+                        self.log(
+                            'Error in {0} ({1}), screenshot saved to: {2}'.format(test_method_name, self.test_number,
+                                                                                  screenshot_fullpath))
+
+                # Save exception data with traceback to text file
+                if self.save_exceptions:
+                    exception_filename = 'error_{0}_{1}.txt'.format(test_method_name, timestamp)
+
+                    # Create string to be saved to the file, use exception class, value and traceback as text
+                    exception_data = '{0} {1}\n{2}: {3}\n{4}'.format(self.test_number, self.test_name,
+                                                                     exctype, excvalue,
+                                                                     exctrace)
+
+                    text_fullpath = self.save_text_data(exception_filename, exception_data)
+
+                    self.log('Error in {0} ({1}), data saved to: {2}'.format(test_method_name, self.test_number,
+                                                                             text_fullpath))
 
     def get_path(self, path=''):
         '''
@@ -322,17 +346,23 @@ class MainController(AssertHelper):
 
         # Close the current WebDriver instance if it exists and we're asked to do so.
         if close_previous and self.driver is not None:
-            # self.driver.close()
             self.driver.quit()
             self.driver = None
 
         # If WebDriver does not exist or we're asked to open a new instance, do it.
         if init_new_webdriver or self.driver is None:
-            self.driver = webdriver_init.get_webdriver(self.driver_type, download_dir=self.get_download_path(),
-                                                       log_dir=self.get_temp_path(self.browser_log))
+            try:
+                self.driver = webdriver_init.get_webdriver(self.driver_type, download_dir=self.get_download_path(),
+                                                           log_dir=self.get_temp_path(self.browser_log))
+            except:
+                # If WebDriver fails to start, the test has failed.
+                assert False, 'MainController: failed to start WebDriver'
 
-        # Go to URL
-        self.driver.get(url)
+        try:
+            # Go to URL
+            self.driver.get(url)
+        except:
+            assert False, 'MainController: WebDriver failed, URL: '.format(url)
 
         # If username specified, try to log in
         if username is not None:
@@ -383,14 +413,17 @@ class MainController(AssertHelper):
         :param filename: str - filename of the screenshot
         :return: str - filename
         '''
-        # Generate screenshot filename and absolute path
-        # screenshot_filename = os.path.join('temp', filename)
-        screenshot_fullpath = self.get_temp_path(filename)
 
-        self.driver.save_screenshot(screenshot_fullpath)
+        try:
+            # Get screenshot absolute path
+            screenshot_fullpath = self.get_temp_path(filename)
 
-        # Return file path
-        return screenshot_fullpath
+            self.driver.save_screenshot(screenshot_fullpath)
+
+            # Return file path
+            return screenshot_fullpath
+        except:
+            return None
 
     def save_text_data(self, filename, data):
         '''
@@ -399,19 +432,21 @@ class MainController(AssertHelper):
         :param data: str - file contents
         :return: str - filename
         '''
-        # Generate text file name and absolute path
-        # text_filename = os.path.join('temp', filename)
-        # text_fullpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', text_filename)
-        text_fullpath = self.get_temp_path(filename)
 
-        # Open and write to file
-        f = open(text_fullpath, 'w')
-        f.write(data)
-        # Close the file
-        f.close()
+        try:
+            # Get text file absolute path
+            text_fullpath = self.get_temp_path(filename)
 
-        # Return file path
-        return text_fullpath
+            # Open and write to file
+            f = open(text_fullpath, 'w')
+            f.write(data)
+            # Close the file
+            f.close()
+
+            # Return file path
+            return text_fullpath
+        except:
+            return None
 
     def logout(self, url=None):
         '''

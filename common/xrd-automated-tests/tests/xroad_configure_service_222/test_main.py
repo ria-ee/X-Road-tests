@@ -9,10 +9,11 @@ from helpers import xroad
 
 class XroadConfigureService(unittest.TestCase):
     def test_xroad_configure_service(self):
-        MainController.driver_autostart = False
         main = MainController(self)
-        main.log_in = True
-        main.close_webdriver = True
+
+        # Set test name and number
+        main.test_number = '2.2.2'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -58,29 +59,32 @@ class XroadConfigureService(unittest.TestCase):
             # Open webdriver
             main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
 
-            # Configure the service
+            # TEST PLAN 2.2.2-1, 2.2.2-2 add WSDL and configure service
             test_configure_service()
-            # Configure service ACL
 
+            # TEST PLAN 2.2.2-3 configure service ACL
+            main.log('2.2.2-3 configure service ACL')
             main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
             test_configure_service_acl()
 
-            # Configure second service ACL
+            # TEST PLAN 2.2.2-3 configure second service ACL
+            main.log('2.2.2-3 configure second service ACL')
             main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
             test_configure_service_acl_2()
 
-            # Enable service
+            # TEST PLAN 2.2.2-4 enable service
             main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
             test_enable_service()
         except:
             main.log('XroadConfigureService: Failed to configure service')
+            main.save_exception_data()
             try:
                 # Delete service
                 main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
                 test_delete_service()
             except:
                 main.log('XroadConfigureService: Failed to delete added data.')
-
+                main.save_exception_data()
             raise
         finally:
             # Test teardown
@@ -89,10 +93,11 @@ class XroadConfigureService(unittest.TestCase):
 
 class XroadDeleteService(unittest.TestCase):
     def test_xroad_configure_service(self):
-        MainController.driver_autostart = False
         main = MainController(self)
-        main.log_in = True
-        main.close_webdriver = True
+
+        # Set test name and number
+        main.test_number = '2.2.2'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')

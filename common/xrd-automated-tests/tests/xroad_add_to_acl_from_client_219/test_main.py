@@ -10,6 +10,8 @@ from tests.xroad_add_to_acl_from_client_219 import add_to_acl_client_2_1_9 as te
 class AddToAclFromClient(unittest.TestCase):
     main = None
 
+    # TEST PLAN 2.1.9 add access from client view
+
     def test_add_1_client(self):
         main = self.get_main_object()
 
@@ -53,12 +55,14 @@ class AddToAclFromClient(unittest.TestCase):
 
     def get_main_object(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.1.9'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('ss1.host')
-        main.username = main.config.get('ss1.user')
-        main.password = main.config.get('ss1.pass')
-        main.close_webdriver = True
-        main.tear_down = True
-        main.log_in = True
-        main.driver.get(main.url)
-        main.login(main.username, main.password)
+        username = main.config.get('ss1.user')
+        password = main.config.get('ss1.pass')
+
+        main.reset_webdriver(main.url, username=username, password=password)
         return main

@@ -19,8 +19,8 @@ WSDL_REFRESH_ERROR_VALIDATION_FAILED = 'Failed to refresh WSDL(s): WSDL ({0}) va
 WSDL_REFRESH_WARNING_ADDING_SERVICES = 'Adding services:'
 WSDL_REFRESH_WARNING_DELETING_SERVICES = 'Deleting services:'
 
-# SERVICE_EDIT_INVALID_URL = 'Invalid URL format, must begin with \'http\' or \'https\''
-SERVICE_EDIT_INVALID_URL = '\'{0}\' is an invalid URL, examples of valid URL-s: \'http://www.example.com\', \'https://www.example.com\''
+# SERVICE_EDIT_INVALID_URL = 'Invalid URL format, must begin with \'http\' or \'https\'' # Specification variant
+SERVICE_EDIT_INVALID_URL = '\'{0}\' is an invalid URL, examples of valid URL-s: \'http://www.example.com\', \'https://www.example.com\'' # Real variant
 SERVICE_EDIT_INVALID_TIMEOUT = 'Timeout value must be a positive integer.'
 SERVICE_EDIT_INFINITE_TIMEOUT_WARNING = 'A timeout value of zero is interpreted as an infinite timeout.'
 
@@ -126,7 +126,6 @@ def get_console_output(self):
     :param self: MainController class object
     :return: string | None
     '''
-    # Check if an error message was shown.
     # Check if an error message was shown.
     try:
         message = self.by_css(popups.CONSOLE_OUTPUT_DIALOG_TEXT_CSS)

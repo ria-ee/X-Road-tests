@@ -45,15 +45,13 @@ def test_xroad_member_access(case, client=None, client_id=None, requester=None, 
         :return: None
         ''"""
 
-        print '*** xroad_member_access'
+        self.log('*** 2.2.9 / XT-473')
 
         # TEST PLAN 2.2.9 - giving access to XRoad member
 
         # TEST PLAN 2.2.9-1 test query from TS2 client TS2OWNER:sub to service bodyMassIndex. Query should fail.
         self.log('2.2.9-1 test query {0} to service bodyMassIndex. Query should fail.'.format(query_filename))
 
-        # refresh_wsdl_2_2_5.check_unsuccessful_query(self, client=client, service=service, faults=faults_unsuccessful,
-        #                                             security_server=servers_constants.SEC_SERVER_2_SERVICE_PATH)
         case.is_true(testclient.check_fail(), msg='2.2.9-1 test query succeeded')
 
         # TEST PLAN 2.2.9-2 set bodyMassIndex address and ACL (give access to TS2OWNER:sub)
@@ -70,8 +68,6 @@ def test_xroad_member_access(case, client=None, client_id=None, requester=None, 
             # TEST PLAN 2.2.9-3 test query from TS2 client TS2OWNER:sub to service bodyMassIndex. Query should succeed.
             self.log('2.2.9-3 test query {0} to service bodyMassIndex. Query should succeed.'.format(query_filename))
 
-            # refresh_wsdl_2_2_5.check_successful_query(self, client=client, service=service, faults=faults_successful,
-            #                                           security_server=servers_constants.SEC_SERVER_2_SERVICE_PATH)
             case.is_true(testclient.check_success(), msg='2.2.9-3 test query failed')
         finally:
             # Always try to remove access
@@ -94,11 +90,9 @@ def test_xroad_member_access(case, client=None, client_id=None, requester=None, 
 
             add_to_acl_2_1_8.remove_subjects_from_acl(self, [requester_id], select_duplicate=True)
 
-        # THIS IS NOT IN THE DOCUMENTATION BUT WE SHOULD STILL CHECK IF REMOVAL WAS SUCCESSFUL
+        # This is not in the specification but we should still check if removal was successful.
         # TEST PLAN 2.2.9-4 test query from TS2 client TS2OWNER:sub to service bodyMassIndex. Query should fail.
         self.log('2.2.9-4 test query {0} to service bodyMassIndex. Query should fail.'.format(query_filename))
-        # refresh_wsdl_2_2_5.check_unsuccessful_query(self, client=client, service=service, faults=faults_unsuccessful,
-        #                                             security_server=servers_constants.SEC_SERVER_2_SERVICE_PATH)
         case.is_true(testclient.check_fail(), msg='2.2.9-4 test query succeeded')
 
     return xroad_member_access

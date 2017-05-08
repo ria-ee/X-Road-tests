@@ -11,8 +11,6 @@ faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.Unkn
 
 
 def set_central_service_provider_fields(self, provider):
-    # provider_data = helper.split_xroad_data(provider)
-
     # Find fields and fill them with our data
     central_service_target_code_input = self.by_id(popups.CENTRAL_SERVICE_POPUP_TARGET_CODE_ID)
     central_service_target_version_input = self.by_id(popups.CENTRAL_SERVICE_POPUP_TARGET_VERSION_ID)
@@ -79,7 +77,8 @@ def test_add_central_service(case, provider=None, central_service_name=None,
                                                        faults_unsuccessful=faults_unsuccessful)
 
     def add_central_service():
-        self.log('*** add_central_service')
+        # TEST PLAN 2.2.8 add central service
+        self.log('*** 2.2.8 / XT-472')
 
         self.log('Starting mock service')
         self.start_mock_service()
@@ -136,6 +135,8 @@ def test_add_central_service(case, provider=None, central_service_name=None,
 
         self.is_true(testclient_central.check_success(), msg='2.2.8-3 Test query to central service failed')
 
+        # TEST PLAN 2.2.8-4 uses a helper scenario and is called from the main TestCase object (XroadAddCentralService)
+
     return add_central_service
 
 
@@ -154,7 +155,8 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
                                                        faults_unsuccessful=faults_unsuccessful)
 
     def edit_central_service():
-        self.log('*** edit_central_service')
+        # TEST PLAN 2.2.8-5 update central service and set a new provider
+        self.log('2.2.8-5 update central service')
 
         self.log('Starting mock service')
         self.mock_service = self.start_mock_service()
@@ -171,7 +173,7 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
 
         # Find the service we're looking for. If nothing is found, cancel everything with assertion - no need to waste time.
         service_row = get_central_service_row(self, central_service_name)
-        self.is_not_none(service_row, msg='Central service not found: {0}'.format(central_service_name))
+        self.is_not_none(service_row, msg='2.2.8-5 Central service not found: {0}'.format(central_service_name))
         #
         # Click the row to select it
         service_row.click()
@@ -199,11 +201,9 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
         # Test that we didn't get an error. If we did, no need to continue.
         error_message = messages.get_error_message(self)  # Error message (anywhere)
         self.is_none(error_message,
-                     msg='2.2.8-5 Got error message when trying to add central service: {0}'.format(error_message))
+                     msg='2.2.8-5 Got error message when trying to update central service: {0}'.format(error_message))
 
-        # data_saved_timestamp = time.time()
-
-        # TEST PLAN 2.2.8-2 test query from TS1 client CLIENT1:sub to service bodyMassIndex. Query should succeed.
+        # TEST PLAN 2.2.8-6 test query from TS1 client CLIENT1:sub to service bodyMassIndex. Query should succeed.
         self.log(
             '2.2.8-6 test query {0} to bodyMassIndex. Query should succeed, served by {1}:{2}.'.format(query_filename, provider['code'],
                                                                                       provider['subsystem']))
@@ -213,7 +213,7 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
 
         testclient_central.verify_service_data = verify_service
 
-        case.is_true(testclient_central.check_success(), msg='2.2.8-3 Test query after updating central service failed')
+        case.is_true(testclient_central.check_success(), msg='2.2.8-6 Test query after updating central service failed')
 
     return edit_central_service
 
@@ -232,7 +232,7 @@ def test_delete_central_service(case, central_service_name, sync_max_seconds=0, 
                                                        faults_unsuccessful=faults_unsuccessful)
 
     def delete_central_service():
-        self.log('*** delete_central_service')
+        self.log('2.2.8-del remove central service')
 
         # Find "Central Services" menu item, click on it.
         central_services_menu = self.by_css(sidebar.CENTRAL_SERVICES_CSS)
@@ -246,8 +246,8 @@ def test_delete_central_service(case, central_service_name, sync_max_seconds=0, 
 
         # Find the service we're looking for. If nothing is found, cancel everything with assertion - no need to waste time.
         service_row = get_central_service_row(self, central_service_name)
-        self.is_not_none(service_row, msg='Central service not found: {0}'.format(central_service_name))
-        #
+        self.is_not_none(service_row, msg='2.2.8-del Central service not found: {0}'.format(central_service_name))
+
         # Click the row to select it
         service_row.click()
 
@@ -263,12 +263,12 @@ def test_delete_central_service(case, central_service_name, sync_max_seconds=0, 
 
         # Test if the service was deleted.
         service_row = get_central_service_row(self, central_service_name)
-        self.is_none(service_row, msg='Central service not deleted: {0}'.format(central_service_name))
+        self.is_none(service_row, msg='2.2.8-del Central service not deleted: {0}'.format(central_service_name))
 
-        # TEST PLAN 2.2.8-3 test query from TS1 client CLIENT1:sub to CENTRAL service. Query should succeed.
-        self.log('2.2.8-3 test query {0} to central service {1}. Query should fail.'.format(query_filename,
+        # TEST PLAN 2.2.8-remove test query from TS1 client CLIENT1:sub to CENTRAL service. Query should succeed.
+        self.log('2.2.8-del test query {0} to central service {1}. Query should fail.'.format(query_filename,
             central_service_name))
 
-        self.is_equal(testclient_central.check_fail(), True, msg='2.2.8-3 Test query to central service succeeded')
+        self.is_equal(testclient_central.check_fail(), True, msg='2.2.8-del Test query to central service succeeded')
 
     return delete_central_service

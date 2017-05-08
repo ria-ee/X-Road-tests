@@ -165,7 +165,7 @@ class TestAll(unittest.TestCase):
 
     # Test 2.1.3 Failures
     def test_16_security_server_client_registration_failures(self):
-        from tests.xroad_ss_client_sertification_213.SecurityServerClientRegistrationFailures import \
+        from tests.xroad_ss_client_certification_213.SecurityServerClientRegistrationFailures import \
             SecurityServerClientRegistrationFailures
         print '\n test_16_security_server_client_registration_failures STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(SecurityServerClientRegistrationFailures)

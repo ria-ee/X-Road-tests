@@ -20,11 +20,6 @@ def get_server_time(ssh_host, ssh_username, ssh_password):
 
 
 def get_history_for_user(client, database_user, database, user, limit):
-    # return client.exec_command(
-    #     'psql -A -t -F"," -U ' + database_user + ' -d ' + database +
-    #     ' -c "select table_name, operation, timestamp from history where user_name like \'' + user +
-    #     '\' group by table_name, operation, timestamp order by timestamp desc limit ' + str(
-    #         limit) + '"')
     return client.exec_command(
         'psql -A -t -F"," -U {0} -d {1} -c "select table_name, operation, timestamp from history where user_name like \'{2}\' group by table_name, operation, timestamp order by timestamp desc limit {3}"'.format(
             database_user, database, user, limit))
@@ -34,7 +29,6 @@ def get_log_lines(client, file_name, lines):
     log_regex = re.compile(
         r'^(([0-9]{4}-[0-9]{2}-[0-9]{2})T(([0-9]{2}:[0-9]{2}:[0-9]{2})(\+[0-9]{2}:[0-9]{2}))) ([^ ]+) ([^ ]+) +(\[([^\]]+)\]) (([0-9]{4}-[0-9]{2}-[0-9]{2}) (([0-9]{2}:[0-9]{2}:[0-9]{2})(\+[0-9]{4}))) ([^ ]+) (.*)$')
     # Execute command, read output (stdout, stderr)
-    # out_clean, out_error = client.exec_command('tail -' + str(lines) + ' ' + file_name, sudo=True)
     out_clean, out_error = client.exec_command('tail -{0} {1}'.format(lines, file_name), sudo=True)
 
     # Loop over stdout lines

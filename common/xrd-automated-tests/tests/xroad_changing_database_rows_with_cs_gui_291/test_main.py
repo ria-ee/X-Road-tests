@@ -9,11 +9,13 @@ from main.maincontroller import MainController
 class XroadChangingDatabaseRowsWithGUICentralServer(unittest.TestCase):
     def test_changing_database_rows_with_cs_gui_2_9_1(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.9.1'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('cs.host')
         main.reset_webdriver(main.url)
-        main.log_in = False
-        main.close_webdriver = True
-        main.tear_down = True
 
         groups = main.config.get('xroad.registration_officer_group')
         users = {'user1': {'username': main.config.get('xroad.user1'), 'password': main.config.get('xroad.user1'),

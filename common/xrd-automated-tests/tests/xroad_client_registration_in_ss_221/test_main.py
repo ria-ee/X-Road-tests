@@ -11,6 +11,10 @@ class XroadSecurityServerClientRegistration(unittest.TestCase):
     def test_client_registration(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = '2.2.1'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
         main.password = main.config.get('cs.pass')

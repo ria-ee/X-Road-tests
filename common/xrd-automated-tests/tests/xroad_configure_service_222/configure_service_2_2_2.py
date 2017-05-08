@@ -47,8 +47,6 @@ def add_wsdl(self,
     # wsdl_url_input.send_keys(wsdl_url)
     self.input(wsdl_url_input, wsdl_url)
 
-    # time.sleep(6)
-
     # Find the "OK" button in "Add WSDL" dialog
     wsdl_dialog_ok_button = self.by_xpath(popups.ADD_WSDL_POPUP_OK_BTN_XPATH)
     wsdl_dialog_ok_button.click()
@@ -56,19 +54,12 @@ def add_wsdl(self,
     # Clicking the button starts an ajax query. Wait until request is complete.
     self.wait_jquery()
 
-    # time.sleep(5)
-
-    # message = wsdl_dialog.find_element(By.CSS_SELECTOR, '.messages .error')
     console_output = messages.get_console_output(self)  # Console message (displayed if WSDL validator gives a warning)
     warning_message = messages.get_warning_message(self)  # Warning message
     error_message = messages.get_error_message(self)  # Error message (anywhere)
 
     if console_output is not None:
         popups.close_console_output_dialog(self)
-
-    # print 'error: ', error_message
-    # print 'warning:', warning_message
-    # print 'console', console_output
 
     return warning_message, error_message, console_output
 
@@ -111,8 +102,6 @@ def edit_wsdl(self, wsdl_url, clear_field=True):
     # wsdl_url_input.send_keys(wsdl_url)
     self.input(wsdl_url_input, wsdl_url)
 
-    # time.sleep(6)
-
     # Find the "OK" button in "Edit WSDL Parameters" dialog
     wsdl_dialog_ok_button = self.by_xpath(popups.EDIT_WSDL_POPUP_OK_BTN_XPATH)
     wsdl_dialog_ok_button.click()
@@ -120,9 +109,6 @@ def edit_wsdl(self, wsdl_url, clear_field=True):
     # Clicking the button starts an ajax query. Wait until request is complete.
     self.wait_jquery()
 
-    # time.sleep(5)
-
-    # message = wsdl_dialog.find_element(By.CSS_SELECTOR, '.messages .error')
     console_output = messages.get_console_output(self)  # Console message (displayed if WSDL validator gives a warning)
     warning_message = messages.get_warning_message(self)  # Warning message
     error_message = messages.get_error_message(self)  # Error message (anywhere)
@@ -165,8 +151,6 @@ def edit_service(self, service_url, service_timeout=None, verify_tls=None):
     service_timeout_input = self.by_id(popups.EDIT_SERVICE_POPUP_TIMEOUT_ID)
 
     # Enter the service URL.
-    # service_url_input.clear()
-    # service_url_input.send_keys(service_url)
     self.input(service_url_input, service_url)
 
     # Set service timeout if specified
@@ -179,7 +163,7 @@ def edit_service(self, service_url, service_timeout=None, verify_tls=None):
     if verify_tls is not None:
         service_tls_checkbox = self.wait_until_visible(popups.EDIT_SERVICE_POPUP_TLS_ENABLED_XPATH, By.XPATH)
         checked = service_tls_checkbox.get_attribute('checked')
-        print 'TLS', checked, verify_tls
+
         if (checked != '' and not verify_tls) or (checked is None and verify_tls):
             service_tls_checkbox.click()
 
@@ -248,12 +232,13 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
         :return: None
         ''"""
 
-        self.log('2.2.2 / XT-466')
+        # TEST PLAN 2.2.2 configure test service
+        self.log('*** 2.2.2 / XT-466')
 
         self.reload_webdriver(url=ss2_host, username=ss2_user, password=ss2_pass)
 
-        # https://jira.ria.ee/browse/XT-466
-        # TEST PLAN 2.2.2 step 1
+        # TEST PLAN 2.2.2-1 add test service WSDL
+        self.log('2.2.2-1 add test service WSDL')
 
         # Open client popup using shortcut button to open it directly at Services tab.
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
@@ -264,7 +249,6 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
         self.wait_jquery()
         self.wait_until_visible(services_table)
 
-        # '''
         # Test precondition: the WSDL has not been added already. Check if finding service with wsdl_correct_url
         # returns None (= not found).
         self.is_none(clients_table_vm.find_wsdl_by_name(self, wsdl_correct_url),
@@ -301,8 +285,8 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
 
             # TEST PLAN 2.2.2.1 error 3 - trying to add a WSDL with a URL that has already been added
 
-        # TEST PLAN 2.2.2 step 1 - First let's add the unique WSDL and it should succeed. (Validation comes later)
-        self.log('2.2.2 step 1 add (unique) WSDL with URL: {0}'.format(wsdl_correct_url))
+        # TEST PLAN 2.2.2-1 - First let's add the unique WSDL and it should succeed. (Validation comes later)
+        self.log('2.2.2-1 add (unique) WSDL with URL: {0}'.format(wsdl_correct_url))
         warning, error, console = add_wsdl(self, wsdl_correct_url)
         self.is_none(error, msg='Add unique WSDL: got error for WSDL {0} : {1}'.format(wsdl_correct_url, error))
         self.is_none(warning,
@@ -376,10 +360,8 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
             # Now we need to cancel the "Add WSDL" popup. Find the "Cancel" button and click it.
             self.wait_until_visible(type=By.XPATH, element=popups.ADD_WSDL_POPUP_CANCEL_BTN_XPATH).click()
 
-        # '''
-
-        # TEST PLAN 2.2.2 step 1 VALIDATION - Check if our unique WSDL has been successfully added
-        self.log('2.2.2 step 1 validation - checking if WSDL was added: {0}'.format(wsdl_correct_url))
+        # TEST PLAN 2.2.2-1 VALIDATION - Check if our unique WSDL has been successfully added
+        self.log('2.2.2-1 validation - checking if WSDL was added: {0}'.format(wsdl_correct_url))
 
         wsdl_index = clients_table_vm.find_wsdl_by_name(self, wsdl_correct_url)
         self.log('WSDL table row index: {0}'.format(wsdl_index))
@@ -409,7 +391,7 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
 
         # Open service parameters by finding the "Edit" button and clicking it.
         edit_wsdl_button = self.by_id(popups.CLIENT_DETAILS_POPUP_EDIT_WSDL_BTN_ID)
-        # '''
+
         if check_edit_errors:
             edit_wsdl_button.click()
 
@@ -446,9 +428,8 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
             # Close "Edit WSDL Parameters" dialog by finding the "Cancel" button and clicking it.
             self.wait_until_visible(type=By.XPATH, element=popups.EDIT_WSDL_POPUP_CANCEL_BTN_XPATH).click()
 
-        # '''
-
-        # TEST PLAN 2.2.2.3 Editing service parameters
+        # TEST PLAN 2.2.2-2 Editing service parameters
+        self.log('2.2.2-2 Editing service parameters')
 
         # Find the service under the specified WSDL in service list (and expand the WSDL services list if not open yet)
         service_row = clients_table_vm.client_services_popup_find_service(self, wsdl_index=wsdl_index,
@@ -470,6 +451,9 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
         modified_service_url = service_url
 
         if check_parameter_errors:
+            # TEST PLAN 2.2.2.3 Test edit service parameters errors
+            self.log('2.2.2.3 Test edit service parameters errors')
+
             # Append URL parameter db=CLIENT_CODE to the url
 
             # Let's be ready that the service may already have some parameters so check if a question mark exists or not.
@@ -541,11 +525,6 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
         # If any error messages are shown, close them.
         messages.close_error_messages(self)
 
-        # time.sleep(3)
-
-        # Close all open dialogs (pre-logout, not essential)
-        # popups.close_all_open_dialogs(self)
-
     return configure_service
 
 
@@ -568,10 +547,8 @@ def test_enable_service(case, client=None, client_name=None, client_id=None, wsd
         :return: None
         ''"""
 
-        # self.log('*** enable_service')
-        self.log('2.2.2 step 4 - activate test service WSDL')
-
-        # TEST PLAN 2.2.2 step 4 - activate test service WSDL
+        # TEST PLAN 2.2.2-4 - activate test service WSDL
+        self.log('2.2.2-4 - activate test service WSDL')
 
         # Open client popup using shortcut button to open it directly at Services tab.
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
@@ -628,7 +605,7 @@ def test_delete_service(case, client=None, client_name=None, client_id=None, wsd
         :return: None
         ''"""
 
-        self.log('*** delete_service')
+        self.log('2.2.8 delete_service')
 
         # Delete WSDL that we added to restore original state.
 

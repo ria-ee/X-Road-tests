@@ -35,6 +35,7 @@ USED_SERVERS_TAB = '//li[@aria-controls="member_used_servers_tab"]'
 GLOBAL_GROUP_TAB = '//li[@aria-controls="member_group_membership_tab"]'
 
 ADD_SUBSYSTEM_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="add_subsystem"]'
+DELETE_SUBSYSTEM_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="delete_subsystem"]'
 REGISTER_SECURITYSERVER_CLIENT_ADD_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="register_securityserver_client"]'
 ADD_MEMBER_TO_GLOBAL_GROUP_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="add_global_group_membership"]'
 
@@ -74,3 +75,4 @@ def get_row_by_columns(table, values):
     for row in rows:
         if row.text == ' '.join(values):
             return row
+    return None

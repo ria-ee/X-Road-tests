@@ -321,6 +321,7 @@ class ConfReader:
         ini_file = self.get('ini', default=ini_path)
         if ini_file is not None:
             self.read_ini(ini_file)
+            self.set('ini', ini_file)
 
         # Check if config file (key=value pairs) is set and parse it
         config_file = self.get('config', default=config_path)

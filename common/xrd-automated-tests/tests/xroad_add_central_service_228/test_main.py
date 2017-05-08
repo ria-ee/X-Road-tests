@@ -10,10 +10,11 @@ from helpers import xroad
 
 class XroadAddCentralService(unittest.TestCase):
     def test_add_central_service_2_2_8(self):
-        MainController.close_webdriver = True
-        MainController.driver_autostart = False
         main = MainController(self)
-        # main.start_mock_service()
+
+        # Set test name and number
+        main.test_number = '2.2.8'
+        main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
@@ -37,36 +38,38 @@ class XroadAddCentralService(unittest.TestCase):
 
         requester_id = xroad.get_xroad_subsystem(requester)
 
-        # Configure the service
+        # Configure the service (2.2.8-1 to 2.2.8-3)
         add_central_service = add_central_service_2_2_8.test_add_central_service(main, provider=provider,
                                                                                  central_service_name=central_service_name,
                                                                                  sync_max_seconds=sync_max_seconds,
                                                                                  wait_sync_retry_delay=wait_sync_retry_delay)
 
-        # Configure a new service
+        # Configure a new service (2.2.8-4)
         configure_service = configure_service_2_2_2.test_configure_service(main, client=provider_2,
                                                                            service_name=service_name,
                                                                            check_add_errors=False,
                                                                            check_edit_errors=False,
                                                                            check_parameter_errors=False)
 
-        # Add the subject to ACL
+        # Add subject to ACL (2.2.8-4)
         configure_service_acl = add_to_acl_2_1_8.test_add_subjects(main, client=provider_2, wsdl_url=wsdl_url,
                                                                    service_name=service_name,
                                                                    service_subjects=[requester_id],
                                                                    remove_data=False, allow_remove_all=False)
-        # Enable the service
+        # Enable new service (2.2.8-4)
         enable_service = configure_service_2_2_2.test_enable_service(main, client=provider_2, wsdl_url=wsdl_url)
 
+        # Delete new service (undo the changes we made for 2.2.8-4)
         delete_service = configure_service_2_2_2.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
 
-        # Configure the service
+        # Configure central service (2.2.8-5 to 2.2.8-6)
         edit_central_service = add_central_service_2_2_8.test_edit_central_service(main,
                                                                                    provider=provider_2,
                                                                                    central_service_name=central_service_name,
                                                                                    sync_max_seconds=sync_max_seconds,
                                                                                    wait_sync_retry_delay=wait_sync_retry_delay)
 
+        # Delete central service (undo changes we made for 2.2.8)
         delete_central_service = add_central_service_2_2_8.test_delete_central_service(main,
                                                                                        central_service_name=central_service_name,
                                                                                        sync_max_seconds=sync_max_seconds,
@@ -74,33 +77,39 @@ class XroadAddCentralService(unittest.TestCase):
 
 
         try:
+            # TEST PLAN 2.2.8-1, 2.2.8-2, 2.2.8-3 add central service
             main.log('XroadAddCentralService: Add central service')
             # Set Central Server UI
             main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)
             add_central_service()
 
+            # TEST PLAN 2.2.8-4 configure new provider for central service
             main.log('XroadAddCentralService: Configure service parameters')
             # Set Security Server 2 and configure service parameters
             main.reload_webdriver(url=ss2_host, username=ss2_user, password=ss2_pass)
             configure_service()
 
+            # TEST PLAN 2.2.8-4 configure new provider for central service (set access using ACL)
             main.log('XroadAddCentralService: Configure service ACL')
             # Go to SS2 main page (no need to login again) and configure ACL
             main.reload_webdriver(url=ss2_host)
             configure_service_acl()
 
+            # TEST PLAN 2.2.8-4 enable the new provider service
             main.log('XroadAddCentralService: Enable service')
             # Go to SS2 main page (no need to login again) and enable service
             main.reload_webdriver(url=ss2_host)
             enable_service()
 
+            # TEST PLAN 2.2.8-5, 2.2.8-6 edit and test the central service with the new provider
             main.log('XroadAddCentralService: Edit central service')
             # Go to CS main page (login again if necessary) and edit the central service
             main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)
             edit_central_service()
 
-        except:
+        except Exception, e:
             main.log('XroadAddCentralService: Error, undoing changes')
+            main.save_exception_data()
             try:
                 # Go to CS main page (login again if necessary) and edit the central service
                 main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)
@@ -110,6 +119,7 @@ class XroadAddCentralService(unittest.TestCase):
                     delete_central_service()
                 except:
                     main.log('XroadAddCentralService: Error deleting central service')
+                    main.save_exception_data()
                     raise
                 finally:
                     try:
@@ -118,19 +128,23 @@ class XroadAddCentralService(unittest.TestCase):
                         delete_service()
                     except:
                         main.log('XroadAddCentralService: Error deleting security server service')
+                        main.save_exception_data()
                         raise
             except:
                 raise
         finally:
             # Test teardown
-            main.tearDown()
+            main.tearDown(save_exception=False)
 
 
 class XroadDeleteCentralService(unittest.TestCase):
     def test_add_central_service_2_2_8(self):
-        MainController.close_webdriver = True
-        MainController.driver_autostart = False
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.2.8'
+        main.test_name = self.__class__.__name__
+
         main.start_mock_service()
 
         cs_host = main.config.get('cs.host')
@@ -156,8 +170,6 @@ class XroadDeleteCentralService(unittest.TestCase):
                                                                                        central_service_name=central_service_name,
                                                                                        sync_max_seconds=sync_max_seconds,
                                                                                        wait_sync_retry_delay=wait_sync_retry_delay)
-
-        main.tear_down = True
 
         try:
             try:

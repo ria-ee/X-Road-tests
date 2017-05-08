@@ -8,11 +8,11 @@ from helpers import xroad
 
 class XroadLocalTls(unittest.TestCase):
     def test_tls_227(self):
-        MainController.driver_autostart = False
         main = MainController(self)
 
-        main.log_in = True
-        main.close_webdriver = True
+        # Set test name and number
+        main.test_number = '2.2.7'
+        main.test_name = self.__class__.__name__
 
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
         requester = xroad.split_xroad_id(main.config.get('ss2.client_id'))
@@ -26,24 +26,22 @@ class XroadLocalTls(unittest.TestCase):
             test_local_tls()
         except:
             main.log('XroadLocalTls: Failed to configure TLS for local service')
+            main.save_exception_data()
             # Delete internal certificates from the servers
             try:
                 delete_local_tls()
             except:
+                main.save_exception_data()
                 main.log('XroadLocalTls: failed to remove TLS from local service')
             raise
         finally:
             # Test teardown
-            main.tearDown()
+            main.tearDown(save_exception=False)
 
 
 class XroadDeleteLocalTls(unittest.TestCase):
     def test_tls_227(self):
-        MainController.driver_autostart = False
         main = MainController(self)
-
-        main.log_in = True
-        main.close_webdriver = True
 
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
         requester = xroad.split_xroad_id(main.config.get('ss2.client_id'))

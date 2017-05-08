@@ -11,8 +11,7 @@ faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.Unkn
                      'Server.ServerProxy.ServiceDisabled', 'Server.ClientProxy.*', 'Client.*']
 
 
-def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None,
-                      service_name=None):
+def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
     '''
     MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
     :param client_name: string | None - name of the client whose ACL we modify
@@ -45,7 +44,8 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
         :return: None
         """
 
-        self.log('*** disable_wsdl')
+        # TEST PLAN 2.2.6 deactivate WSDL
+        self.log('*** 2.2.6 / XT-470')
 
         # Create an out of order message with timestamp and milliseconds. We need to compare the error we get later.
         out_of_order_message = 'Out of order: {0}'.format(int(round(time.time() * 1000)))
@@ -53,7 +53,6 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
         # TEST PLAN 2.2.6-1 test query from TS1 client CLIENT1:sub to service bodyMassIndex. Query should succeed.
         self.log('2.2.6-1 test query {0} to bodyMassIndex. Query should succeed.'.format(query_filename))
 
-        # refresh_wsdl_2_2_5.check_successful_query(self, client=client, service=service, faults=faults_successful)
         case.is_true(testclient_http.check_success(), msg='2.2.6-1 test query failed')
 
         # TEST PLAN 2.2.6-2 disable/deactivate the WSDL.
@@ -74,10 +73,8 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
         # Get the WSDL URL from wsdl_element text
         if wsdl_url is None:
             wsdl_text = wsdl_element.find_elements_by_tag_name('td')[1].text
-            # print wsdl_text
             matches = re.search(popups.CLIENT_DETAILS_POPUP_WSDL_URL_REGEX, wsdl_text)
             wsdl_found_url = matches.group(2)
-            # print wsdl_found_url
             self.log('Found WSDL URL: {0}'.format(wsdl_found_url))
         else:
             wsdl_found_url = wsdl_url
@@ -95,8 +92,6 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
         disable_notice_input = self.by_id(popups.DISABLE_WSDL_POPUP_NOTICE_ID)
 
         # Clear the disabled notice input and set a new text
-        # disable_notice_input.clear()
-        # disable_notice_input.send_keys(out_of_order_message)
         self.input(disable_notice_input, out_of_order_message)
 
         # Click "OK" button to save the data
@@ -139,8 +134,7 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
     return disable_wsdl
 
 
-def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None,
-                     service_name=None):
+def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
     '''
     MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
     :param client_name: string | None - name of the client whose ACL we modify
@@ -174,7 +168,7 @@ def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_i
         :return: None
         ''"""
 
-        self.log('*** enable_wsdl')
+        self.log('2.2.6 enable_wsdl')
 
         # TEST PLAN 2.2.6-4 reactivate the WSDL
         self.log('2.2.6-4 reactivate the WSDL.')

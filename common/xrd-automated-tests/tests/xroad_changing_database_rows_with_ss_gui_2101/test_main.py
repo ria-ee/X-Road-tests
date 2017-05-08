@@ -8,10 +8,12 @@ from main.maincontroller import MainController
 
 class XroadChangingDatabaseRowsWithGUISecurityServer(unittest.TestCase):
     def test_changing_database_rows_with_ss_gui_2_10_1(self):
-        MainController.log_in = False
-        MainController.close_webdriver = True
-        MainController.tear_down = True
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.10.1'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('ss1.host')
         if main.driver is None:
             main.reset_webdriver(main.url, init_new_webdriver=False)

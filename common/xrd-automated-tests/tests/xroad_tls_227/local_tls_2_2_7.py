@@ -7,7 +7,6 @@ from requests.exceptions import SSLError
 from tests.xroad_configure_service_222 import configure_service_2_2_2
 
 # These faults are checked when we need the result to be unsuccessful. Otherwise the checking function returns True.
-# faults_unsuccessful = ['Server.ServerProxy.ServiceDisabled', 'Client.InternalError', 'Server.ClientProxy.SslAuthenticationFailed']
 faults_unsuccessful = ['Server.ClientProxy.SslAuthenticationFailed']
 # These faults are checked when we need the result to be successful. Otherwise the checking function returns False.
 faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.UnknownService',
@@ -35,7 +34,7 @@ def test_delete_tls(case, client, requester):
     def delete_tls():
         self.reload_webdriver(url=ss1_host, username=ss1_user, password=ss1_pass)
 
-        self.log('*** local_tls')
+        self.log('2.2.7 delete_tls')
         self.log('2.2.7-delete setting {0} connection type to HTTP'.format(client_id))
 
         # Open "Security Server Clients" page
@@ -48,8 +47,6 @@ def test_delete_tls(case, client, requester):
         clients_table_vm.open_client_popup_internal_servers(self, client_id=client_id)
 
         # Set connection type to HTTPS_NO_AUTH (SSLNOAUTH)
-        # case.assertEqual(clients_table_vm.client_servers_popup_set_connection(self, 'NOSSL'), True,
-        #                  msg='2.2.7-delete-2 Failed to set connection type')
         self.is_true(clients_table_vm.client_servers_popup_set_connection(self, 'NOSSL'),
                      msg='2.2.7-delete-2 Failed to set connection type')
 
@@ -82,7 +79,6 @@ def test_delete_tls(case, client, requester):
         edit_service_button.click()
 
         warning, error = configure_service_2_2_2.edit_service(self, service_url=new_service_url)
-        # case.assertIsNone(error, msg='2.2.7-14 Got error when trying to update service URL')
         case.is_none(error, msg='2.2.7-14 Got error when trying to update service URL')
 
         # Click tab "Internal Servers"
@@ -99,13 +95,7 @@ def test_delete_tls(case, client, requester):
 
 def test_tls(case, client, requester):
     self = case
-    # certs_download_filename = 'certs.tar.gz'
-    # certs_ss1_filename = 'certs_ss1.tar.gz'
-    # certs_ss2_filename = 'certs_ss2.tar.gz'
-    # verify_cert_filename = 'cert.pem'
-    # client_cert_filename = 'mock.crt'
-    # client_key_filename = 'mock.key'
-    # mock_cert_filename = 'mockservice.crt'
+
     certs_download_filename = self.config.get('certs.downloaded_ss_certs_filename')
     certs_ss1_filename = self.config.get('certs.ss1_certs')
     certs_ss2_filename = self.config.get('certs.ss2_certs')
@@ -121,9 +111,6 @@ def test_tls(case, client, requester):
     sync_retry = self.config.get('services.request_sync_delay')
     sync_max_seconds = self.config.get('services.request_sync_timeout')
 
-    # service = helper.split_xroad_data('KS1 : COM : CLIENT3 : testservice : bodyMassIndex.v1')
-    # client = helper.split_xroad_data('KS1 : COM : CLIENT3 : sub')
-
     client_id = xroad.get_xroad_subsystem(client)
     requester_id = xroad.get_xroad_subsystem(requester)
 
@@ -136,8 +123,8 @@ def test_tls(case, client, requester):
     ss2_pass = self.config.get('ss2.pass')
 
     wsdl_url = self.config.get('wsdl.remote_path').format(self.config.get('wsdl.service_wsdl'))
-    testservice_name = self.config.get('services.test_service')  # 'xroadGetRandom.v1'
-    new_service_url = self.config.get('services.test_service_url_ssl')  # 'https://localhost:18086/xroadGetRandom'
+    testservice_name = self.config.get('services.test_service')
+    new_service_url = self.config.get('services.test_service_url_ssl')
 
     query_url = self.config.get('ss1.service_path')
     query_url_ssl = self.config.get('ss1.service_path_ssl')
@@ -172,7 +159,8 @@ def test_tls(case, client, requester):
         :return: None
         ''"""
 
-        self.log('*** local_tls')
+        # TEST PLAN 2.2.7 test local TLS
+        self.log('*** 2.2.7 / XT-471')
 
         self.reload_webdriver(url=ss1_host, username=ss1_user, password=ss1_pass)
 
@@ -187,20 +175,12 @@ def test_tls(case, client, requester):
         if not os.path.isdir(ss2_certs_directory_abs):
             os.mkdir(ss2_certs_directory_abs)
 
-        # Remove old files if they exist
-        # for filename in [certs_filename, ss1_filename, ss2_filename]:
-        #     if os.path.isfile(filename):
-        #         try:
-        #             os.remove(filename)
-        #         except:
-        #             pass
         self.remove_files([certs_filename, ss1_filename, ss2_filename, ss2_certs_directory_abs])
 
         created_files = [certs_filename]
 
         self.start_mock_service()
 
-        # '''
         # TEST PLAN 2.2.7-1 generate new internal TLS key.
         self.log('2.2.7-1 generate new internal TLS key.')
 
@@ -255,6 +235,7 @@ def test_tls(case, client, requester):
 
         self.log('2.2.7-1 certificate archive has been extracted')
 
+        # TEST PLAN 2.2.7-2 setting connection type to HTTPS_NO_AUTH
         self.log('2.2.7-2 setting {0} connection type to HTTPS_NO_AUTH'.format(client_id))
 
         # Open "Security Server Clients" page
@@ -267,35 +248,27 @@ def test_tls(case, client, requester):
         clients_table_vm.open_client_popup_internal_servers(self, client_id=client_id)
 
         # Set connection type to HTTPS_NO_AUTH (SSLNOAUTH)
-        # case.assertEqual(clients_table_vm.client_servers_popup_set_connection(self, 'SSLNOAUTH'), True,
-        #                  msg='2.2.7-2 Failed to set connection type')
         case.is_true(clients_table_vm.client_servers_popup_set_connection(self, 'SSLNOAUTH'),
                      msg='2.2.7-2 Failed to set connection type')
-        # time.sleep(auth_update_delay)
 
         # TEST PLAN 2.2.7-3 test query from TS1:CLIENT1:sub to test service. Query should fail.
         self.log('2.2.7-3 test query {0} to test service. Query should fail.'.format(query_filename))
 
-        # case.assertEqual(testclient_http.check_fail(), True, msg='2.2.7-3 test query succeeded')
         case.is_true(testclient_http.check_fail(), msg='2.2.7-3 test query succeeded')
 
         # TEST PLAN 2.2.7-4/5 test query to test service using SSL and client certificate. Query should succeed.
         self.log('2.2.7-4/5 test query to test service using SSL and client certificate. Query should succeed.')
-        # case.assertEqual(testclient_https.check_success(), True, msg='2.2.7-5 test query failed')
         case.is_true(testclient_https.check_success(), msg='2.2.7-5 test query failed')
 
+        # TEST PLAN 2.2.7-6 setting connection type to HTTPS
         self.log('2.2.7-6 setting {0} connection type to HTTPS'.format(client_id))
 
         # Set connection type to HTTPS (SSLAUTH)
-        # case.assertEqual(clients_table_vm.client_servers_popup_set_connection(self, 'SSLAUTH'), True,
-        #                  msg='2.2.7-6 Failed to set connection type')
         case.is_true(clients_table_vm.client_servers_popup_set_connection(self, 'SSLAUTH'),
                      msg='2.2.7-6 Failed to set connection type')
-        # time.sleep(auth_update_delay)
 
         # TEST PLAN 2.2.7-7 test query to test service using SSL and client certificate. Query should fail.
         self.log('2.2.7-7 test query to test service using SSL and client certificate. Query should fail.')
-        # case.assertEqual(testclient_https.check_fail(), True, msg='2.2.7-7 test query succeeded')
         case.is_true(testclient_https.check_fail(), msg='2.2.7-7 test query succeeded')
 
         # TEST PLAN 2.2.7-8 upload certificate to TS1 client CLIENT1:sub
@@ -317,7 +290,6 @@ def test_tls(case, client, requester):
         # Set client certificate and key
         testclient_https.client_certificate = (client_cert_path, client_key_path)
 
-        # case.assertEqual(testclient_https.check_success(), True, msg='2.2.7-9 test query failed')
         case.is_true(testclient_https.check_success(), msg='2.2.7-9 test query failed')
 
         # TEST PLAN 2.2.7-10 set test client to use TS2 TLS certificate
@@ -376,17 +348,15 @@ def test_tls(case, client, requester):
 
         try:
             testclient_https_ss2.check_fail()
-            # case.assertEqual(True, False, msg='2.2.7-11 test query failed but not with an SSLError.')
             case.is_true(False, msg='2.2.7-11 test query failed but not with an SSLError.')
         except SSLError:
-            # We're actually hoping for SSLError so we're good.
+            # We're actually hoping to get an SSLError so we're good.
             pass
 
         # TEST PLAN 2.2.7-12/13 test query to test service using SSL and TS1 certificate. Query should succeed.
         self.log(
             '2.2.7-12/13 test query to test service using SSL and client certificate, verify TS1. Query should succeed.')
 
-        # case.assertEqual(testclient_https.check_success(), True, msg='2.2.7-13 test query failed')
         case.is_true(testclient_https.check_success(), msg='2.2.7-13 test query failed')
 
         # TEST PLAN 2.2.7-14 TS2 test service is configured from http to https. TLS check disabled.
@@ -416,12 +386,10 @@ def test_tls(case, client, requester):
         edit_service_button.click()
 
         warning, error = configure_service_2_2_2.edit_service(self, service_url=new_service_url, verify_tls=False)
-        # case.assertIsNone(error, msg='2.2.7-14 Got error when trying to update service URL')
         case.is_none(error, msg='2.2.7-14 Got error when trying to update service URL')
 
         # TEST PLAN 2.2.7-15 test query to test service using SSL and TS1 certificate. Query should succeed.
         self.log('2.2.7-15 test query to test service using SSL and client certificate. Query should succeed.')
-        # case.assertEqual(testclient_https.check_success(), True, msg='2.2.7-15 test query failed')
         case.is_true(testclient_https.check_success(), msg='2.2.7-15 test query failed')
 
         # TEST PLAN 2.2.7-16 TS2 test service is as https with TLS certificate check enabled.
@@ -430,7 +398,6 @@ def test_tls(case, client, requester):
         edit_service_button.click()
 
         configure_service_2_2_2.edit_service(self, service_url=new_service_url, verify_tls=True)
-        # '''
 
         # TEST PLAN 2.2.7-17 test query to test service using SSL and TS1 certificate. Query should succeed.
         self.log('2.2.7-17 test query to test service using SSL and client certificate. Query should fail.')
@@ -457,6 +424,7 @@ def test_tls(case, client, requester):
         submit_button = self.by_id(popups.FILE_UPLOAD_SUBMIT_BUTTON_ID)
         submit_button.click()
 
+        # TEST PLAN 2.2.7-19 test query to test service using SSL and client certificate. Should succeed.
         self.log('2.2.7-19 test query to test service using SSL and client certificate. Query should succeed.')
 
         case.is_true(testclient_https.check_success(), msg='2.2.7-19 test query failed')

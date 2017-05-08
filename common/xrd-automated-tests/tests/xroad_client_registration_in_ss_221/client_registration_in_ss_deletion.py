@@ -10,11 +10,15 @@ from helpers import xroad
 class XroadSecurityServerClientDeletion(unittest.TestCase):
     def test_client_deletion(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.2.1'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
         main.password = main.config.get('cs.pass')
-        main.close_webdriver = True
-        main.tear_down = True
+
         main.reset_webdriver(url=main.url, username=main.username, password=main.password, close_previous=False,
                              init_new_webdriver=False)
 

@@ -4,7 +4,6 @@ import re
 import uuid
 from xml.etree import ElementTree
 
-
 # If the access rights are ok but the service endpoint has a problem, it may return:
 # - Server.ServerProxy.ServiceFailed.InvalidContentType
 # - Server.ServerProxy.ServiceFailed.NetworkError

@@ -4,6 +4,7 @@ import re
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
+from helpers import xroad
 import messages
 
 ADD_CLIENT_BTN_ID = 'client_add'
@@ -48,7 +49,7 @@ def find_row_by_client(table_rows, client=None, client_name=None, client_id=None
     """
 
     if client is not None:
-        client_id = helper.get_xroad_id(client)
+        client_id = xroad.get_xroad_id(client)
     if client_name is not None:
         cell_index = 1  # Second cell contains the client name
         compare_text = client_name
@@ -63,7 +64,6 @@ def find_row_by_client(table_rows, client=None, client_name=None, client_id=None
         row_client_data = row.find_elements_by_tag_name('td')[cell_index]
         if row_client_data.text == compare_text:
             # We found our client! Return the row ID.
-            print 'Client found:', row_client_data.text
             return i
 
     print 'Client not found:', compare_text
@@ -72,7 +72,6 @@ def find_row_by_client(table_rows, client=None, client_name=None, client_id=None
 
 
 def find_wsdl_by_name(self, wsdl_name):
-    print "finding by name", wsdl_name
     """
     Finds a WSDL index (zero based) from the table of WSDLs by comparing the values in the table with the
     string supplied.
@@ -87,15 +86,12 @@ def find_wsdl_by_name(self, wsdl_name):
     for i, row in enumerate(services_table_rows):
         # Get the second table cell
         row_wsdl_name = row.find_elements_by_tag_name("td")[1]
-        # print 're.match(\'{0}\', \'{1}\')'.format(' \(' + re.escape(wsdl_name) + '\)', row_wsdl_name.text)
 
         # See if its content matches the WSDL address
         if re.match(popups.CLIENT_DETAILS_POPUP_WSDL_REGEX.format(re.escape(wsdl_name)), row_wsdl_name.text):
             # Match - return index
-            # print 'WSDL found:', row_wsdl_name.text
             return i
 
-    # print 'WSDL not found:', wsdl_name
     # WSDL not found
     return None
 
@@ -159,9 +155,6 @@ def select_subjects_from_table(self, subjects_table, subjects, select_duplicate=
         # Add the ID to a list for later checking
         selected_ids.append(xroad_id_text)
 
-        # Scroll element into view before clicking it
-        # self.driver.execute_script('return arguments[0].scrollIntoView(true);', xroad_id)
-
         # Click the element
         xroad_id.click()
 
@@ -173,7 +166,6 @@ def get_client_row_element(self, client=None, client_name=None, client_id=None):
     self.wait_jquery()
 
     # Find all client rows in client table
-    # table_rows = self.by_css(CLIENT_ROW_CSS, multiple=True)
     table_rows = self.wait_until_visible(CLIENT_ROW_CSS, type=By.CSS_SELECTOR, multiple=True)
 
     client_row_index = find_row_by_client(table_rows, client=client, client_name=client_name, client_id=client_id)
@@ -182,7 +174,6 @@ def get_client_row_element(self, client=None, client_name=None, client_id=None):
 
     client_row = table_rows[client_row_index]
 
-    # print "Row found", row_client_name.text
     return client_row
 
 
@@ -229,7 +220,6 @@ def get_service_parameters(self, service_row):
         cells = service_row.find_elements_by_tag_name('td')
 
         service_code_cell = cells[1].text
-        # print service_code_cell
         service_matches = re.search(popups.CLIENT_DETAILS_POPUP_SERVICE_CODE_REGEX, service_code_cell)
 
         service_code = service_matches.group(1)
@@ -248,7 +238,6 @@ def get_service_parameters(self, service_row):
         return {'code': service_code, 'name': service_name, 'version': service_version, 'acl_count': service_acl_count,
                 'title': service_title, 'url': service_url, 'timeout': service_timeout, 'refresh': service_refresh}
     except:
-        # raise
         return None
 
 
@@ -262,7 +251,7 @@ def client_services_popup_select_wsdl(self, wsdl_index=None, wsdl_url=None):
     if wsdl_index is None:
         raise RuntimeError('WSDL index not found for {0}'.format(wsdl_url))
 
-    wsdl_list = self.wait_until_visible(popups.CLIENT_DETAILS_POPUP_WSDL_CSS, type=By.CSS_SELECTOR, multiple=True)
+    self.wait_until_visible(popups.CLIENT_DETAILS_POPUP_WSDL_CSS, type=By.CSS_SELECTOR, multiple=True)
 
     # We take the Nth element from the WSDL list, N=wsdl_index
     wsdl_row = client_services_popup_get_wsdl(self, wsdl_index)
@@ -277,7 +266,7 @@ def client_services_popup_select_wsdl(self, wsdl_index=None, wsdl_url=None):
 
 def client_services_popup_get_services_rows(self, wsdl_index=None, wsdl_url=None):
     # Wait until WSDL definitions are visible and everything has been downloaded
-    self.wait_until_visible(popups.CLIENT_DETAILS_POPUP_WSDL_CSS, type=By.CSS_SELECTOR, multiple=True)
+    wsdl_list = self.wait_until_visible(popups.CLIENT_DETAILS_POPUP_WSDL_CSS, type=By.CSS_SELECTOR, multiple=True)
     self.wait_jquery()
 
     if wsdl_url is not None:
@@ -383,8 +372,6 @@ def client_services_popup_find_service(self, wsdl_index=None, wsdl_url=None, ser
         service_row_index = wsdl_index + 1 + service_index
         service_row = service_all_rows[service_row_index]
 
-    # service_row = services_table_rows[service_index]
-    # Click on the service to enable "Access Rights" button.
     return service_row
 
 
@@ -409,15 +396,6 @@ def client_services_popup_open_wsdl_acl(self, services_table, service_index=None
         # We got an exception. Let's assume that the WSDL is already open. If it is not, we'll get another exception
         # when trying to find/click the service row.
         pass
-
-    '''
-    # The table is updated dynamically, so we're going to find the service elements now (after clicking open the WSDL)
-    services_table_rows = services_table.find_elements_by_css_selector(
-        popups.CLIENT_DETAILS_POPUP_SERVICES_TABLE_CONTENT_CSS)
-    service_row = services_table_rows[service_index]
-    # Click on the service to enable "Access Rights" button.
-    service_row.click()
-    '''
 
     service_row = client_services_popup_find_service(self, wsdl_index=wsdl_index,
                                                      service_name=service_name)

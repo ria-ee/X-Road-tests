@@ -1,0 +1,36 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+        xmlns:id="http://x-road.eu/xsd/identifiers"
+        xmlns:ns1="http://producer.x-road.eu">
+           <soapenv:Header>
+              <xrd:protocolVersion>{xroadProtocolVersion}</xrd:protocolVersion>
+              <xrd:issue>{xroadIssue}</xrd:issue>
+              <xrd:userId>{xroadUserId}</xrd:userId>
+              <xrd:id>{uuid}</xrd:id>
+              <xrd:service id:objectType="SERVICE">
+                 <id:xRoadInstance>{serviceMemberInstance}</id:xRoadInstance>
+                 <id:memberClass>{serviceMemberClass}</id:memberClass>
+                 <id:memberCode>{serviceMemberCode}</id:memberCode>
+                 <!--Optional:-->
+                 <id:subsystemCode>{serviceSubsystemCode}</id:subsystemCode>
+                 <id:serviceCode>{serviceCode}</id:serviceCode>
+                 <!--Optional:-->
+                 <id:serviceVersion>{serviceVersion}</id:serviceVersion>
+              </xrd:service>
+              <xrd:client id:objectType="MEMBER">
+                 <id:xRoadInstance>{memberInstance}</id:xRoadInstance>
+                 <id:memberClass>{memberClass}</id:memberClass>
+                 <id:memberCode>{memberCode}</id:memberCode>
+                 <!--Optional:-->
+                 <id:subsystemCode>{subsystemCode}</id:subsystemCode>
+              </xrd:client>
+           </soapenv:Header>
+           <soapenv:Body>
+            <ns1:bodyMassIndex>
+                <request>
+                 <weight>75</weight>
+                 <height>180</height>
+                </request>
+            </ns1:bodyMassIndex>
+           </soapenv:Body>
+</soapenv:Envelope>

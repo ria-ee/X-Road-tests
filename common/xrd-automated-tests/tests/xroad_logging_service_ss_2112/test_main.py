@@ -9,27 +9,17 @@ from view_models.log_constants import *
 
 class XroadLoggingInSecurityServer(unittest.TestCase):
     def test_loggin_in_security_server_2_11_2(self):
-        MainController.close_webdriver = True
-        MainController.tear_down = True
-        MainController.log_in = False
-
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = '2.11.2'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
         main.password = main.config.get('cs.pass')
         if main.driver is None:
             main.reset_webdriver(main.url, username=main.username, password=main.password, init_new_webdriver=False)
-
-        # member = {'name': 'Client Two', 'class': 'GOV', 'code': 'CLIENT2'}
-        # client = {'code': 'CLIENT2', 'class': 'GOV', 'subsystem_code': 'sub', 'type': 'SUBSYSTEM'}
-
-        # users = {'user1': {'username': 'user1', 'password': 'user1',
-        #                    'group': 'xroad-registration-officer,xroad-service-administrator'},
-        #          'user2': {'username': 'user2', 'password': 'user2',
-        #                    'group': 'xroad-registration-officer,xroad-service-administrator'},
-        #          'user3': {'username': 'user3', 'password': 'user3',
-        #                    'group': 'xroad-registration-officer,xroad-service-administrator'}
-        #          }
 
         groups = '{0},{1}'.format(main.config.get('xroad.registration_officer_group'),
                                   main.config.get('xroad.service_administrator_group'))

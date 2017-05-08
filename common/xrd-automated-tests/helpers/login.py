@@ -35,7 +35,6 @@ def login(self, username, password, login_with_enter=False):
     else:
         login_button = self.wait_until_visible(type=By.XPATH, element=login_constants.SUBMIT_BUTTON)
         login_button.click()
-        # time.sleep(4)
 
     if self.debug:
         self.log("We have tried to log in, check_login value: {0}".format(check_login(self, username)))

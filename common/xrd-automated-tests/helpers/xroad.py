@@ -1,23 +1,3 @@
-import os
-
-
-# def get_download_path(filename=''):
-#     """
-#     returns download path of
-#     :param filename:
-#     :return:
-#     """
-#     return os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temp', 'downloads', filename)
-
-#
-# def get_xml_query(filename):
-#     if not os.path.isabs(filename):
-#         file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'mock', 'queries', filename)
-#
-#     with open(file_path, 'r') as f:
-#         return f.read()
-
-
 def split_xroad_id(xroad_id, type=None):
     '''
     Creates a dictionary {type, instance, class, code, subsystem} from an XRoad ID string.

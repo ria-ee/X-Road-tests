@@ -8,11 +8,11 @@ from helpers import xroad
 
 class XroadMemberAccess(unittest.TestCase):
     def test_xroad_member_access(self):
-        MainController.driver_autostart = False
         main = MainController(self)
 
-        main.log_in = True
-        main.close_webdriver = True
+        # Set test name and number
+        main.test_number = '2.2.9'
+        main.test_name = self.__class__.__name__
 
         ss2_host = main.config.get('ss2.host')
         ss2_user = main.config.get('ss2.user')
@@ -32,8 +32,12 @@ class XroadMemberAccess(unittest.TestCase):
         # Set Security Server 2
         main.reload_webdriver(url=ss2_host, username=ss2_user, password=ss2_pass)
 
-        # Test local TLS
-        test_xroad_member_access()
-
-        # Test teardown
-        main.tearDown()
+        try:
+            # Test local TLS
+            test_xroad_member_access()
+        except:
+            main.save_exception_data()
+            raise
+        finally:
+            # Test teardown
+            main.tearDown(save_exception=False)
