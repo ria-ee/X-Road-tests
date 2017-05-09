@@ -14,11 +14,7 @@ faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.Unkn
 def test_xroad_member_access(case, client=None, client_id=None, requester=None, wsdl_index=None, wsdl_url=None,
                              service_name=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
-    :param client_name: string | None - name of the client whose ACL we modify
-    :param client_id: string | None - XRoad ID of the client whose ACL we modify
-    :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list
-    :param wsdl_url: str | None - URL for WSDL we select from the list
+    MainController test function. Tests XRoad member access.
     :return:
     '''
 
@@ -27,17 +23,34 @@ def test_xroad_member_access(case, client=None, client_id=None, requester=None, 
     requester_id = xroad.get_xroad_subsystem(requester)
 
     query_url = self.config.get('ss2.service_path')
-    query_filename = self.config.get('services.testservice_request_2_filename')
+    query_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)
 
     sync_retry = 0
     sync_max_seconds = 0
 
+    testclient_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': client['instance'],
+        'serviceMemberClass': client['class'],
+        'serviceMemberCode': client['code'],
+        'serviceSubsystemCode': client['subsystem'],
+        'serviceCode': xroad.get_service_name(service_name),
+        'serviceVersion': xroad.get_service_version(service_name),
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.testservice_2_request_body')
+    }
+
     testclient = soaptestclient.SoapTestClient(url=query_url,
                                                body=query,
                                                retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                faults_successful=faults_successful,
-                                               faults_unsuccessful=faults_unsuccessful)
+                                               faults_unsuccessful=faults_unsuccessful, params=testclient_params)
 
     def xroad_member_access():
         """

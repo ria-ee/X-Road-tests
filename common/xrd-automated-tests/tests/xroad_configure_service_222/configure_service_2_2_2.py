@@ -184,13 +184,7 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
                            check_add_errors=True,
                            check_edit_errors=True, check_parameter_errors=True):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
-    :param client_name: string - name of the client whose ACL we modify
-    :param wsdl_index: int - index (zero-based) for WSDL we select from the list
-    :param service_index: int - index (zero-based) for WSDL we select from the list
-    :param remove_data: Boolean - remove data after test or not.
-    :param allow_remove_all: Boolean - allow using "Remove all" button when removing data and if original ACL was empty.
-    :return:
+    MainController test function. Configures a new service.
     '''
 
     self = case
@@ -530,11 +524,7 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
 
 def test_enable_service(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
-    :param client_name: string | None - name of the client whose ACL we modify
-    :param client_id: string | None - XRoad ID of the client whose ACL we modify
-    :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list
-    :param wsdl_url: str | None - URL for WSDL we select from the list
+    MainController test function. Enables a service.
     :return:
     '''
 
@@ -588,7 +578,8 @@ def test_enable_service(case, client=None, client_name=None, client_id=None, wsd
 
 def test_delete_service(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
+    MainController test function. Deletes a service from security server.
+    :param case: TestCase object
     :param client_name: string | None - name of the client whose ACL we modify
     :param client_id: string | None - XRoad ID of the client whose ACL we modify
     :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list

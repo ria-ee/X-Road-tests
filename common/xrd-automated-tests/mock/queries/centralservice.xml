@@ -9,7 +9,7 @@ xmlns:ns1="http://producer.x-road.eu">
       <xrd:id>{uuid}</xrd:id>
       <xrd:centralService id:objectType="CENTRALSERVICE">
          <id:xRoadInstance>{serviceMemberInstance}</id:xRoadInstance>
-         <id:serviceCode>{serviceMemberCode}</id:serviceCode>
+         <id:serviceCode>{serviceCode}</id:serviceCode>
       </xrd:centralService>
       <xrd:client id:objectType="MEMBER">
          <id:xRoadInstance>{memberInstance}</id:xRoadInstance>
@@ -20,10 +20,6 @@ xmlns:ns1="http://producer.x-road.eu">
       </xrd:client>
    </soapenv:Header>
    <soapenv:Body>
-      <ns1:xroadGetRandom>
-         <request>
-            <seed>100</seed>
-         </request>
-      </ns1:xroadGetRandom>
+      <ns1:{serviceProviderCode}>{requestBody}</ns1:{serviceProviderCode}>
    </soapenv:Body>
 </soapenv:Envelope>

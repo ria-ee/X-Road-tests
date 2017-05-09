@@ -40,6 +40,7 @@ class SoapTestClient:
     fault_message = None
     xml = None
     verify_service_data = None
+    params = None
     query_timeout = 90.0  # Query timeout in seconds
     retry_interval = 0  # Seconds to retry in a loop after getting errors (if check_* function is called). 0 for no retries.
     fail_timeout = 120  # Stop loop and throw error when at least this amount of time has passed.
@@ -71,7 +72,7 @@ class SoapTestClient:
     def __init__(self, url=None, body=None, client_certificate=None, server_certificate=None, query_timeout=None,
                  retry_interval=None, fail_timeout=None, headers=None, xroad_namespace=None,
                  xroad_identifiers_namespace=None, faults_successful=None, faults_unsuccessful=None,
-                 verify_service=None, log=None):
+                 verify_service=None, params=None, log=None):
         '''
         Initializes the class and sets default values for all necessary parameters (if specified).
 
@@ -89,6 +90,7 @@ class SoapTestClient:
         :param faults_successful: [str] - fault codes for a successful query (other codes are considered a success)
         :param faults_unsuccessful: [str] - fault codes for an unsuccessful query (other codes are considered a success)
         :param verify_service: dict{} - verify specified service parameters; if one doesn't match, query fails
+        :param params: dict{}|None - default parameters for query
         :param log: logging function
         '''
 
@@ -120,6 +122,8 @@ class SoapTestClient:
             self.faults_unsuccessful = faults_unsuccessful
         if verify_service is not None:
             self.verify_service_data = verify_service
+        if params is not None:
+            self.params = params
         if log is not None:
             self.log = log
 
@@ -150,6 +154,8 @@ class SoapTestClient:
             timeout = self.query_timeout
         if body is None:
             body = self.body
+        if params is None:
+            params = self.params
 
         # Set last result, fault, fault code and message and query uuid to be None.
         self.result = None
@@ -165,6 +171,10 @@ class SoapTestClient:
             if params is None:
                 self.query_uuid = uuid.uuid4()
                 params = {'uuid': self.query_uuid}
+            # If uuid is not set, set it
+            elif 'uuid' not in params:
+                self.query_uuid = uuid.uuid4()
+                params['uuid'] = self.query_uuid
 
             # Replace all {parameters} in body
             body = body.format(**params)
@@ -309,7 +319,8 @@ class SoapTestClient:
         # Loop until break statement
         while True:
             if self.log:
-                self.log('Waiting {0} seconds before query'.format(retry_interval))
+                if retry_interval > 0:
+                    self.log('Waiting {0} seconds before query'.format(retry_interval))
             time.sleep(retry_interval)
 
             # Get the result of the query

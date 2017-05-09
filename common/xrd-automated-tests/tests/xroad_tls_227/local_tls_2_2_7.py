@@ -13,7 +13,7 @@ faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.Unkn
                      'Server.ServerProxy.ServiceDisabled', 'Server.ClientProxy.*', 'Client.*']
 
 
-def test_delete_tls(case, client, requester):
+def test_delete_tls(case, client, provider):
     self = case
 
     ss1_host = self.config.get('ss1.host')
@@ -25,7 +25,7 @@ def test_delete_tls(case, client, requester):
     ss2_pass = self.config.get('ss2.pass')
 
     client_id = xroad.get_xroad_subsystem(client)
-    requester_id = xroad.get_xroad_subsystem(requester)
+    provider_id = xroad.get_xroad_subsystem(provider)
 
     testservice_name = self.config.get('services.test_service')
     wsdl_url = self.config.get('wsdl.remote_path').format(self.config.get('wsdl.service_wsdl'))
@@ -63,7 +63,7 @@ def test_delete_tls(case, client, requester):
         self.wait_jquery()
 
         # Open client popup using shortcut button to open it directly at Services tab.
-        clients_table_vm.open_client_popup_services(self, client_id=requester_id)
+        clients_table_vm.open_client_popup_services(self, client_id=provider_id)
 
         # Find the service under the specified WSDL in service list (and expand the WSDL services list if not open yet)
         service_row = clients_table_vm.client_services_popup_find_service(self, wsdl_url=wsdl_url,
@@ -93,7 +93,7 @@ def test_delete_tls(case, client, requester):
     return delete_tls
 
 
-def test_tls(case, client, requester):
+def test_tls(case, client, provider):
     self = case
 
     certs_download_filename = self.config.get('certs.downloaded_ss_certs_filename')
@@ -112,7 +112,7 @@ def test_tls(case, client, requester):
     sync_max_seconds = self.config.get('services.request_sync_timeout')
 
     client_id = xroad.get_xroad_subsystem(client)
-    requester_id = xroad.get_xroad_subsystem(requester)
+    provider_id = xroad.get_xroad_subsystem(provider)
 
     ss1_host = self.config.get('ss1.host')
     ss1_user = self.config.get('ss1.user')
@@ -128,7 +128,7 @@ def test_tls(case, client, requester):
 
     query_url = self.config.get('ss1.service_path')
     query_url_ssl = self.config.get('ss1.service_path_ssl')
-    query_filename = self.config.get('services.testservice_request_filename')
+    query_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)
     client_cert_path = self.get_cert_path(client_cert_filename)
     client_key_path = self.get_cert_path(client_key_filename)
@@ -136,22 +136,40 @@ def test_tls(case, client, requester):
 
     ss2_certs_directory = self.config.get('certs.ss2_certificate_directory')
 
+    testclient_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': provider['instance'],
+        'serviceMemberClass': provider['class'],
+        'serviceMemberCode': provider['code'],
+        'serviceSubsystemCode': provider['subsystem'],
+        'serviceCode': xroad.get_service_name(testservice_name),
+        'serviceVersion': xroad.get_service_version(testservice_name),
+        'memberInstance': client['instance'],
+        'memberClass': client['class'],
+        'memberCode': client['code'],
+        'subsystemCode': client['subsystem'],
+        'requestBody': self.config.get('services.testservice_request_body')
+    }
+
     testclient_http = soaptestclient.SoapTestClient(url=query_url, body=query,
                                                     retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                     faults_successful=faults_successful,
-                                                    faults_unsuccessful=faults_unsuccessful)
+                                                    faults_unsuccessful=faults_unsuccessful, params=testclient_params)
     testclient_https = soaptestclient.SoapTestClient(url=query_url_ssl, body=query,
                                                      retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                      server_certificate=self.get_download_path(verify_cert_filename),
                                                      faults_successful=faults_successful,
-                                                     faults_unsuccessful=faults_unsuccessful)
+                                                     faults_unsuccessful=faults_unsuccessful, params=testclient_params)
     testclient_https_ss2 = soaptestclient.SoapTestClient(url=query_url_ssl, body=query,
                                                          retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                          server_certificate=self.get_download_path(
                                                              os.path.join(ss2_certs_directory, verify_cert_filename)),
                                                          client_certificate=(client_cert_path, client_key_path),
                                                          faults_successful=faults_successful,
-                                                         faults_unsuccessful=faults_unsuccessful)
+                                                         faults_unsuccessful=faults_unsuccessful,
+                                                         params=testclient_params)
 
     def local_tls():
         """
@@ -370,7 +388,7 @@ def test_tls(case, client, requester):
         self.wait_jquery()
 
         # Open client popup using shortcut button to open it directly at Services tab.
-        clients_table_vm.open_client_popup_services(self, client_id=requester_id)
+        clients_table_vm.open_client_popup_services(self, client_id=provider_id)
 
         # Find the service under the specified WSDL in service list (and expand the WSDL services list if not open yet)
         service_row = clients_table_vm.client_services_popup_find_service(self, wsdl_url=wsdl_url,

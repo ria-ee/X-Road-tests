@@ -11,13 +11,16 @@ faults_successful = ['Server.ServerProxy.AccessDenied', 'Server.ServerProxy.Unkn
                      'Server.ServerProxy.ServiceDisabled', 'Server.ClientProxy.*', 'Client.*']
 
 
-def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
+def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None,
+                      requester=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
+    MainController test function. Disables a WSDL for a client and tests if queries fail after.
+    :param client: dict | None - client XRoad data
     :param client_name: string | None - name of the client whose ACL we modify
     :param client_id: string | None - XRoad ID of the client whose ACL we modify
     :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list
     :param wsdl_url: str | None - URL for WSDL we select from the list
+    :param requester: dict | None - requester XRoad data
     :return:
     '''
 
@@ -27,17 +30,36 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
     wsdl_disabled_class = self.config.get_string('wsdl.disabled_class', 'disabled')
 
     query_url = self.config.get('ss1.service_path')
-    query_filename = self.config.get('services.testservice_2_request_filename')
+    query_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)
+
+    service_name = self.config.get('services.test_service_2')
 
     # Immediate queries, no delay needed, no retry allowed.
     sync_retry = 0
     sync_max_seconds = 0
 
+    testclient_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': client['instance'],
+        'serviceMemberClass': client['class'],
+        'serviceMemberCode': client['code'],
+        'serviceSubsystemCode': client['subsystem'],
+        'serviceCode': xroad.get_service_name(service_name),
+        'serviceVersion': xroad.get_service_version(service_name),
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.testservice_2_request_body')
+    }
+
     testclient_http = soaptestclient.SoapTestClient(url=query_url, body=query,
                                                     retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                     faults_successful=faults_successful,
-                                                    faults_unsuccessful=faults_unsuccessful)
+                                                    faults_unsuccessful=faults_unsuccessful, params=testclient_params)
 
     def disable_wsdl():
         """
@@ -112,7 +134,8 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
 
         # Check that WSDL element has class "disabled" (red text)
         self.is_equal(wsdl_disabled_class in self.get_classes(wsdl_row), True,
-                      msg='2.2.6-4 error - WSDL still has "{0}" class (red text): {1}'.format(wsdl_disabled_class, wsdl_url))
+                      msg='2.2.6-4 error - WSDL still has "{0}" class (red text): {1}'.format(wsdl_disabled_class,
+                                                                                              wsdl_url))
 
         # Get the WSDL row text and verify that it starts with "WSDL DISABLED". As we have a regex for it that matches
         # only an empty string OR the "DISABLED" part, we can compare with the empty string (in case someone wants to
@@ -134,13 +157,16 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
     return disable_wsdl
 
 
-def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None):
+def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_index=None, wsdl_url=None,
+                     requester=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
+    MainController test function. Re-enables a WSDL for a client and tests if queries work after.
+    :param client: dict | None - client XRoad data
     :param client_name: string | None - name of the client whose ACL we modify
     :param client_id: string | None - XRoad ID of the client whose ACL we modify
     :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list
     :param wsdl_url: str | None - URL for WSDL we select from the list
+    :param requester: dict | None - requester XRoad data
     :return:
     '''
 
@@ -148,17 +174,36 @@ def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_i
     client_id = xroad.get_xroad_subsystem(client)
 
     query_url = self.config.get('ss1.service_path')
-    query_filename = self.config.get('services.testservice_2_request_filename')
+    query_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)
+
+    service_name = self.config.get('services.test_service_2')
 
     # Immediate queries, no delay needed, no retry allowed.
     sync_retry = 0
     sync_max_seconds = 0
 
+    testclient_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': client['instance'],
+        'serviceMemberClass': client['class'],
+        'serviceMemberCode': client['code'],
+        'serviceSubsystemCode': client['subsystem'],
+        'serviceCode': xroad.get_service_name(service_name),
+        'serviceVersion': xroad.get_service_version(service_name),
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.testservice_2_request_body')
+    }
+
     testclient_http = soaptestclient.SoapTestClient(url=query_url, body=query,
                                                     retry_interval=sync_retry, fail_timeout=sync_max_seconds,
                                                     faults_successful=faults_successful,
-                                                    faults_unsuccessful=faults_unsuccessful)
+                                                    faults_unsuccessful=faults_unsuccessful, params=testclient_params)
 
     wsdl_disabled_class = self.config.get_string('wsdl.disabled_class', 'disabled')
 
@@ -216,7 +261,8 @@ def test_enable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_i
 
         # Check that WSDL element does not have class "disabled" (red text)
         self.is_equal(wsdl_disabled_class in self.get_classes(wsdl_row), False,
-                      msg='2.2.6-4 error - WSDL still has "{0}" class (red text): {1}'.format(wsdl_disabled_class, wsdl_url))
+                      msg='2.2.6-4 error - WSDL still has "{0}" class (red text): {1}'.format(wsdl_disabled_class,
+                                                                                              wsdl_url))
 
         # Get the WSDL row text and verify that it starts with "WSDL DISABLED". As we have a regex for it that matches
         # only an empty string OR the "DISABLED" part, we can compare with the empty string (in case someone wants to

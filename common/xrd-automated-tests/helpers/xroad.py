@@ -33,6 +33,22 @@ def split_xroad_member(xroad_id, member_type='MEMBER'):
 def split_xroad_subsystem(xroad_id, member_type='SUBSYSTEM'):
     return split_xroad_id(xroad_id=xroad_id, type=member_type)
 
+def get_service_name(service):
+    '''
+    Returns service part of string service.version
+    :param service: service full name
+    :return: str - service name
+    '''
+    return service.split('.')[0]
+
+def get_service_version(service):
+    '''
+    Returns version part of string service.version; empty string if not specified.
+    :param service: service full name
+    :return: str - service version or empty string
+    '''
+    return ''.join(service.split('.')[1:2])
+
 
 def get_xroad_id(xroad_data):
     '''

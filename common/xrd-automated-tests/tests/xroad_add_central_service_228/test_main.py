@@ -40,6 +40,7 @@ class XroadAddCentralService(unittest.TestCase):
 
         # Configure the service (2.2.8-1 to 2.2.8-3)
         add_central_service = add_central_service_2_2_8.test_add_central_service(main, provider=provider,
+                                                                                 requester=requester,
                                                                                  central_service_name=central_service_name,
                                                                                  sync_max_seconds=sync_max_seconds,
                                                                                  wait_sync_retry_delay=wait_sync_retry_delay)
@@ -65,6 +66,7 @@ class XroadAddCentralService(unittest.TestCase):
         # Configure central service (2.2.8-5 to 2.2.8-6)
         edit_central_service = add_central_service_2_2_8.test_edit_central_service(main,
                                                                                    provider=provider_2,
+                                                                                   requester=requester,
                                                                                    central_service_name=central_service_name,
                                                                                    sync_max_seconds=sync_max_seconds,
                                                                                    wait_sync_retry_delay=wait_sync_retry_delay)
@@ -72,9 +74,10 @@ class XroadAddCentralService(unittest.TestCase):
         # Delete central service (undo changes we made for 2.2.8)
         delete_central_service = add_central_service_2_2_8.test_delete_central_service(main,
                                                                                        central_service_name=central_service_name,
+                                                                                       provider=provider_2,
+                                                                                       requester=requester,
                                                                                        sync_max_seconds=sync_max_seconds,
                                                                                        wait_sync_retry_delay=wait_sync_retry_delay)
-
 
         try:
             # TEST PLAN 2.2.8-1, 2.2.8-2, 2.2.8-3 add central service
@@ -84,19 +87,19 @@ class XroadAddCentralService(unittest.TestCase):
             add_central_service()
 
             # TEST PLAN 2.2.8-4 configure new provider for central service
-            main.log('XroadAddCentralService: Configure service parameters')
+            main.log('XroadAddCentralService: Configure service parameters (using 2.2.2)')
             # Set Security Server 2 and configure service parameters
             main.reload_webdriver(url=ss2_host, username=ss2_user, password=ss2_pass)
             configure_service()
 
             # TEST PLAN 2.2.8-4 configure new provider for central service (set access using ACL)
-            main.log('XroadAddCentralService: Configure service ACL')
+            main.log('XroadAddCentralService: Configure service ACL (using 2.1.8)')
             # Go to SS2 main page (no need to login again) and configure ACL
             main.reload_webdriver(url=ss2_host)
             configure_service_acl()
 
             # TEST PLAN 2.2.8-4 enable the new provider service
-            main.log('XroadAddCentralService: Enable service')
+            main.log('XroadAddCentralService: Enable service (using 2.2.2)')
             # Go to SS2 main page (no need to login again) and enable service
             main.reload_webdriver(url=ss2_host)
             enable_service()
@@ -155,6 +158,8 @@ class XroadDeleteCentralService(unittest.TestCase):
         ss2_user = main.config.get('ss2.user')
         ss2_pass = main.config.get('ss2.pass')
 
+        requester = xroad.split_xroad_id(main.config.get('ss1.client_id'))
+
         provider_2 = xroad.split_xroad_id(main.config.get('services.central_service_provider_2_id'))
 
         central_service_name = main.config.get('services.central_service')
@@ -167,6 +172,8 @@ class XroadDeleteCentralService(unittest.TestCase):
         delete_service = configure_service_2_2_2.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
 
         delete_central_service = add_central_service_2_2_8.test_delete_central_service(main,
+                                                                                       provider=provider_2,
+                                                                                       requester=requester,
                                                                                        central_service_name=central_service_name,
                                                                                        sync_max_seconds=sync_max_seconds,
                                                                                        wait_sync_retry_delay=wait_sync_retry_delay)

@@ -4,7 +4,7 @@
 
 
 
-**Authors** : Sten Luhtoja, Märt Tibar, Arto Vaas
+**Authors** : Sten Luhtoja, Mï¿½rt Tibar, Arto Vaas
 
 **Version** : 0.1
 
@@ -281,6 +281,7 @@ _Table 7. MainController class methods_
 | --- | --- |
 | setUp() | Setup method for starting a test. Starts a browser (WebDriver) and Mock Service if they are configured to start automatically. |
 | tearDown() | Test teardown method, used for closing the test environment after successful or failed tests. Stops mock service if it was started, and closes the browser window. If an exception has been raised during the test, and screenshots and traceback saving has been enabled, takes a screenshot and saves a traceback to a file. |
+| save\_exception\_data(exctype=None, excvalue=None, exctrace=None) | Saves the exception screenshot and traceback if set in configuration. |
 | remove\_files(file\_list, remove\_directories=True) | Removes files and, if _remove\_directories=True_, directories given in _file\_list_ as a list of strings. Single filename may also be supplied as a string for _file\_list_ parameter. Returns _True_ if everything was successfully deleted, _False_ otherwise. |
 | empty\_directory(path) | Empties a directory without deleting the directory itself. |
 | get\_path(path=&#39;&#39;) | Gets the current base path (one level up from maincontroller.py location). If _path_ parameter is supplied, then: if it is an absolute path, returns _path_, if a relative path, concatenates it with the base path. |
@@ -323,7 +324,7 @@ Mock directory contains the certificates and XML query bodies that are used by S
 
 The &quot;cert&quot; subdirectory contains the certificate (mock.crt) and private key (mock.key) of the mock client, and the certificate of the Mock Service (mockservice.crt, used for verifying the server&#39;s certificate).
 
-The &quot;queries&quot; subdirectory contains queries that are sent by the mock client to the server when testing access lists and services themselves. These are basically static\* SOAP XML files that are sent to the server by the client. The list of queries is shown in the following table.
+The &quot;queries&quot; subdirectory contains query templates that are parsed by SoapTestClient and sent by the server when testing access lists and services themselves. The list of query templates is shown in the following table.
 
 \* A dynamic variable of &quot;{uuid}&quot; is allowed in the files. This is replaced with a random UUID to make the queries unique.
 
@@ -331,11 +332,30 @@ _Table 8. Mock directory files_
 
 | Filename | Description |
 | --- | --- |
-| testservice\_bodyMassIndex\_CLIENT1\_sub.xml | Test query from client _KS1 : COM : CLIENT1 : sub_ to service _KS1 : COM : CLIENT1 : testservice : bodyMassIndex.v1_. |
-| testservice\_bodyMassIndex\_TS2OWNER\_sub.xml | Test query from client _KS1 : GOV : TS2OWNER : sub_ to service _KS1 : COM : CLIENT1 : testservice : bodyMassIndex.v1_. |
-| testservice\__xroadGetRandom_\_CLIENT1\_sub.xml | Test query from client _KS1 : COM : CLIENT1 : sub_ to service _KS1 : COM : CLIENT1 : testservice : xroadGetRandom.v1_. |
-| testservice\__xroadGetRandom_\_TS2OWNER\_sub.xml | Test query from client _KS1 : GOV : TS2OWNER : sub_ to service _KS1 : COM : CLIENT1 : testservice : xroadGetRandom.v1_. |
-| centralservice\_random\_CLIENT1\_sub.xml | Test query from client _KS1 : COM : CLIENT1 : sub_ to central service _random_ (_KS1 : random_) |
+| service.xml | SOAP query template for sending queries to security server services. |
+| centralservice.xml | SOAP query template for sending queries to central services. |
+
+The following dynamic variables are allowed in the templates, these are replaced with different values for the specific query.
+
+_Table 9. Query template parameters_
+
+| Parameter | Description |
+| --- | --- |
+| {uuid} | random generated UUID to make the queries unique. |
+| {xroadProtocolVersion} | X-Road protocol version (configuration parameter _services.xroad_protocol_) |
+| {xroadIssue} | X-Road issue identifier (configuration parameter _services.xroad_issue_) |
+| {xroadUserId} | X-Road user ID (configuration parameter _services.xroad_userid_) |
+| {serviceMemberInstance} | service provider X-Road instance (query-specific) |
+| {serviceMemberClass} | service provider X-Road class (query-specific) |
+| {serviceMemberCode} | service provider X-Road code (query-specific) |
+| {serviceSubsystemCode} | service provider X-Road subsystem code (query-specific) |
+| {serviceCode} | service name (query-specific); for central server queries this is the central service name |
+| {serviceProviderCode} | service provider name (query-specific), used only for central server queries |
+| {serviceVersion} | service version (query-specific) |
+| {memberInstance} | requester X-Road instance (query-specific) |
+| {memberClass} | requester X-Road class (query-specific) |
+| {memberCode} | requester X-Road code (query-specific) |
+| {subsystemCode} | requester X-Road subsystem code (query-specific) |
 
 
 <h2>2.10 Temp Directory</h2>
@@ -350,7 +370,7 @@ This package contains all the tests. Tests have their own packages.The test stru
 
 
 
-_Table 9. Test example architecture_
+_Table 10. Test example architecture_
 
 | \_\_init\_\_.py | Must be file for python package. Makes the test visible to others |
 | --- | --- |
@@ -360,7 +380,7 @@ _Table 9. Test example architecture_
 
 <h2>2.12 Test dependencies and requirements</h2>
 
-_Table 10. Test dependencies and requirements_
+_Table 11. Test dependencies and requirements_
 
 | Test number | Depends on finishing other test(s) | Requires helper scenarios |
 | --- | --- | --- |
@@ -392,7 +412,7 @@ The mock service location is set in the WSDL files (under _&lt;wsdl:service&gt;_
 
 The Mock Service itself is defined in a single XML file (SoapUI project) but as it has to support certificates, it also requires a SoapUI settings file (for supporting SSL), a key store and a certificate file. The list of files required to run the service is in the following table.
 
-_Table 11. Mock service directory files_
+_Table 12. Mock service directory files_
 
 | Filename | Description |
 | --- | --- |
@@ -412,7 +432,7 @@ List of WSDL files defined in the default configuration is in the following tabl
 
 
 
-_Table 12. WSDL files in default configuration_
+_Table 13. WSDL files in default configuration_
 
 | Filename | Description |
 | --- | --- |

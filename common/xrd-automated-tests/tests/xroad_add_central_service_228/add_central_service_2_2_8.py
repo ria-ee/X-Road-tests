@@ -45,9 +45,9 @@ def get_central_service_row(self, central_service_name):
 
 
 def test_add_central_service(case, provider=None, central_service_name=None,
-                             sync_max_seconds=0, wait_sync_retry_delay=0):
+                             sync_max_seconds=0, wait_sync_retry_delay=0, requester=None):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
+    MainController test function. Adds a central service and tests if queries work.
     :param client_name: string | None - name of the client whose ACL we modify
     :param client_id: string | None - XRoad ID of the client whose ACL we modify
     :param wsdl_index: int | None - index (zero-based) for WSDL we select from the list
@@ -57,24 +57,56 @@ def test_add_central_service(case, provider=None, central_service_name=None,
 
     self = case
 
-    body_filename = self.config.get('services.testservice_2_request_filename')
-    body_central_filename = self.config.get('services.central_service_request_filename')
+    body_filename = self.config.get('services.request_template_filename')
+    body_central_filename = self.config.get('services.central_request_template_filename')
 
     body = self.get_xml_query(body_filename)
     body_central = self.get_xml_query(body_central_filename)
+
+    testclient_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': provider['instance'],
+        'serviceMemberClass': provider['class'],
+        'serviceMemberCode': provider['code'],
+        'serviceSubsystemCode': provider['subsystem'],
+        'serviceCode': provider['service_name'],
+        'serviceVersion': provider['service_version'],
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.testservice_2_request_body')
+    }
+
+    testclient_central_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': provider['instance'],
+        'serviceCode': central_service_name,
+        'serviceProviderCode': provider['service_name'],
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.central_service_request_body')
+    }
 
     testclient = soaptestclient.SoapTestClient(url=self.config.get('ss1.service_path'),
                                                body=body,
                                                retry_interval=wait_sync_retry_delay, fail_timeout=sync_max_seconds,
                                                faults_successful=faults_successful,
-                                               faults_unsuccessful=faults_unsuccessful)
+                                               faults_unsuccessful=faults_unsuccessful, params=testclient_params)
 
     testclient_central = soaptestclient.SoapTestClient(url=self.config.get('ss1.service_path'),
                                                        body=body_central,
                                                        retry_interval=wait_sync_retry_delay,
                                                        fail_timeout=sync_max_seconds,
                                                        faults_successful=faults_successful,
-                                                       faults_unsuccessful=faults_unsuccessful)
+                                                       faults_unsuccessful=faults_unsuccessful,
+                                                       params=testclient_central_params)
 
     def add_central_service():
         # TEST PLAN 2.2.8 add central service
@@ -131,7 +163,7 @@ def test_add_central_service(case, provider=None, central_service_name=None,
 
         # TEST PLAN 2.2.8-3 test query from TS1 client CLIENT1:sub to CENTRAL service. Query should succeed.
         self.log('2.2.8-3 test query {0} to central service {1}. Query should succeed.'.format(body_central_filename,
-            central_service_name))
+                                                                                               central_service_name))
 
         self.is_true(testclient_central.check_success(), msg='2.2.8-3 Test query to central service failed')
 
@@ -140,19 +172,34 @@ def test_add_central_service(case, provider=None, central_service_name=None,
     return add_central_service
 
 
-def test_edit_central_service(case, provider, central_service_name, sync_max_seconds=0,
+def test_edit_central_service(case, provider, requester, central_service_name, sync_max_seconds=0,
                               wait_sync_retry_delay=0):
     self = case
 
     query_url = self.config.get('ss1.service_path')
-    query_filename = self.config.get('services.central_service_request_filename')
+    query_filename = self.config.get('services.central_request_template_filename')
     query = self.get_xml_query(query_filename)
+
+    testclient_central_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': provider['instance'],
+        'serviceCode': central_service_name,
+        'serviceProviderCode': provider['service_name'],
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.central_service_request_body')
+    }
 
     testclient_central = soaptestclient.SoapTestClient(url=query_url, body=query,
                                                        retry_interval=wait_sync_retry_delay,
                                                        fail_timeout=sync_max_seconds,
                                                        faults_successful=faults_successful,
-                                                       faults_unsuccessful=faults_unsuccessful)
+                                                       faults_unsuccessful=faults_unsuccessful,
+                                                       params=testclient_central_params)
 
     def edit_central_service():
         # TEST PLAN 2.2.8-5 update central service and set a new provider
@@ -205,8 +252,10 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
 
         # TEST PLAN 2.2.8-6 test query from TS1 client CLIENT1:sub to service bodyMassIndex. Query should succeed.
         self.log(
-            '2.2.8-6 test query {0} to bodyMassIndex. Query should succeed, served by {1}:{2}.'.format(query_filename, provider['code'],
-                                                                                      provider['subsystem']))
+            '2.2.8-6 test query {0} to bodyMassIndex. Query should succeed, served by {1}:{2}.'.format(query_filename,
+                                                                                                       provider['code'],
+                                                                                                       provider[
+                                                                                                           'subsystem']))
 
         verify_service = {'class': provider['class'], 'code': provider['code'],
                           'subsystem': provider['subsystem']}
@@ -218,18 +267,33 @@ def test_edit_central_service(case, provider, central_service_name, sync_max_sec
     return edit_central_service
 
 
-def test_delete_central_service(case, central_service_name, sync_max_seconds=0, wait_sync_retry_delay=0):
+def test_delete_central_service(case, central_service_name, provider, requester, sync_max_seconds=0, wait_sync_retry_delay=0):
     self = case
 
     query_url = self.config.get('ss1.service_path')
-    query_filename = self.config.get('services.central_service_request_filename')
+    query_filename = self.config.get('services.central_request_template_filename')
     query = self.get_xml_query(query_filename)
+
+    testclient_central_params = {
+        'xroadProtocolVersion': self.config.get('services.xroad_protocol'),
+        'xroadIssue': self.config.get('services.xroad_issue'),
+        'xroadUserId': self.config.get('services.xroad_userid'),
+        'serviceMemberInstance': provider['instance'],
+        'serviceCode': central_service_name,
+        'serviceProviderCode': provider['service_name'],
+        'memberInstance': requester['instance'],
+        'memberClass': requester['class'],
+        'memberCode': requester['code'],
+        'subsystemCode': requester['subsystem'],
+        'requestBody': self.config.get('services.central_service_request_body')
+    }
 
     testclient_central = soaptestclient.SoapTestClient(url=query_url, body=query,
                                                        retry_interval=wait_sync_retry_delay,
                                                        fail_timeout=sync_max_seconds,
                                                        faults_successful=faults_successful,
-                                                       faults_unsuccessful=faults_unsuccessful)
+                                                       faults_unsuccessful=faults_unsuccessful,
+                                                       params=testclient_central_params)
 
     def delete_central_service():
         self.log('2.2.8-del remove central service')
@@ -267,7 +331,7 @@ def test_delete_central_service(case, central_service_name, sync_max_seconds=0, 
 
         # TEST PLAN 2.2.8-remove test query from TS1 client CLIENT1:sub to CENTRAL service. Query should succeed.
         self.log('2.2.8-del test query {0} to central service {1}. Query should fail.'.format(query_filename,
-            central_service_name))
+                                                                                              central_service_name))
 
         self.is_equal(testclient_central.check_fail(), True, msg='2.2.8-del Test query to central service succeeded')
 

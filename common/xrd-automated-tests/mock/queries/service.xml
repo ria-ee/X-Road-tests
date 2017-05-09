@@ -26,11 +26,6 @@
               </xrd:client>
            </soapenv:Header>
            <soapenv:Body>
-            <ns1:bodyMassIndex>
-                <request>
-                 <weight>75</weight>
-                 <height>180</height>
-                </request>
-            </ns1:bodyMassIndex>
+            <ns1:{serviceCode}>{requestBody}</ns1:{serviceCode}>
            </soapenv:Body>
 </soapenv:Envelope>

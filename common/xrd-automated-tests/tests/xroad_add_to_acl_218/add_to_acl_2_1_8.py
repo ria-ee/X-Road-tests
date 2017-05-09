@@ -379,7 +379,7 @@ def test_add_all_subjects(case, client=None, client_name=None, client_id=None, w
                           service_name=None, remove_data=True,
                           allow_remove_all=True):
     '''
-    MainController test function. Very similar to test_all_subjects but adds ALL subjects to a specified subject's ACL.
+    MainController test function. Very similar to test_add_subjects but adds ALL subjects to a specified subject's ACL.
     :param client_name: string | None - name of the client whose ACL we modify (this or client_id must be set)
     :param client_id: string | None - XRoad ID of the client whose ACL we modify (this or client_name must be set)
     :param wsdl_index: int - index (zero-based) for WSDL we select from the list

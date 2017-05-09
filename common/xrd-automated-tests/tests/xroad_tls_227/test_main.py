@@ -15,11 +15,11 @@ class XroadLocalTls(unittest.TestCase):
         main.test_name = self.__class__.__name__
 
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
-        requester = xroad.split_xroad_id(main.config.get('ss2.client_id'))
+        provider = xroad.split_xroad_id(main.config.get('ss2.client_id'))
 
         # Configure the tests
-        test_local_tls = local_tls_2_2_7.test_tls(case=main, client=client, requester=requester)
-        delete_local_tls = local_tls_2_2_7.test_delete_tls(case=main, client=client, requester=requester)
+        test_local_tls = local_tls_2_2_7.test_tls(case=main, client=client, provider=provider)
+        delete_local_tls = local_tls_2_2_7.test_delete_tls(case=main, client=client, provider=provider)
 
         try:
             # Test local TLS
@@ -44,10 +44,10 @@ class XroadDeleteLocalTls(unittest.TestCase):
         main = MainController(self)
 
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
-        requester = xroad.split_xroad_id(main.config.get('ss2.client_id'))
+        provider = xroad.split_xroad_id(main.config.get('ss2.client_id'))
 
         # Configure the tests
-        delete_local_tls = local_tls_2_2_7.test_delete_tls(case=main, client=client, requester=requester)
+        delete_local_tls = local_tls_2_2_7.test_delete_tls(case=main, client=client, provider=provider)
 
         try:
             # Delete internal certificates from the servers

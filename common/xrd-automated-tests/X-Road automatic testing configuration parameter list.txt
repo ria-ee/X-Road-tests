@@ -12,7 +12,7 @@
 |   | server\_name |   |   |   |   | x |   |   |   |   |   |   |   |   | x |   |
 |   | management\_id |   |   |   |   | x |   |   |   |   |   |   |   |   |   |   |
 |   | client\_name |   |   |   |   | x |   |   |   |   |   |   |   |   |   |   |
-|   | client\_id |   |   | x |   | x | x | x |   | x | x |   |   |   |   |   |
+|   | client\_id |   |   | x |   | x | x | x | x | x | x |   |   |   |   |   |
 |   | client2\_id |   |   |   |   |   |   |   |   |   |   |   | x |   | x | x |
 |   | client2\_name |   |   |   |   |   |   |   |   |   |   |   | x |   | x | x |
 |   | client2\_name2 |   |   |   |   |   |   |   |   |   |   |   |   |   | x |   |
@@ -67,11 +67,14 @@
 |   | central\_service |   |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
 |   | central\_service\_provider\_id |   |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
 |   | central\_service\_provider\_2\_id |   |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
-|   | central\_service\_request\_filename |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
-|   | testservice\_request\_filename |   |   |   |   |   |   | x |   | x |   |   |   |   |   |   |
-|   | testservice\_request\_2\_filename |   |   |   |   |   |   |   |   |   |   | x |   |   |   |   |
-|   | testservice\_2\_request\_filename |   |   |   |   |   |   | x | x |   | x |   |   |   |   |   |
-|   | testservice\_2\_request\_2\_filename |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+|   | xroad\_protocol |   |   |   |   |   |   | x | x | x | x | x |   |   |   |   |
+|   | xroad\_issue |   |   |   |   |   |   | x | x | x | x | x |   |   |   |   |
+|   | xroad\_userid |   |   |   |   |   |   | x | x | x | x | x |   |   |   |   |
+|   | request\_template\_filename |   |   |   |   |   |   | x | x | x | x | x |   |   |   |   |
+|   | central\_request\_template\_filename |   |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
+|   | central\_service\_request\_body |   |   |   |   |   |   |   |   |   | x |   |   |   |   |   |
+|   | testservice\_request\_body |   |   |   |   |   |   | x |   | x |   |   |   |   |   |   |
+|   | testservice\_2\_request\_body |   |   |   |   |   |   | x | x |   | x | x |   |   |   |   |
 |   | request\_sync\_delay |   |   |   |   |   |   |   |   | x | x |   |   |   |   |   |
 |   | request\_sync\_timeout |   |   |   |   |   |   |   |   | x | x |   |   |   |   |   |
 | **certs** |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
@@ -107,5 +110,6 @@
 |   | empty\_download\_dir | x |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
 |   | save\_exceptions | x |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
 |   | save\_screenshots | x |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+|   | debug | x |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
 
 ![Logo](https://github.com/ria-ee/X-Road/blob/develop/doc/Manuals/img/eu_regional_development_fund_horizontal_div_15.png "EU logo")
