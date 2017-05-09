@@ -767,14 +767,6 @@ def check_expected_result_cs(self, ss_1_client, ss_2_client, ss_2_client_2, chec
                      '2.2.1-13.2: CHECKING IF TS1 HAS SUB 1 FAILED',
                      '2.2.1-13.2: CHECKING IF TS1 HAS SUB 1')
 
-    self.is_not_none(members_table.get_row_by_columns(clients_table,
-                                                      [self.config.get('ss1.server_name'),
-                                                       self.management_services['class'],
-                                                       self.management_services['code'],
-                                                       self.management_services['subsystem']]),
-                     test_name, '2.2.1-13.2: CHECKING IF TS1 HAS MANAGEMENT SERVICES FAILED',
-                     '2.2.1-13.2: CHECKING IF TS1 HAS MANAGEMENT SERVICES')
-
     self.log('2.2.1-13.2: Check security servers > clients table for TS1: TEST SUCCESSFUL')
 
     self.log('2.2.1-13.3: Check security servers > clients table for TS2')
