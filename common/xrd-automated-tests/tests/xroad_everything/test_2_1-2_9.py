@@ -14,6 +14,8 @@ class Test(unittest.TestCase):
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
             assert False
+        elif len(ret.errors) > 0:
+            assert False
         print '\n test_01_xroad_security_server_client_registration FINISHED'
         del XroadSecurityServerClientRegistration
 
@@ -24,6 +26,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadConfigureService)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_02_xroad_configure_service FINISHED'
         del XroadConfigureService
@@ -36,6 +40,8 @@ class Test(unittest.TestCase):
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
             assert False
+        elif len(ret.errors) > 0:
+            assert False
         print '\n test_03_xroad_refresh_wsdl FINISHED'
         del XroadRefreshWsdl
 
@@ -46,6 +52,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeactivateWsdl)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_04_xroad_deactivate_wsdl FINISHED'
         del XroadDeactivateWsdl
@@ -58,6 +66,8 @@ class Test(unittest.TestCase):
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
             assert False
+        elif len(ret.errors) > 0:
+            assert False
         print '\n test_05_xroad_Local_tls FINISHED'
         del XroadLocalTls
 
@@ -67,6 +77,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteLocalTls)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_06_xroad_delete_local_tls FINISHED'
         del XroadDeleteLocalTls
@@ -79,6 +91,8 @@ class Test(unittest.TestCase):
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
             assert False
+        elif len(ret.errors) > 0:
+            assert False
         print '\n test_07_xroad_add_central_service FINISHED'
         del XroadAddCentralService
 
@@ -89,6 +103,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadMemberAccess)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_08_xroad_member_access FINISHED'
         del XroadMemberAccess
@@ -101,6 +117,8 @@ class Test(unittest.TestCase):
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
             assert False
+        elif len(ret.errors) > 0:
+            assert False
         print '\n test_09_xroad_delete_central_service FINISHED'
         del XroadDeleteCentralService
 
@@ -111,6 +129,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteService)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_10_xroad_delete_service FINISHED'
         del XroadDeleteService
@@ -123,6 +143,8 @@ class Test(unittest.TestCase):
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientDeletion)
         ret = unittest.TextTestRunner(verbosity=0).run(suite)
         if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_11_xroad_security_server_client_deletion FINISHED'
         del XroadSecurityServerClientDeletion
