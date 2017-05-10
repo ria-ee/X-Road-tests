@@ -292,14 +292,15 @@ def test_test(case, cs_host, cs_username, cs_password,
             if delete_client:
                 self.log('2.2.1-del Deleting client')
                 # Remove all data we created
-                remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_username, sec_1_password,
-                            sec_2_host, sec_2_username, sec_2_password,
-                            cs_member=cs_member, ss_1_client=ss_1_client, ss_2_client=ss_2_client,
-                            ss_2_client_2=ss_2_client_2)
-
+                try:
+                    remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_username, sec_1_password,
+                                sec_2_host, sec_2_username, sec_2_password,
+                                cs_member=cs_member, ss_1_client=ss_1_client, ss_2_client=ss_2_client,
+                                ss_2_client_2=ss_2_client_2)
+                except:
+                    raise AssertionError, '2.2.1 Client deletion Failed'
             # If we got an error previously, raise an exception
             if error:
-                print 'Assertionerrror'
                 raise AssertionError, '2.2.1 failed'
 
     return test_case
@@ -1046,7 +1047,7 @@ def remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_usern
     self.log('2.2.1-del removing certificate from security server 2')
     login(self, sec_2_host, sec_2_username, sec_2_password)
     # Try to remove certificate
-    safe(self, remove_certificate, ss_2_client, '2.2.1-del Removing certificate from security server 2 failed')
+    error = safe(self, remove_certificate, ss_2_client, '2.2.1-del Removing certificate from security server 2 failed')
 
     self.driver.get(self.url)
     # Try to remove client
@@ -1258,7 +1259,7 @@ def revoke_requests(self):
 
 
 def safe(self, func, member, message):
-    '''
+    """
     A try-except wrapper that allows executing functions without crashing. Used for removing data that
      might not be there.
     :param self: MainController object
@@ -1266,12 +1267,12 @@ def safe(self, func, member, message):
     :param member: member to use as a parameter to function
     :param message: str - message to display in case of an error
     :return: bool - True if no error; False otherwise
-    '''
+    """
     try:
         func(self, member)
         return True
     except Exception, e:
         if self.debug:
             self.log('Got an exception in safe(): {0}'.format(message))
-            traceback.print_exc()
-        return False
+        traceback.print_exc()
+        raise AssertionError
