@@ -71,7 +71,7 @@ def test_remove(cs_host, cs_username, cs_password,
             # Something went wrong
             self.log('Failed to remove client.')
             traceback.print_exc()
-            raise AssertionError, '2.2.1 failed to remove client'
+            assert False, '2.2.1 failed to remove client'
 
     return test_case
 

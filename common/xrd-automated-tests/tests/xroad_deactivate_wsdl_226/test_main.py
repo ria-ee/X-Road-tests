@@ -44,7 +44,7 @@ class XroadDeactivateWsdl(unittest.TestCase):
             except:
                 main.log('XroadDeactivateWsdl: Failed to reactivate WSDL')
                 main.save_exception_data()
-                raise
+                assert False
             finally:
                 # Test teardown
                 main.tearDown(save_exception=False)
