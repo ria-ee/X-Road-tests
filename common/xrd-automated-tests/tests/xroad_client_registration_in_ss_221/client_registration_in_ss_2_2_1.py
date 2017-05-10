@@ -137,7 +137,7 @@ def test_test(case, cs_host, cs_username, cs_password,
         error = False
         self.exception = False
         try:
-            raise
+            raise AssertionError, 'testing'
             # TEST PLAN 2.2.1-1 add member to Central Server
             self.log('2.2.1-1 add member to Central Server')
 
@@ -281,7 +281,7 @@ def test_test(case, cs_host, cs_username, cs_password,
             check_expected_result_ss(self, ss_2_client_2, registered_status=registered_status,
                                      retry_interval=sync_retry, retry_timeout=sync_timeout)
 
-        except Exception, e:
+        except Exception:
             # We got an exception, so the test failed. Save screenshot and traceback to a file.
             delete_client = True
             self.save_exception_data()
@@ -299,6 +299,7 @@ def test_test(case, cs_host, cs_username, cs_password,
 
             # If we got an error previously, raise an exception
             if error:
+                print 'Assertionerrror'
                 raise AssertionError, '2.2.1 failed'
 
     return test_case
