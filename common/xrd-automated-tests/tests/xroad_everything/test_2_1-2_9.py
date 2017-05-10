@@ -11,7 +11,7 @@ class Test2_(unittest.TestCase):
         from tests.xroad_client_registration_in_ss_221.test_main import XroadSecurityServerClientRegistration
         print '\n test_01_xroad_security_server_client_registration STARTED \n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientRegistration)
-        unittest.TextTestRunner(verbosity=0).run(suite)
+        print unittest.TextTestRunner().run(suite)
         print '\n test_01_xroad_security_server_client_registration FINISHED'
         del XroadSecurityServerClientRegistration
         return
