@@ -14,7 +14,9 @@ class TestAll(unittest.TestCase):
         print '\n test_01_xroad_security_server_client_registration STARTED \n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientRegistration)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_01_xroad_security_server_client_registration FINISHED'
         del XroadSecurityServerClientRegistration
@@ -26,7 +28,9 @@ class TestAll(unittest.TestCase):
         print '\n test_02_xroad_configure_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadConfigureService)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_02_xroad_configure_service FINISHED'
         del XroadConfigureService
@@ -38,7 +42,9 @@ class TestAll(unittest.TestCase):
         print '\n test_03_xroad_refresh_wsdl STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadRefreshWsdl)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_03_xroad_refresh_wsdl FINISHED'
         del XroadRefreshWsdl
@@ -51,7 +57,9 @@ class TestAll(unittest.TestCase):
         print '\n test_04_xroad_deactivate_wsdl STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeactivateWsdl)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_04_xroad_deactivate_wsdl FINISHED'
         del XroadDeactivateWsdl
@@ -63,7 +71,9 @@ class TestAll(unittest.TestCase):
         print '\n test_05_xroad_Local_tls STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadLocalTls)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_05_xroad_Local_tls FINISHED'
         del XroadLocalTls
@@ -74,7 +84,9 @@ class TestAll(unittest.TestCase):
         print '\n test_06_xroad_delete_local_tls STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteLocalTls)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_06_xroad_delete_local_tls FINISHED'
         del XroadDeleteLocalTls
@@ -86,7 +98,9 @@ class TestAll(unittest.TestCase):
         print '\n test_07_xroad_add_central_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadAddCentralService)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_07_xroad_add_central_service FINISHED'
         del XroadAddCentralService
@@ -98,7 +112,9 @@ class TestAll(unittest.TestCase):
         print '\n test_08_xroad_member_access STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadMemberAccess)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_08_xroad_member_access FINISHED'
         del XroadMemberAccess
@@ -110,7 +126,9 @@ class TestAll(unittest.TestCase):
         print '\n test_09_xroad_delete_central_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteCentralService)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_09_xroad_delete_central_service FINISHED'
         del XroadDeleteCentralService
@@ -122,7 +140,9 @@ class TestAll(unittest.TestCase):
         print '\n test_10_xroad_delete_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteService)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_10_xroad_delete_service FINISHED'
         del XroadDeleteService
@@ -135,7 +155,9 @@ class TestAll(unittest.TestCase):
         print '\n test_11_xroad_security_server_client_deletion STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientDeletion)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print 'Waiting 120 seconds for changes'
         time.sleep(120)
@@ -150,7 +172,9 @@ class TestAll(unittest.TestCase):
         print '\n test_l2_xroad_changing_database_rows_with_gui_in_central_server STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadChangingDatabaseRowsWithGUICentralServer)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_l2_xroad_changing_database_rows_with_gui_in_central_server FINISHED'
         del XroadChangingDatabaseRowsWithGUICentralServer
@@ -163,7 +187,9 @@ class TestAll(unittest.TestCase):
         print '\n test_13_xroad_changing_database_rows_with_gui_in_security_server STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadChangingDatabaseRowsWithGUISecurityServer)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_13_xroad_changing_database_rows_with_gui_in_security_server FINISHED'
         del XroadChangingDatabaseRowsWithGUISecurityServer
@@ -175,7 +201,9 @@ class TestAll(unittest.TestCase):
         print '\n test_14_xroad_logging_in_central_server STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadLoggingInCentralServer)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         print '\n test_14_xroad_logging_in_central_server FINISHED'
         del XroadLoggingInCentralServer
@@ -188,7 +216,9 @@ class TestAll(unittest.TestCase):
         print '\n test_15_XroadLoggingInSecurityServer STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadLoggingInSecurityServer)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         del XroadLoggingInSecurityServer
         print '\n test_15_XroadLoggingInSecurityServer FINISHED'
@@ -200,7 +230,9 @@ class TestAll(unittest.TestCase):
         print '\n test_16_security_server_client_registration_failures STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(SecurityServerClientRegistrationFailures)
         ret = unittest.TextTestRunner().run(suite)
-        if len(ret.failures) > 0 | len(ret.errors) > 0:
+        if len(ret.failures) > 0:
+            assert False
+        elif len(ret.errors) > 0:
             assert False
         del SecurityServerClientRegistrationFailures
         print '\n test_16_security_server_client_registration_failures FINISHED'
