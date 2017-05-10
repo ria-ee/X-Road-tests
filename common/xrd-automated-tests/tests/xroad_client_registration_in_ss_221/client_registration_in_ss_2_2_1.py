@@ -289,6 +289,7 @@ def test_test(case, cs_host, cs_username, cs_password,
             error = True
         finally:
             # Delete the client
+            print 'Finally'
             if delete_client:
                 self.log('2.2.1-del Deleting client')
                 # Remove all data we created
@@ -298,9 +299,10 @@ def test_test(case, cs_host, cs_username, cs_password,
                                 cs_member=cs_member, ss_1_client=ss_1_client, ss_2_client=ss_2_client,
                                 ss_2_client_2=ss_2_client_2)
                 except:
-                    raise AssertionError, '2.2.1 Client deletion Failed'
+                    self.log('2.2.1 Client deletion FAILED')
             # If we got an error previously, raise an exception
             if error:
+                print 'Finally error'
                 raise AssertionError, '2.2.1 failed'
 
     return test_case
