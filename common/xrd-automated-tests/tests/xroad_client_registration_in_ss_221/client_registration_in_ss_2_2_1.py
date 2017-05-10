@@ -71,7 +71,7 @@ def test_remove(cs_host, cs_username, cs_password,
             # Something went wrong
             self.log('Failed to remove client.')
             traceback.print_exc()
-            assert False, '2.2.1 failed to remove client'
+            raise AssertionError, '2.2.1 failed to remove client'
 
     return test_case
 
@@ -137,6 +137,7 @@ def test_test(case, cs_host, cs_username, cs_password,
         error = False
         self.exception = False
         try:
+            raise
             # TEST PLAN 2.2.1-1 add member to Central Server
             self.log('2.2.1-1 add member to Central Server')
 
