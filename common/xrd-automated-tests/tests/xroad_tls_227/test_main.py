@@ -54,7 +54,7 @@ class XroadDeleteLocalTls(unittest.TestCase):
             delete_local_tls()
         except:
             main.log('XroadDeleteLocalTls: failed to remove TLS from local service')
-            raise
+            assert False
         finally:
             # Test teardown
             main.tearDown()

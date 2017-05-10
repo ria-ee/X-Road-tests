@@ -85,7 +85,7 @@ class XroadConfigureService(unittest.TestCase):
             except:
                 main.log('XroadConfigureService: Failed to delete added data.')
                 main.save_exception_data()
-            raise
+            assert False
         finally:
             # Test teardown
             main.tearDown()
