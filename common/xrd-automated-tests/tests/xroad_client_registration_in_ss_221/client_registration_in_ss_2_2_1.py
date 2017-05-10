@@ -398,7 +398,7 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
     self.wait_jquery()
     time.sleep(wait_input)
 
-    self.input(subsystem_input, client['subsystem_code'])
+    self.input(subsystem_input, client['subsystem_code'], click=False)
 
     # Try to add client
     self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
