@@ -393,8 +393,8 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
 
     # Enter data to form
     time.sleep(wait_input)
-    subsystem_input = self.wait_until_visible(type=By.CSS_SELECTOR,
-                                              element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_CSS)
+    subsystem_input = self.wait_until_visible(type=By.XPATH,
+                                              element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_XPATH)
     self.wait_jquery()
     time.sleep(wait_input)
 
@@ -457,8 +457,8 @@ def add_client_to_ss_by_hand(self, client):
     self.input(input_code, client['code'])
 
     self.log('2.2.1-6: Enter ' + client['subsystem_code'] + ' to  "SUBSYSTEM CODE AREA" dropdown')
-    subsystem_input = self.wait_until_visible(type=By.CSS_SELECTOR,
-                                              element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_CSS)
+    subsystem_input = self.wait_until_visible(type=By.XPATH,
+                                              element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_XPATH)
     self.input(subsystem_input, client['subsystem_code'])
 
     self.wait_jquery()
@@ -876,6 +876,7 @@ def check_expected_result_ss(self, client, retry_interval=0, retry_timeout=0, re
                 # Timeout - failed
                 if retry_timeout > 0:
                     self.log('2.2.1-13: Timeout while waiting')
+                assert False
                 raise
 
     self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.KEYSANDCERTIFICATES_BTN_CSS).click()

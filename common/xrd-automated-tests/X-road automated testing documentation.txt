@@ -326,8 +326,6 @@ The &quot;cert&quot; subdirectory contains the certificate (mock.crt) and privat
 
 The &quot;queries&quot; subdirectory contains query templates that are parsed by SoapTestClient and sent by the server when testing access lists and services themselves. The list of query templates is shown in the following table.
 
-\* A dynamic variable of &quot;{uuid}&quot; is allowed in the files. This is replaced with a random UUID to make the queries unique.
-
 _Table 8. Mock directory files_
 
 | Filename | Description |

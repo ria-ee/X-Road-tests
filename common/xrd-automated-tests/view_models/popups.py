@@ -118,6 +118,7 @@ ADD_CLIENT_POPUP_XPATH = '//div[@aria-describedby="client_add_dialog"]'
 ADD_CLIENT_POPUP_MEMBER_CLASS_DROPDOWN_ID = 'add_member_class'
 ADD_CLIENT_POPUP_MEMBER_CODE_AREA_ID = 'add_member_code'
 ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_CSS = '#client_add_dialog #add_subsystem_code'
+ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_XPATH = '//div[not(contains(@style,"display:none")) and contains(@id, "client_add_dialog")]//input[@id="add_subsystem_code"]'
 ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_ID = 'add_subsystem_code'
 ADD_CLIENT_POPUP_OK_BTN_XPATH = ADD_CLIENT_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="OK"]'
 
