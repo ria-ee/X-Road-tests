@@ -71,7 +71,7 @@ class XroadRefreshWsdl(unittest.TestCase):
             except:
                 main.log('XroadRefreshWsdl: Failed to reset WSDL to original file')
                 main.save_exception_data()
-            raise RuntimeError('Test FAILED')
+            assert False
         finally:
             # Test teardown
             main.tearDown(save_exception=False)

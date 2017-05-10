@@ -33,7 +33,7 @@ class XroadLocalTls(unittest.TestCase):
             except:
                 main.save_exception_data()
                 main.log('XroadLocalTls: failed to remove TLS from local service')
-            raise RuntimeError('TEST FAILED')
+            assert False
         finally:
             # Test teardown
             main.tearDown(save_exception=False)

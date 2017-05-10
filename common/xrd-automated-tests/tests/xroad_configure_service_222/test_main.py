@@ -116,7 +116,7 @@ class XroadDeleteService(unittest.TestCase):
             test_delete_service()
         except:
             main.log('XroadDeleteService: Failed to delete service')
-            raise RuntimeError('TEST FAILED')
+            assert False
         finally:
             # Test teardown
             main.tearDown()
