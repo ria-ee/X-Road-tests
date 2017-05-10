@@ -132,7 +132,7 @@ class XroadAddCentralService(unittest.TestCase):
                     except:
                         main.log('XroadAddCentralService: Error deleting security server service')
                         main.save_exception_data()
-                        raise
+                        assert False
             except:
                 assert False
         finally:
@@ -187,7 +187,7 @@ class XroadDeleteCentralService(unittest.TestCase):
                 delete_central_service()
             except:
                 main.log('XroadDeleteCentralService: Failed to delete central service')
-                raise
+                assert False
             finally:
                 try:
                     # Go to SS2 main page (re-login if necessary) and delete the newly created service
@@ -195,7 +195,7 @@ class XroadDeleteCentralService(unittest.TestCase):
                     delete_service()
                 except:
                     main.log('XroadDeleteCentralService: failed to delete security server service')
-                    raise
+                    assert False
         finally:
             # Test teardown
             main.tearDown()
