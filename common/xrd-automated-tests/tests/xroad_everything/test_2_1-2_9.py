@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import unittest
 
 
-class Test2_(unittest.TestCase):
+class Test(unittest.TestCase):
     print 'Testing 2.1-2.9 tests'
 
     # Add clients to central server (2.2.1), undo later
@@ -11,7 +11,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_client_registration_in_ss_221.test_main import XroadSecurityServerClientRegistration
         print '\n test_01_xroad_security_server_client_registration STARTED \n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientRegistration)
-        print unittest.TextTestRunner().run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_01_xroad_security_server_client_registration FINISHED'
         del XroadSecurityServerClientRegistration
         return
@@ -21,7 +23,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_configure_service_222.test_main import XroadConfigureService
         print '\n test_02_xroad_configure_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadConfigureService)
-        print unittest.TextTestRunner().run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_02_xroad_configure_service FINISHED'
         del XroadConfigureService
         return
@@ -31,7 +35,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_refresh_wsdl_225.test_main import XroadRefreshWsdl
         print '\n test_03_xroad_refresh_wsdl STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadRefreshWsdl)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_03_xroad_refresh_wsdl FINISHED'
         del XroadRefreshWsdl
 
@@ -42,7 +48,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_deactivate_wsdl_226.test_main import XroadDeactivateWsdl
         print '\n test_04_xroad_deactivate_wsdl STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeactivateWsdl)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_04_xroad_deactivate_wsdl FINISHED'
         del XroadDeactivateWsdl
         return
@@ -52,7 +60,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_tls_227.test_main import XroadLocalTls
         print '\n test_05_xroad_Local_tls STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadLocalTls)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_05_xroad_Local_tls FINISHED'
         del XroadLocalTls
         return
@@ -61,7 +71,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_tls_227.test_main import XroadDeleteLocalTls
         print '\n test_06_xroad_delete_local_tls STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteLocalTls)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_06_xroad_delete_local_tls FINISHED'
         del XroadDeleteLocalTls
         return
@@ -71,7 +83,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_add_central_service_228.test_main import XroadAddCentralService
         print '\n test_07_xroad_add_central_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadAddCentralService)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_07_xroad_add_central_service FINISHED'
         del XroadAddCentralService
         return
@@ -81,7 +95,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_member_access_229.test_main import XroadMemberAccess
         print '\n test_08_xroad_member_access STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadMemberAccess)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_08_xroad_member_access FINISHED'
         del XroadMemberAccess
         return
@@ -91,7 +107,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_add_central_service_228.test_main import XroadDeleteCentralService
         print '\n test_09_xroad_delete_central_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteCentralService)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_09_xroad_delete_central_service FINISHED'
         del XroadDeleteCentralService
         return
@@ -101,7 +119,9 @@ class Test2_(unittest.TestCase):
         from tests.xroad_configure_service_222.test_main import XroadDeleteService
         print '\n test_10_xroad_delete_service STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadDeleteService)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_10_xroad_delete_service FINISHED'
         del XroadDeleteService
         return
@@ -112,7 +132,9 @@ class Test2_(unittest.TestCase):
             XroadSecurityServerClientDeletion
         print '\n test_11_xroad_security_server_client_deletion STARTED\n'
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadSecurityServerClientDeletion)
-        print unittest.TextTestRunner(verbosity=0).run(suite)
+        ret = unittest.TextTestRunner().run(suite)
+        if len(ret.failures) > 0:
+            assert False
         print '\n test_11_xroad_security_server_client_deletion FINISHED'
         del XroadSecurityServerClientDeletion
         return
