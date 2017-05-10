@@ -87,7 +87,7 @@ def failing_tests():
         client = {'name': 'failure', 'class': 'COM', 'code': 'failure', 'subsystem_code': 'failure'}
         error = False
         try:
-            raise AssertionError, 'Testing'
+            assert False, 'Testing'
             # Add a temporary client for testing the failure scenarios
             add_client(self, client)
 
