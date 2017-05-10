@@ -75,17 +75,19 @@ def test(client_code, client_class):
 
 def failing_tests():
     def fail_test_case(self):
-        '''
+        """
         Tests all failure scenarios of 2.1.3 (2.1.3.1)
         :param self: MainController object
         :return: None
-        '''
+        """
 
         # TEST PLAN 2.1.3.1 failure scenarios
         self.log('2.1.3.1 failure scenarios')
         self.log('Adding testing client')
         client = {'name': 'failure', 'class': 'COM', 'code': 'failure', 'subsystem_code': 'failure'}
+        error = False
         try:
+            raise
             # Add a temporary client for testing the failure scenarios
             add_client(self, client)
 
@@ -112,9 +114,12 @@ def failing_tests():
         except:
             # Exception occured, print traceback
             traceback.print_exc()
+            error = True
+
         finally:
             # Always remove the temporary client
             remove_client(self, client)
+            raise AssertionError, '2.1.3 Failure test FAILED'
 
     def add_client(self, client):
         '''

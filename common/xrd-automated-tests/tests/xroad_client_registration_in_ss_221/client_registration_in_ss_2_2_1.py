@@ -279,6 +279,7 @@ def test_test(case, cs_host, cs_username, cs_password,
             # Check if client 2 has been registered
             check_expected_result_ss(self, ss_2_client_2, registered_status=registered_status,
                                      retry_interval=sync_retry, retry_timeout=sync_timeout)
+
         except Exception, e:
             # We got an exception, so the test failed. Save screenshot and traceback to a file.
             delete_client = True
@@ -297,7 +298,7 @@ def test_test(case, cs_host, cs_username, cs_password,
 
             # If we got an error previously, raise an exception
             if error:
-                assert False, '2.2.1 failed'
+                raise AssertionError, '2.2.1 failed'
 
     return test_case
 
@@ -398,7 +399,7 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
     self.wait_jquery()
     time.sleep(wait_input)
 
-    self.input(subsystem_input, client['subsystem_code'], click=False)
+    self.input(subsystem_input, client['subsystem_code'])
 
     # Try to add client
     self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
@@ -436,12 +437,12 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
 
 
 def add_client_to_ss_by_hand(self, client):
-    '''
+    """
     Adds a client to security server without searching for it in lists.
     :param self: MainController object
     :param client: dict - client data
     :return: None
-    '''
+    """
 
     # Start adding the client
     self.log('2.2.1-6: Click on "ADD CLIENT" button')
@@ -501,7 +502,7 @@ def add_client_to_ss_by_hand(self, client):
 
 
 def add_sub_as_client_to_member(self, system_code, client, wait_input=2, step='x.x.x-y: '):
-    '''
+    """
     Adds a subsystem to member and as a client.
     :param self: MainController object
     :param system_code: str - subsystem code
@@ -509,7 +510,7 @@ def add_sub_as_client_to_member(self, system_code, client, wait_input=2, step='x
     :param wait_input: int - seconds to wait before inputs
     :param step: str - prefix to be added to logs
     :return:
-    '''
+    """
 
     # Open management requests
     self.log(step + 'CHECKING REGISTRATIONS STATUS TEST')
@@ -594,14 +595,14 @@ def add_sub_as_client_to_member(self, system_code, client, wait_input=2, step='x
 
 
 def add_subsystem_to_server_client(self, server_code, client, wait_input=3):
-    '''
+    """
     Adds a subsystem to server client.
     :param self: MainController object
     :param server_code: str - server code
     :param client: dict - client data
     :param wait_input: int - seconds to wait before entering text to inputs
     :return: None
-    '''
+    """
 
     # Open clients list for server
     open_servers_clients(self, server_code)
@@ -650,12 +651,12 @@ def add_subsystem_to_server_client(self, server_code, client, wait_input=3):
 
 
 def approve_requests(self, step):
-    '''
+    """
     Approve the management requests.
     :param self: MainController object
     :param step: str - prefix for logging
     :return: None
-    '''
+    """
 
     # Open main page
     self.log(step + 'Open central server')
@@ -699,7 +700,7 @@ def approve_requests(self, step):
 
 
 def check_expected_result_cs(self, ss_1_client, ss_2_client, ss_2_client_2, check_limit=6):
-    '''
+    """
     Checks for expected results (new clients) in central server.
     :param self: MainController object
     :param ss_1_client: dict - client data for security server 1
@@ -707,7 +708,7 @@ def check_expected_result_cs(self, ss_1_client, ss_2_client, ss_2_client_2, chec
     :param ss_2_client_2: dict - second client data for security server 2
     :param check_limit: int - check no more than this number of items (helps to speed up checks)
     :return: None
-    '''
+    """
     self.log('2.2.1-13: TEST CENTRAL SERVER RESULTS')
     self.log('2.2.1-13: Check from members table')
 
