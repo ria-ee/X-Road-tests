@@ -299,7 +299,8 @@ def test_test(case, cs_host, cs_username, cs_password,
                 except:
                     self.log('2.2.1 Client deletion FAILED')
             # If we got an error previously, raise an exception
-            return not error
+            if error:
+                raise RuntimeError('2.2.1 failed')
 
     return test_case
 
