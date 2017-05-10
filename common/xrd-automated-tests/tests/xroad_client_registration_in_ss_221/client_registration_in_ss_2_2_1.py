@@ -82,7 +82,7 @@ def test_test(case, cs_host, cs_username, cs_password,
               cs_new_member=None, ss1_client=None, ss2_client=None, ss2_client_2=None,
               cs_member_name=None, ss1_client_name=None, ss2_client_name=None, ss2_client_2_name=None,
               remove_added_data=True):
-    '''
+    """
 
     :param case: MainController object
     :param cs_host: str - central server hostname
@@ -104,7 +104,7 @@ def test_test(case, cs_host, cs_username, cs_password,
     :param ss2_client_2_name: str - security server 2 second client name
     :param remove_added_data: bool - True to remove the data after testing; False otherwise
     :return: None
-    '''
+    """
     self = case
     sync_retry = 30
     sync_timeout = 120
@@ -112,10 +112,10 @@ def test_test(case, cs_host, cs_username, cs_password,
     registered_status = 'registered'
 
     def test_case():
-        '''
+        """
         Executes the test.
         :return: None
-        '''
+        """
         # TEST PLAN 2.2.1 registering clients to security servers
         self.log('*** 2.2.1 / XT-465')
 
@@ -137,7 +137,6 @@ def test_test(case, cs_host, cs_username, cs_password,
         error = False
         self.exception = False
         try:
-            raise AssertionError, 'testing'
             # TEST PLAN 2.2.1-1 add member to Central Server
             self.log('2.2.1-1 add member to Central Server')
 
@@ -303,7 +302,7 @@ def test_test(case, cs_host, cs_username, cs_password,
             # If we got an error previously, raise an exception
             if error:
                 print 'Finally error'
-                assert False, '2.2.1 failed'
+                return AssertionError, '2.2.1 failed'
 
     return test_case
 
