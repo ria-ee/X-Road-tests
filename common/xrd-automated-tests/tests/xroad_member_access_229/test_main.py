@@ -37,7 +37,7 @@ class XroadMemberAccess(unittest.TestCase):
             test_xroad_member_access()
         except:
             main.save_exception_data()
-            raise
+            raise RuntimeError('TEST FAILED')
         finally:
             # Test teardown
             main.tearDown(save_exception=False)

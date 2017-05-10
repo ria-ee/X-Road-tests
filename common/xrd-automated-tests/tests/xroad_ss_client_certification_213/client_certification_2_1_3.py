@@ -119,7 +119,7 @@ def failing_tests():
             # Always remove the temporary client
             remove_client(self, client)
             if error:
-                raise AssertionError, '2.1.3 Failure test FAILED'
+                raise RuntimeError('2.1.3 Failure test FAILED')
 
     def add_client(self, client):
         '''

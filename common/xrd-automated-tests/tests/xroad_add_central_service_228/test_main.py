@@ -134,7 +134,7 @@ class XroadAddCentralService(unittest.TestCase):
                         main.save_exception_data()
                         raise
             except:
-                raise
+                raise RuntimeError('TEST FAILED')
         finally:
             # Test teardown
             main.tearDown(save_exception=False)
