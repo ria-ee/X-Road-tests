@@ -494,6 +494,7 @@ def remove_subsystem_registration_request(self, ssh_client, user, server_id):
     # Revoke the request
     self.log('Revoke request by clicking "REVOKE" button')
     self.wait_jquery()
+    time.sleep(5)
     self.wait_until_visible(type=By.XPATH, element=cs_security_servers.REVOKE_MANAGEMENT_REQUEST_BTN_XPATH).click()
 
     # Confirm
