@@ -30,7 +30,8 @@ class XRoad extends Simulation {
   val msgXRoadInstance = System.getProperty("msgXRoadInstance", "ee-dev")
   val msgMemberClass = System.getProperty("msgMemberClass", "COM")
   val msgMemberCode = System.getProperty("msgMemberCode", "11045744")
-  val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MOCK")
+  val msgMemberSubsystemCode = System.getProperty("msgMemberSubsystemCode", "MockSystem")
+  val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MockSystem")
   val msgServiceCode = System.getProperty("msgServiceCode", "mock")
   val msgServiceVersion = System.getProperty("msgServiceVersion", "v1")
   val msgUserId = System.getProperty("msgUserId", "EE1234567890")
@@ -44,7 +45,7 @@ class XRoad extends Simulation {
     .extraInfoExtractor(extraInfo => List(extraInfo.session))
 
   // Gatling feeder for generating unique ID-s that can be used within XRoad requests
-  val xRoadFeeder = Iterator.continually(Map("xRoadRequestId" -> java.util.UUID.randomUUID.toString))  
+  val xRoadFeeder = Iterator.continually(Map("xRoadRequestId" -> java.util.UUID.randomUUID.toString))
 
   // Generate XRoad message body with unique identifier. Please note the hardcoded member and service codes.
   def makeXRoadRequest(messageSize: String) =
@@ -61,10 +62,11 @@ class XRoad extends Simulation {
     xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
     xmlns:id="http://x-road.eu/xsd/identifiers">
   <SOAP-ENV:Header>
-    <xrd:client id:objectType="MEMBER">
+    <xrd:client id:objectType="SUBSYSTEM">
       <id:xRoadInstance>""" + msgXRoadInstance + """</id:xRoadInstance>
       <id:memberClass>""" + msgMemberClass + """</id:memberClass>
       <id:memberCode>""" + msgMemberCode + """</id:memberCode>
+      <id:subsystemCode>""" + msgMemberSubsystemCode + """</id:subsystemCode>
     </xrd:client>
     <xrd:service id:objectType="SERVICE">
       <id:xRoadInstance>""" + msgXRoadInstance + """</id:xRoadInstance>
