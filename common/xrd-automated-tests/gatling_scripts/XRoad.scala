@@ -9,7 +9,7 @@ import java.util.Arrays
 class XRoad extends Simulation {
 
   // XRoad security server end-point URL. Can be overridden from command-line.
-  val xRoadURL = System.getProperty("xRoadURL", "https://xtee9.ci.kit")
+  val xRoadURL = System.getProperty("xRoadURL", "http://127.0.0.1:8080/")
 
   // Test scenario hold times. Default values can be overridden from command-line.
   val warmUpHoldPeriod = Integer.getInteger("warmUpHoldPeriod", 30) seconds
@@ -26,13 +26,6 @@ class XRoad extends Simulation {
   val weight2MB = Double.parseDouble(System.getProperty("weight2MB", "0.9"))
   val weight10MB = Double.parseDouble(System.getProperty("weight10MB", "0.1"))
 
-<<<<<<< .mine
-  // XRoad member code. Can be overridden from command-line.
-  val memberCode = System.getProperty("memberCode", "00000001_1")
-||||||| .r17017
-  // XRoad member code. Can be overridden from command-line.
-  val memberCode = System.getProperty("memberCode", "11045744")
-=======
   // XRoad message body variables. Can be overridden from command-line.
   val msgXRoadInstance = System.getProperty("msgXRoadInstance", "ee-dev")
   val msgMemberClass = System.getProperty("msgMemberClass", "COM")
@@ -41,7 +34,6 @@ class XRoad extends Simulation {
   val msgServiceCode = System.getProperty("msgServiceCode", "getMock")
   val msgServiceVersion = System.getProperty("msgServiceVersion", "v1")
   val msgUserId = System.getProperty("msgUserId", "EE1234567890")
->>>>>>> .r17069
 
   // Gatling HTTP request settings (refer to Gatling documentation at http://gatling.io/).
   val httpConfig = http
