@@ -31,7 +31,7 @@ class XRoad extends Simulation {
   val msgMemberClass = System.getProperty("msgMemberClass", "COM")
   val msgMemberCode = System.getProperty("msgMemberCode", "11045744")
   val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MOCK")
-  val msgServiceCode = System.getProperty("msgServiceCode", "getMock")
+  val msgServiceCode = System.getProperty("msgServiceCode", "mock")
   val msgServiceVersion = System.getProperty("msgServiceVersion", "v1")
   val msgUserId = System.getProperty("msgUserId", "EE1234567890")
 
@@ -57,6 +57,7 @@ class XRoad extends Simulation {
         .body(StringBody("""<?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope
     xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:ns1="http://producer.x-road.eu"
     xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
     xmlns:id="http://x-road.eu/xsd/identifiers">
   <SOAP-ENV:Header>
@@ -78,9 +79,9 @@ class XRoad extends Simulation {
     <xrd:protocolVersion>4.0</xrd:protocolVersion>
   </SOAP-ENV:Header>
   <SOAP-ENV:Body>
-    <ns1:getMock xmlns:ns1="http://mock.x-road.ee">
+    <ns1:""" + msgServiceCode + """>
       <desiredResponseSize>""" + messageSize + """</desiredResponseSize>
-    </ns1:getMock>
+    </ns1:""" + msgServiceCode + """>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>"""))
         .check(
