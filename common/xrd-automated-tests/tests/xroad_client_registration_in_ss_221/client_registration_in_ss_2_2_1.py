@@ -407,7 +407,7 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
     self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
 
-    time.sleep(3)
+    time.sleep(10)
 
     # Confirm the popup that should have opened
     warning = self.wait_until_visible(type=By.ID, element=popups.CONFIRM_POPUP_TEXT_AREA_ID).text
