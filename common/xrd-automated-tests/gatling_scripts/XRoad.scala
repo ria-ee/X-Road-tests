@@ -26,8 +26,22 @@ class XRoad extends Simulation {
   val weight2MB = Double.parseDouble(System.getProperty("weight2MB", "0.9"))
   val weight10MB = Double.parseDouble(System.getProperty("weight10MB", "0.1"))
 
+<<<<<<< .mine
   // XRoad member code. Can be overridden from command-line.
   val memberCode = System.getProperty("memberCode", "00000001_1")
+||||||| .r17017
+  // XRoad member code. Can be overridden from command-line.
+  val memberCode = System.getProperty("memberCode", "11045744")
+=======
+  // XRoad message body variables. Can be overridden from command-line.
+  val msgXRoadInstance = System.getProperty("msgXRoadInstance", "ee-dev")
+  val msgMemberClass = System.getProperty("msgMemberClass", "COM")
+  val msgMemberCode = System.getProperty("msgMemberCode", "11045744")
+  val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MOCK")
+  val msgServiceCode = System.getProperty("msgServiceCode", "getMock")
+  val msgServiceVersion = System.getProperty("msgServiceVersion", "v1")
+  val msgUserId = System.getProperty("msgUserId", "EE1234567890")
+>>>>>>> .r17069
 
   // Gatling HTTP request settings (refer to Gatling documentation at http://gatling.io/).
   val httpConfig = http
@@ -55,19 +69,19 @@ class XRoad extends Simulation {
     xmlns:id="http://x-road.eu/xsd/identifiers">
   <SOAP-ENV:Header>
     <xrd:client id:objectType="MEMBER">
-      <id:xRoadInstance>ee-dev</id:xRoadInstance>
-      <id:memberClass>COM</id:memberClass>
-      <id:memberCode>""" + memberCode + """</id:memberCode>
+      <id:xRoadInstance>""" + msgXRoadInstance + """</id:xRoadInstance>
+      <id:memberClass>""" + msgMemberClass + """</id:memberClass>
+      <id:memberCode>""" + msgMemberCode + """</id:memberCode>
     </xrd:client>
     <xrd:service id:objectType="SERVICE">
-      <id:xRoadInstance>ee-dev</id:xRoadInstance>
-      <id:memberClass>COM</id:memberClass>
-      <id:memberCode>""" + memberCode + """</id:memberCode>
-      <id:subsystemCode>MOCK</id:subsystemCode>
-      <id:serviceCode>getMock</id:serviceCode>
-      <id:serviceVersion>v1</id:serviceVersion>
+      <id:xRoadInstance>""" + msgXRoadInstance + """</id:xRoadInstance>
+      <id:memberClass>""" + msgMemberClass + """</id:memberClass>
+      <id:memberCode>""" + msgMemberCode + """</id:memberCode>
+      <id:subsystemCode>""" + msgSubsystemCode + """</id:subsystemCode>
+      <id:serviceCode>""" + msgServiceCode + """</id:serviceCode>
+      <id:serviceVersion>""" + msgServiceVersion + """</id:serviceVersion>
     </xrd:service>
-    <xrd:userId>EE1234567890</xrd:userId>
+    <xrd:userId>""" + msgUserId + """</xrd:userId>
     <xrd:id>${xRoadRequestId}</xrd:id>
     <xrd:protocolVersion>4.0</xrd:protocolVersion>
   </SOAP-ENV:Header>
@@ -76,11 +90,13 @@ class XRoad extends Simulation {
       <desiredResponseSize>""" + messageSize + """</desiredResponseSize>
     </ns1:getMock>
   </SOAP-ENV:Body>
-</SOAP-ENV:Envelope>"""))  
+</SOAP-ENV:Envelope>"""))
         .check(
           status.is(200),
           // Check that the response ID in response matches the one sent in request (e.g. sessions do not get mixed and response is valid).
           substring("""<xrd:id>${xRoadRequestId}</xrd:id>"""),
+          // Check that response message does not contain fault element
+          substring("""<SOAP-ENV:Fault>""").notExists,
           // Extract mock timestamp from response so it would get saved in the logs and can be used for further analyzis.
           regex("""<mockTimeStamp>([\d]+)</mockTimeStamp>""").saveAs("mockTimeStamp")
         )
