@@ -107,6 +107,7 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
         except:
             # Had an error, set error to be True and print traceback.
             traceback.print_exc()
+            self.save_exception_data(exctrace=traceback)
             error = True
         finally:
             # Always remove data
@@ -457,21 +458,21 @@ def register_subsystem_to_security_server(self, ssh_client, user, member, server
 
 
 def remove_subsystem_registration_request(self, ssh_client, user, server_id):
-    '''
+    """
     Revokes a registration request for a client and checks if it was logged.
     :param self: MainController object
     :param ssh_client: SSHClient object
     :param user: dict - user data
     :param server_id: str - server identifier
     :return:
-    '''
+    """
 
     # Go to UI main page
     self.driver.get(self.url)
     self.wait_jquery()
 
     # Open security server details popup
-    self.log('Open Security server details popup')
+    self.log('2.11.1-12: Open Security server details popup')
     self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.SECURITY_SERVERS_CSS).click()
     self.wait_jquery()
     self.wait_until_visible(type=By.XPATH, element=members_table.get_row_by_td_text(server_id)).click()
@@ -482,23 +483,23 @@ def remove_subsystem_registration_request(self, ssh_client, user, server_id):
     self.wait_jquery()
 
     # Open management requests
-    self.log('Open management requests tab')
+    self.log('2.11.1-12: Open management requests tab')
     table = self.wait_until_visible(type=By.ID, element=cs_security_servers.SECURITYSERVER_MANAGEMENT_REQUESTS_TABLE_ID)
     self.wait_jquery()
 
     # Get the latest requests
     tr = table.find_elements_by_tag_name('tr')[1]
-    self.log('Clicking request index')
+    self.log('2.11.1-12: Clicking request index')
     tr.find_element_by_tag_name('a').click()
 
     # Revoke the request
-    self.log('Revoke request by clicking "REVOKE" button')
+    self.log('2.11.1-12: Revoke request by clicking "REVOKE" button')
     self.wait_jquery()
     time.sleep(10)
     self.wait_until_visible(type=By.XPATH, element=cs_security_servers.REVOKE_MANAGEMENT_REQUEST_BTN_XPATH).click()
 
     # Confirm
-    self.log('Confirm revoking request')
+    self.log('2.11.1-12: Confirm revoking request')
     popups.confirm_dialog_click(self)
 
     # TEST PLAN 2.11.1-14 check if revoking the request was logged

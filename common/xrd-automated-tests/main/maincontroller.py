@@ -163,10 +163,10 @@ class MainController(AssertHelper):
                 self.driver.quit()
 
     def save_exception_data(self, exctype=None, excvalue=None, exctrace=None):
-        '''
+        """
         Saves the exception screenshot and traceback if set in configuration.
         :return: None
-        '''
+        """
 
         # Do we need to save anything about errors?
         if self.save_exceptions or self.save_screenshots:
