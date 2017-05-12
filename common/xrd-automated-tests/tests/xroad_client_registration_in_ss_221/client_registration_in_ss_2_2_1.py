@@ -391,19 +391,21 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
             self.log(step + 'Client row not found')
 
     # Click "OK"
+    time.sleep(5)
     self.wait_until_visible(type=By.XPATH, element=clients_table_vm.SELECT_CLIENT_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
 
     # Enter data to form
-    time.sleep(wait_input)
+    time.sleep(5)
     subsystem_input = self.wait_until_visible(type=By.XPATH,
                                               element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_XPATH)
     self.wait_jquery()
     time.sleep(5)
 
-    self.input(subsystem_input, client['subsystem_code'], click=False)
+    self.input(subsystem_input, client['subsystem_code'])
 
     # Try to add client
+    time.sleep(wait_input)
     self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
 
