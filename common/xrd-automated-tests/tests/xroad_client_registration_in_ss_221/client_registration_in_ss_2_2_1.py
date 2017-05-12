@@ -375,8 +375,10 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
             self.log(step + 'Searching for client row')
 
             # Try to get the row associated with the client. If not found, we'll get an exception.
-            members_table.get_row_by_columns(table, [client['name'], client['class'], client['code']]).click()
-
+            member_row = members_table.get_row_by_columns(table, [client['name'], client['class'], client['code']])
+            time.sleep(wait_input)
+            self.wait_jquery()
+            member_row.click()
             # If we got here, client was found
             self.log(step + 'Found client row')
             break
@@ -391,7 +393,9 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
             self.log(step + 'Client row not found')
 
     # Click "OK"
+    self.wait_jquery()
     time.sleep(10)
+    self.log(step + 'confirm popup')
     self.wait_until_visible(type=By.XPATH, element=clients_table_vm.SELECT_CLIENT_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
 
@@ -405,7 +409,7 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, wait_input
     self.input(subsystem_input, client['subsystem_code'], click=False)
 
     # Try to add client
-    time.sleep(wait_input)
+    time.sleep(5)
     self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
 
