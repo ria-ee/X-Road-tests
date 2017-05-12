@@ -9,7 +9,7 @@ import java.util.Arrays
 class XRoad extends Simulation {
 
   // XRoad security server end-point URL. Can be overridden from command-line.
-  val xRoadURL = System.getProperty("xRoadURL", "http://127.0.0.1:8080/")
+  val xRoadURL = System.getProperty("xRoadURL", "http://xtee9.ci.kit")
 
   // Test scenario hold times. Default values can be overridden from command-line.
   val warmUpHoldPeriod = Integer.getInteger("warmUpHoldPeriod", 30) seconds
@@ -27,14 +27,15 @@ class XRoad extends Simulation {
   val weight10MB = Double.parseDouble(System.getProperty("weight10MB", "0.1"))
 
   // XRoad message body variables. Can be overridden from command-line.
-  val msgXRoadInstance = System.getProperty("msgXRoadInstance", "ee-dev")
-  val msgMemberClass = System.getProperty("msgMemberClass", "COM")
-  val msgMemberCode = System.getProperty("msgMemberCode", "11045744")
-  val msgMemberSubsystemCode = System.getProperty("msgMemberSubsystemCode", "MockSystem")
-  val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MockSystem")
+  val msgXRoadInstance = System.getProperty("msgXRoadInstance", "XTEE-CI-XM")
+  val msgMemberClass = System.getProperty("msgMemberClass", "GOV")
+  val msgMemberCode = System.getProperty("msgMemberCode", "00000001")
+  val msgMemberSubsystemCode = System.getProperty("msgMemberSubsystemCode", "MockSystemGatling")
+  val msgSubsystemCode = System.getProperty("msgSubsystemCode", "MockSystemGatling")
   val msgServiceCode = System.getProperty("msgServiceCode", "mock")
   val msgServiceVersion = System.getProperty("msgServiceVersion", "v1")
-  val msgUserId = System.getProperty("msgUserId", "EE1234567890")
+  val msgUserId = System.getProperty("msgUserId", "EE12345678901")
+  val msgIssue = System.getProperty("msgIssue", "12345")
 
   // Gatling HTTP request settings (refer to Gatling documentation at http://gatling.io/).
   val httpConfig = http
@@ -45,7 +46,7 @@ class XRoad extends Simulation {
     .extraInfoExtractor(extraInfo => List(extraInfo.session))
 
   // Gatling feeder for generating unique ID-s that can be used within XRoad requests
-  val xRoadFeeder = Iterator.continually(Map("xRoadRequestId" -> java.util.UUID.randomUUID.toString))
+  val xRoadFeeder = Iterator.continually(Map("xRoadRequestId" -> java.util.UUID.randomUUID.toString))  
 
   // Generate XRoad message body with unique identifier. Please note the hardcoded member and service codes.
   def makeXRoadRequest(messageSize: String) =
@@ -79,10 +80,11 @@ class XRoad extends Simulation {
     <xrd:userId>""" + msgUserId + """</xrd:userId>
     <xrd:id>${xRoadRequestId}</xrd:id>
     <xrd:protocolVersion>4.0</xrd:protocolVersion>
+    <xrd:issue>""" + msgIssue + """</xrd:issue>
   </SOAP-ENV:Header>
   <SOAP-ENV:Body>
     <ns1:""" + msgServiceCode + """>
-      <desiredResponseSize>""" + messageSize + """</desiredResponseSize>
+      <desiredResponse>""" + messageSize + """</desiredResponse>
     </ns1:""" + msgServiceCode + """>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>"""))
@@ -91,9 +93,7 @@ class XRoad extends Simulation {
           // Check that the response ID in response matches the one sent in request (e.g. sessions do not get mixed and response is valid).
           substring("""<xrd:id>${xRoadRequestId}</xrd:id>"""),
           // Check that response message does not contain fault element
-          substring("""<SOAP-ENV:Fault>""").notExists,
-          // Extract mock timestamp from response so it would get saved in the logs and can be used for further analyzis.
-          regex("""<mockTimeStamp>([\d]+)</mockTimeStamp>""").saveAs("mockTimeStamp")
+          substring("""<SOAP-ENV:Fault>""").notExists
         )
     )
 
