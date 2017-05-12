@@ -89,7 +89,8 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
             self.log('2.11.1-10 add new registration request for the new subsystem')
             self.driver.get(self.url)
             register_subsystem_to_security_server(self, ssh_client, user, member=client, server_id=server_id)
-
+            self.log('wait 120 for effect')
+            time.sleep(120)
             # TEST PLAN 2.11.1-11 log out, then log in to central server as user3
             self.log('2.11.1-11 log out, then log in to central server as user3')
             user = users['user3']
