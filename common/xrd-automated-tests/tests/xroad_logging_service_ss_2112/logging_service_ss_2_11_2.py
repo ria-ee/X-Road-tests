@@ -550,7 +550,6 @@ def remove_client(self, client):
         is_delete_needed = True
         self.log('Not unregistering')
         self.wait_jquery()
-        traceback.print_exc()
 
     try:
         # Try to delete
