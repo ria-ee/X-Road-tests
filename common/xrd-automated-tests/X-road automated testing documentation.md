@@ -1,6 +1,6 @@
 # X-road automated testing documentation
 
-**Authors** : Sten Luhtoja, Märt Tibar, Arto Vaas
+**Authors** : Sten Luhtoja, Mï¿½rt Tibar, Arto Vaas
 
 
 ![Logo](https://github.com/ria-ee/X-Road/blob/develop/doc/Manuals/img/eu_regional_development_fund_horizontal_div_15.png "EU logo")
@@ -438,16 +438,24 @@ _Table 13. WSDL files in default configuration_
   * Nature = Shell
   * Command:
 
-repo\_root\_dir=/opt/riajenk/x-road-tests/
-test\_dir=xroad\_everything
-test\_name=test\_main
-project\_name=testing\_all\_automated\_tests
-cd $repo\_root\_dir/tests/$test\_dir
+project_location=$(pwd)
+repo_root_dir=/var/lib/jenkins/workspace/repository/common/xrd-automated-tests
+test_dir=xroad_everything
+test_name=test_main
+
+
+set +e
+Xvfb :10 -screen 0 1024x768x16 &
+killall 'firefox'
+rm -rf /tmp/tmp*
+rm -rf /tmp/rust_mozprofile*
+
+cd $repo_root_dir/tests/$test_dir
 export DISPLAY=:10
 export PYTHONUNBUFFERED=true
-export PYTHONPATH=$repo\_root\_dir
-nose2 --plugin nose2.plugins.junitxml  --junit-xml $test\_name
-cp $repo\_root\_dir/tests/$test\_name/nose2-junit.xml   /var/lib/jenkins/workspace/$project\_name/
+export PYTHONPATH=$repo_root_dir
+nose2 --plugin nose2.plugins.junitxml  --junit-xml $test_name
+cp $repo_root_dir/tests/$test_dir/nose2-junit.xml  $project_location
 
 4. Add post build action
   * Publish Junit test result report
@@ -571,6 +579,14 @@ Create new project for performance test - Freestyle project
 * Use the parameters and else info you need to add:
 #!/bin/bash
 
+// Creating directory for reports
+mkdir -p /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report
+// Creating directory for reports history
+mkdir -p /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/history
+
+// Removing old results
+rm -rf /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report/*
+
 JAVA_OPTS=`echo "
 // add memory to gatling
   -Xms1024m
@@ -603,8 +619,22 @@ JAVA_OPTS=`echo "
   -Dgatling.core.directory.binaries=/var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/binaries
 // Change the name of the results folder
   -Dgatling.core.outputDirectoryBaseName=reports
+  
 // these paramters are explained in chapter 4.6
-  -DxRoadURL=http://xtee2.ci.kit:8089/xrd-mock
+  -DxRoadURL=http://xtee9.ci.kit
+  
+  -DwarmUpHoldPeriod=3
+  -DmainHoldPeriod=15
+  -DuserBumpInterval=3
+  
+  -DrpsTargets=1,5
+  
+  -Dweight2kB=30.0
+  -Dweight10kB=60.0
+  -Dweight100kB=9.0
+  -Dweight2MB=0.9
+  -Dweight10MB=0.1
+  
   -DmsgXRoadInstance=XTEE-CI-XM
   -DmsgMemberClass=GOV
   -DmsgMemberCode=00000001
@@ -613,18 +643,11 @@ JAVA_OPTS=`echo "
   -DmsgServiceVersion=v1
   -DmsgUserId=EE12345678901
   -DmsgIssue=12345
-  ${@}
 
 " | xargs` \
 /var/lib/jenkins/gatling-charts-highcharts-bundle-2.2.3/bin/gatling.sh
 
-// Creating directory for reports
-mkdir -p /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report
-// Creating directory for reports history
-mkdir -p /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/history
 
-// Removing old results
-rm -rf /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report/*
 // Copying new results to report directory
 cp -R /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/reports-* /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report/
 // Moving results to history to save history
@@ -637,7 +660,11 @@ Parameter information:
 * xtee2.ci.kit is a mock server
 * xtee9.ci.kit is a security server
 
+### Post-build Actions
+add Publish HTML reports stepp
 
+HTML directory to archive : User needs to add  directory location where the report inex.exe and other files are (example: /var/lib/jenkins/workspace/XRoad-load-test/common/xrd-automated-tests/gatling_scripts/results/report)
+Index page[s] : user should add html file names from report folders, they would like to see in result view tabs.(example: index.html )
 
 ## 4.9 Running performance test
 
@@ -648,7 +675,9 @@ Parameter information:
 * Mock service should be running 
 	* Example command: cd /opt/riajenk/xrd-testing-service; ../SoapUI-5.3.0/bin/mockservicerunner.sh -s soapui-settings-gatling.xml gatling-mock.xml
 
-If all the preconditions are fullfilled then you can start the jenkins buld.
+If all the preconditions are fullfilled then you can start the jenkins buld and wait for the results.
+
+Results are shown in the Jenkins Job behind the "report" link.
 
 
 

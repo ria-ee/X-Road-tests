@@ -124,15 +124,17 @@ sudo chmod -R 777 {directory}
 
 project_location=$(pwd)
 
-repo_root_dir=/home/username/x-road-tests
+repo_root_dir=/var/lib/jenkins/workspace/repository/common/xrd-automated-tests
 
 test_dir=xroad_everything
 
 test_name=test_main
 
-* kills firefox browsers and clears profile(a lot of data)
+* Executes Xvfb, kills firefox browsers and clears profile(a lot of data)
 
 set +e
+
+Xvfb :10 -screen 0 1024x768x16 &
 
 killall 'firefox'
 
