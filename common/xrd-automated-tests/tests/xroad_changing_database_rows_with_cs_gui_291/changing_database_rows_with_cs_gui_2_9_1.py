@@ -70,6 +70,14 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
                                                                             users['user1'][USERNAME], 2)
 
                 for data in get_formatted_data(output):
+                    try:
+                        self.log('2.9.1 Must be true:{0} <= {1} <= {2}'.format(before_created_at,
+                                                                               datetime.datetime.strptime(
+                                                                                   data['timestamp'],
+                                                                                   "%Y-%m-%d %H:%M:%S.%f"),
+                                                                               after_created_at))
+                    except:
+                        pass
                     self.is_true(before_created_at <= datetime.datetime.strptime(data['timestamp'],
                                                                                  "%Y-%m-%d %H:%M:%S.%f") <= after_created_at,
                                  test_name, '2.9.1-9 Error: database rows have not been changed for user1',
@@ -80,6 +88,14 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
                                                                             users['databaseuser']['db_name'],
                                                                             users['user2'][USERNAME], 2)
                 for data in get_formatted_data(output):
+                    try:
+                        self.log('2.9.1 Must be true:{0} <= {1} <= {2}'.format(after_created_at,
+                                                                               datetime.datetime.strptime(
+                                                                                   data['timestamp'],
+                                                                                   "%Y-%m-%d %H:%M:%S.%f"),
+                                                                               after_edited_at))
+                    except:
+                        pass
                     self.is_true(after_created_at <= datetime.datetime.strptime(data['timestamp'],
                                                                                 "%Y-%m-%d %H:%M:%S.%f") <= after_edited_at,
                                  test_name, '2.9.1-9 Error: database rows have not been changed for user2',
@@ -90,6 +106,14 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
                                                                             users['databaseuser']['db_name'],
                                                                             users['user3'][USERNAME], 3)
                 for data in get_formatted_data(output):
+                    try:
+                        self.log('2.9.1 Must be true:{0} <= {1} <= {2}'.format(after_edited_at,
+                                                                               datetime.datetime.strptime(
+                                                                                   data['timestamp'],
+                                                                                   "%Y-%m-%d %H:%M:%S.%f"),
+                                                                               after_deleted_at))
+                    except:
+                        pass
                     self.is_true(after_edited_at <= datetime.datetime.strptime(data['timestamp'],
                                                                                "%Y-%m-%d %H:%M:%S.%f") <= after_deleted_at,
                                  test_name, '2.9.1-9 Error: database rows have not been changed for user3',
@@ -98,7 +122,7 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
 
             except:
                 # Exception - don't fail but remember it
-                self.log('2.9.1 Could not parse string {0}, {1}'.format(output, out_error))
+                self.log('2.9.1 Error: {0}'.format(traceback))
                 error = True
             finally:
                 # Close SSH connection and, if error, print traceback
