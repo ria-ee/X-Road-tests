@@ -144,13 +144,17 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
 
 
 def remove_added_data(self, client):
-    '''
+    """
     Removes data added during testing.
     :param self: MainController object
     :param client: dict - member data
     :return: None
-    '''
-    user_3_actions(self, client)
+    """
+    try:
+        user_3_actions(self, client)
+    except:
+        self.members_current_name = client['name']
+        user_3_actions(self, client)
 
 
 def user_1_actions(self, client):
@@ -187,12 +191,12 @@ def user_1_actions(self, client):
 
 
 def user_2_actions(self, client):
-    '''
+    """
     Executes actions with user2.
     :param self: MainController object
     :param client: dict - member data
     :return: None
-    '''
+    """
     # TEST PLAN 2.9.1-5 log in with user2
     self.log('2.9.1-5 log in with user2')
     self.logout()
@@ -214,18 +218,18 @@ def user_2_actions(self, client):
                                                element=members_table.MEMBER_EDIT_NAME_POPUP_EDIT_NAME_AREA_XPATH)
     self.log('Changing name')
     self.input(member_name_area, client['name2'])
-    self.members_current_name = client['name2']
     self.log('Saving name by clicking "OK"')
     self.wait_until_visible(type=By.XPATH, element=members_table.MEMBER_EDIT_NAME_POPUP_OK_BTN_XPATH).click()
+    self.members_current_name = client['name2']
 
 
 def user_3_actions(self, client):
-    '''
+    """
     Executes actions with user3.
     :param self: MainController object
     :param client: dict - member data
     :return: None
-    '''
+    """
     # TEST PLAN 2.9.1-7 log in with user3
     self.log('2.9.1-7 log in with user3')
     self.logout()
