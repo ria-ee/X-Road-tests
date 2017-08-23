@@ -82,18 +82,21 @@ The versions merged to X-Road-tests/develop branch are not tagged.
 
 ## 7 Changelog management and Pull requests
 
-Changelog description is visible in pull requests.Pull requests from Partners made against the `X-Road-tests/master` branch MUST follow these conventions
+Changelog description is visible in pull requests. Pull requests from Partners made against the `ria-ee/X-Road-tests/master` or `ria-ee/X-Road-tests/develop` branch MUST follow these conventions:
 
-- Pull request name format is:
+Pull request name format is 'country-month-year-description':
+Country=origin of the pull request
+Month=Month when the pull request was created
+Year=Year when the pull request was created
+Description=(short) Description of the pull request
 
-Finnish-08-2017-Description-of-pull-request
-Estonian-07-2017-Description-of-pull-request
+e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of-pull-request
 
 - Description field must contain at least the changelist. Any relevant additional information should also be provided here.
 
 ## 8 Submitting and accepting tests work
 
-8.1 Upon completion of tests development, submit a pull request to `X-Road-tests/master`.
+8.1 Upon completion of tests development, submit a pull request to `X-Road-tests/develop`.
 
 8.2	The pull request is reviewed by Finland and Estonia responsible persons. Additional reviewers can be added as necessary. The pull request is reviewed according to the acceptance criteria that was in effect when the work on this changeset started.
 
@@ -119,7 +122,9 @@ Estonian-07-2017-Description-of-pull-request
 
 8.2.5 Pull request
 - Pull requests are generally reviewed and accepted on first-come, first-served (FCFS) basis.Non-functional requirements
-- Describe well git commit messages
+- Descriptive git commit messages
+	- E.g "Added xroad-global-configuration test case 3.3" or "Fixed login test working with new layout"
+
 - New tests are made PR to Xroad public github develop branch
     - In moving later Xroad development and Xroad tests at same time
 
@@ -130,4 +135,4 @@ Estonian-07-2017-Description-of-pull-request
 
 ## 9 Bug fixes
 
-The Partner who created the version is main responsible of fixing the problem.
+The Partner who created the latest version is main responsible of fixing the problem.
