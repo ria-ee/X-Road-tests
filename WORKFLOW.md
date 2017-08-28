@@ -32,15 +32,15 @@ v1.0
 
 ## 3 Development model
 
-3.1	X-Road uses [Github](https://github.com/) and [Git](https://git-scm.com/) based version management.
+3.1	X-Road tests uses [Github](https://github.com/) and [Git](https://git-scm.com/) based version management.
 
 ## 4	Repositories
 
 4.1	The following code and documentation repositories are used:
-- Master Test Repository - short name: `X-Road-tests`; hosted by: GitHub; managed by: RIA; purpose: release of X-Road automated tests; access: Estonia Head Architect and Finland Scrum Master has write access; read access: ALL.
+- Master Test Repository - short name: X-Road-tests; hosted by: GitHub; managed by: RIA; purpose: release of X-Road automated tests; access: Head Architect has write access; read access: ALL.
 	- https://github.com/ria-ee/X-Road-tests
 
-- Finland and Estonia develop in fork of RIA-EE/X-Road-tests
+- Finland and Estonia develop in fork of ria-ee/X-Road-tests
 	- Finland fork
 		- https://github.com/vrk-kpa/X-Road-tests
 	- Estonia fork
@@ -54,13 +54,13 @@ v1.0
 
 - `master` branch is used to release X-Road tests
 - `develop` branch is used to test development
-- `testfeature` branches are used to work on test features
+- `feature` branches are used to work on test features
 
 Main repository:
 - `master` branch https://github.com/ria-ee/X-Road-tests
 	- Tagged releases of Xroad-tests
 - `develop` branch https://github.com/ria-ee/X-Road-tests
-	- Integration branch Finland and Estonia
+	- Integration branch between Finland and Estonia
 	- Latest integrated test development source code 
 	- Make pull request to master for tagging release or milestone
 
@@ -68,7 +68,7 @@ Fork repository:
 - `master` branch https://github.com/vrk-kpa/X-Road-tests and https://github.com/asaquality/X-Road-tests
 	- Tagged releases of Xroad-tests
 - `develop` branch https://github.com/vrk-kpa/X-Road-tests and https://github.com/asaquality/X-Road-tests 
-	- Country branch for test developme
+	- Country branch for test development
 	- Latest country test development source code 
 	- Make pull request to develop for ria-ee/X-Road-tests
 
@@ -96,7 +96,7 @@ e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of
 
 ## 8 Submitting and accepting tests work
 
-8.1 Upon completion of tests development, submit a pull request to `X-Road-tests/develop`.
+8.1 Upon completion of tests development, submit a pull request to `ria-ee/X-Road-tests/develop`.
 
 8.2	The pull request is reviewed by Finland and Estonia responsible persons. Additional reviewers can be added as necessary. The pull request is reviewed according to the acceptance criteria that was in effect when the work on this changeset started.
 
