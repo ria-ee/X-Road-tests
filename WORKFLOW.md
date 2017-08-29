@@ -119,14 +119,13 @@ e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of
 
 8.2.4 Licensing
 - License exists in root folder
+- Is 
 
 8.2.5 Pull request
 - Pull requests are generally reviewed and accepted on first-come, first-served (FCFS) basis.Non-functional requirements
 - Descriptive git commit messages
 	- E.g "Added xroad-global-configuration test case 3.3" or "Fixed login test working with new layout"
 
-- New tests are made PR to Xroad public github develop branch
-    - In moving later Xroad development and Xroad tests at same time
 
 8.2.6 Browser acceptance testing
 - Browser versions
