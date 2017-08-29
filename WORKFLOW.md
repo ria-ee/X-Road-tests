@@ -28,7 +28,7 @@ v1.0
 ## 2 Related documents
 
 2.1 Workflow policy is related to other X-Road tests development policy and regulations:
-- workflow policy implements Harmonized Xroad tests document [Harmonized X-Road test environment](https://github.com/ria-ee/blob/master/HARMONIZED_TEST_ENVIRONMENT.md)
+- workflow policy implements Harmonized X-road tests document [Harmonized X-Road test environment](https://github.com/ria-ee/blob/master/HARMONIZED_TEST_ENVIRONMENT.md)
 
 ## 3 Development model
 
@@ -39,12 +39,6 @@ v1.0
 4.1	The following code and documentation repositories are used:
 - Master Test Repository - short name: X-Road-tests; hosted by: GitHub; managed by: RIA; purpose: release of X-Road automated tests; access: Head Architect has write access; read access: ALL.
 	- https://github.com/ria-ee/X-Road-tests
-
-- Finland and Estonia develop in fork of ria-ee/X-Road-tests
-	- Finland fork
-		- https://github.com/vrk-kpa/X-Road-tests
-	- Estonia fork
-		- https://github.com/asaquality/X-Road-tests
 
 4.2	Partners can establish their own, additional repositories, for backup, software distribution or other purposes.
 
@@ -58,7 +52,7 @@ v1.0
 
 Main repository:
 - `master` branch https://github.com/ria-ee/X-Road-tests
-	- Tagged releases of Xroad-tests
+	- Tagged releases of X-road-tests
 - `develop` branch https://github.com/ria-ee/X-Road-tests
 	- Integration branch between Finland and Estonia
 	- Latest integrated test development source code 
@@ -66,7 +60,7 @@ Main repository:
 
 Fork repository:
 - `master` branch https://github.com/vrk-kpa/X-Road-tests and https://github.com/asaquality/X-Road-tests
-	- Tagged releases of Xroad-tests
+	- Tagged releases of X-road-tests
 - `develop` branch https://github.com/vrk-kpa/X-Road-tests and https://github.com/asaquality/X-Road-tests 
 	- Country branch for test development
 	- Latest country test development source code 
@@ -76,7 +70,7 @@ Fork repository:
 
 6.1 The versions merged to X-Road-tests/master branch are tagged by the Head Architect.
 
-git tag -a 6.16.0 -m "X-Road-tests for Xroad version 6.16.0"
+git tag -a 6.16.0 -m "X-Road-tests for X-road version 6.16.0"
 
 The versions merged to X-Road-tests/develop branch are not tagged.
 
@@ -129,8 +123,9 @@ e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of
 
 8.2.6 Browser acceptance testing
 - Browser versions
-    - Mozilla firefox 47.0.2
-    - Smoke tests with Chrome -> Not file download and upload, and certificates
+    - Mozilla firefox versionin tests README.md
+    - Chrome version version tests README.md
+    	- Chrome used only smoke tests (excluding file download and upload, and certificates)
 
 ## 9 Bug fixes
 
