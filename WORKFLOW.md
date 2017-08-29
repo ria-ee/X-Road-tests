@@ -74,7 +74,7 @@ Fork repository:
 
 ## 6 Tagging
 
-6.1 The versions merged to X-Road-tests/master branch are tagged by Finnish / Estonian responsible persons.
+6.1 The versions merged to X-Road-tests/master branch are tagged by the Head Architect.
 
 git tag -a 6.16.0 -m "X-Road-tests for Xroad version 6.16.0"
 
@@ -119,7 +119,7 @@ e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of
 
 8.2.4 Licensing
 - License exists in root folder
-- Is 
+- Is the licensing of the tests and its dependencies ok?
 
 8.2.5 Pull request
 - Pull requests are generally reviewed and accepted on first-come, first-served (FCFS) basis.Non-functional requirements
@@ -134,4 +134,4 @@ e.g Finnish-08-2017-Description-of-pull-request, Estonian-07-2017-Description-of
 
 ## 9 Bug fixes
 
-The Partner who created the latest version is main responsible of fixing the problem.
+When an error is detected, the Partner who located the error is responsible of detecting the source of the error. Detecting the source of the error means tracking the first version of the software that contains the error. When the source is detected the Partner who created the version in question must be notified. The Partner who created the version is responsible of fixing the problem.
