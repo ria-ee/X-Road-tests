@@ -51,12 +51,16 @@ v1.0
 - `feature` branches are used to work on test features
 
 Main repository:
-- `master` branch https://github.com/ria-ee/X-Road-tests
-	- Tagged releases of X-road-tests
-- `develop` branch https://github.com/ria-ee/X-Road-tests
-	- Integration branch between Finland and Estonia
+- `master` branch https://github.com/ria-ee/X-Road-tests/tree/master
+	- releases of X-Road-tests that correspond to a specific release of X-Road source code. Several versions of X-Road-tests may point to the same X-Road source code version if necessary.
+	-  `master` branch releases are tagged with e.g "X-Road-tests for X-Road 6.16.0"
+- `develop` branch https://github.com/ria-ee/X-Road-tests/tree/develop
+	- Integration branch between Finland and Estonia (and other possible partners)
 	- Latest integrated test development source code 
-	- Make pull request to master for tagging release or milestone
+
+README.md file in the root of X-Road-tests must indicate the X-Road source code version for both MASTER and DEVELOP branches so that there is no confusion for which version these tests were designated for. Indication is done by pointing to the specific tag (MASTER) or commit (DEVELOP) of the X-Road source code.
+	
+	
 
 Fork repository:
 - `master` branch https://github.com/vrk-kpa/X-Road-tests and https://github.com/asaquality/X-Road-tests
