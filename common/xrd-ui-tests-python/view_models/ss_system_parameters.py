@@ -1,0 +1,3 @@
+GENERATE_INTERNAL_TLS_KEY_BUTTON_ID = 'generate_internal_ssl'
+EXPORT_INTERNAL_TLS_CERT_BUTTON_ID = 'export_internal_ssl_cert'
+SERVICE_TIMEOUT_VALUE = '60'
