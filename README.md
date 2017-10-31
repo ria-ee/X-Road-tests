@@ -1,6 +1,6 @@
 # testing
 
-This is a library for X-Road tests.
+This is a library for X-Road-tests for X-Road 6.16.0
 
 Currently there are 3 main sections:
 
