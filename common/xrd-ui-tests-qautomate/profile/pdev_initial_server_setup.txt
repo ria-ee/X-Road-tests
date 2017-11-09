@@ -1,0 +1,2 @@
+Pvayla_server_conf.test_get_anchor_key_from_cs_and_add_member=0
+Pvayla_server_conf.test_initialize_ss_and_add_member_ss=1

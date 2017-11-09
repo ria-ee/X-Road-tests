@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<TestData>
+	<Section name="new_cs_url">
+		<parameter name="server_address" value="xroad-lxd-cs2.lxd"/>
+	</Section>
+	<Section name="invalid_cs_url">
+		<parameter name="server_address" value="xroad-lxd-cs2.lxd_asdf"/>
+	</Section>
+</TestData>

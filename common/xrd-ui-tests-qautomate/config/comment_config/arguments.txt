@@ -1,0 +1,11 @@
+parameters: Test data section dictionary
+section: Test data section name
+section1: Test data section name
+section2: Test data section name
+section3: Test data section name
+parameter: Test data parameter name
+text: String value for text
+message: String value for message
+initial_conf: If true server is in configurations state
+wait_for_jquery: If true method waits for jquery
+value_string: String value

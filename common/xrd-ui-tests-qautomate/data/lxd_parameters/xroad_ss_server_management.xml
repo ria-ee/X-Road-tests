@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestData>
+	<Section name="security_server_url_wrong_password">
+		<parameter name="url" pagemodel="open_application" validation="" value="https://xroad-lxd-ss1.lxd:4000" verify=""/>
+		<parameter name="j_username" pagemodel="ss_login" validation="" value="xrd" verify=""/>
+		<parameter name="j_password" pagemodel="ss_login" validation="" value="wrong_password" verify=""/>
+	</Section>
+</TestData>

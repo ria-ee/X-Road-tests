@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestData>
+	<Section name="log_server">
+		<parameter name="server1" value="xroad-lxd-cs.lxd"/>
+		<parameter name="server2" value="xroad-lxd-ss1.lxd"/>
+	</Section>
+</TestData>

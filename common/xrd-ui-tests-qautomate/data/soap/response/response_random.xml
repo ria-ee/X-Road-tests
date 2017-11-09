@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SOAP-ENV:Envelope
+xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:id="http://x-road.eu/xsd/identifiers" 
+xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+    <SOAP-ENV:Header>
+        <xrd:client id:objectType="MEMBER">
+            <id:xRoadInstance>dev-cs</id:xRoadInstance>
+            <id:memberClass>PUB</id:memberClass>
+            <id:memberCode>ORG1</id:memberCode>
+        </xrd:client>
+        <xrd:service id:objectType="SERVICE">
+            <id:xRoadInstance>dev-cs</id:xRoadInstance>
+            <id:memberClass>PUB</id:memberClass>
+            <id:memberCode>ORG1</id:memberCode>
+            <id:subsystemCode>GUITEST</id:subsystemCode>
+            <id:serviceCode>getRandom</id:serviceCode>
+            <id:serviceVersion>v1</id:serviceVersion>
+            </xrd:service>
+        <xrd:userId>EE1234567890</xrd:userId>
+        <xrd:id>ID11234</xrd:id>
+        <xrd:protocolVersion>4.0</xrd:protocolVersion>
+        <xrd:requestHash algorithmId="http://www.w3.org/2001/04/xmlenc#sha512">Qf6KMDvUgxjdZ+RfeylACvADkfSxceCb/gIzvzffTz4Hqxo0U9jnuOZeSEfRzGt+OgQKgqBQMEdZeqiG6CfmjA==</xrd:requestHash>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <ts1:getRandomResponse xmlns:ts1="http://test.x-road.fi/producer">
+            <ts1:request/>
+            <ts1:response>
+                <ts1:data>70</ts1:data>
+            </ts1:response>
+        </ts1:getRandomResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

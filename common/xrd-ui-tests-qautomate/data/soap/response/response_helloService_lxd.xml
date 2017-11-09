@@ -1,0 +1,32 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+  <SOAP-ENV:Header>
+    <xrd:client id:objectType="SUBSYSTEM">
+      <id:xRoadInstance>FIsuomi</id:xRoadInstance>
+      <id:memberClass>GOV</id:memberClass>
+      <id:memberCode>1234567-2</id:memberCode>
+      <id:subsystemCode>SUB_TESTMEMBER_SERVICE</id:subsystemCode>
+    </xrd:client>
+    <xrd:service id:objectType="SERVICE">
+      <id:xRoadInstance>FIsuomi</id:xRoadInstance>
+      <id:memberClass>GOV</id:memberClass>
+      <id:memberCode>1234567-2</id:memberCode>
+      <id:subsystemCode>SUB_TESTMEMBER_SERVICE</id:subsystemCode>
+      <id:serviceCode>helloService</id:serviceCode>
+      <id:serviceVersion>v1</id:serviceVersion>
+    </xrd:service>
+    <xrd:userId>EE1234567890</xrd:userId>
+    <xrd:id>ID11234</xrd:id>
+    <xrd:requestHash algorithmId="http://www.w3.org/2001/04/xmlenc#sha512">O2qF8cZvqevTW8sSYrzUsURJr05PEUbjvrfx4y3IQN4C/dtFbOJ/lehD9btj0RvQqhw2xVKMQFS11JZx09q9mg==</xrd:requestHash>
+    <xrd:protocolVersion>4.0</xrd:protocolVersion>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <ts1:helloServiceResponse xmlns:ts1="http://test.x-road.fi/producer">
+      <ts1:request>
+      <ts1:name>gui_test</ts1:name>
+      </ts1:request>
+      <ts1:response>
+        <ts1:message>Hello gui_test! Greetings from adapter server!</ts1:message>
+      </ts1:response>
+    </ts1:helloServiceResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

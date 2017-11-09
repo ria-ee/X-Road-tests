@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+	<filters>
+		<filter name="id"/>
+		<filter name="css_selector"/>
+		<filter name="class_name"/>
+		<filter name="link_text"/>
+		<filter name="xpath"/>
+	</filters>
+	<xpath_type value="xpath-position"/>
+	<css_deep value="3"/>
+	<minimize_css value="True"/>
+	<project_proxy_ff value="127.0.0.1"/>
+	<project_proxy_port value="12765"/>
+	<project_proxy_type value="5"/>
+	<project_proxy_type_protocol value="socks"/>
+	<project_login value=""/>
+	<automated_methods value="False"/>
+	<canvas_modeling value="False"/>
+	<css_pattern pattern="" use="False"/>
+	<allow_non_unique_css_pattern value="False"/>
+	<pm_template template_string="" use="False"/>
+	<testability template_string="data-name" use="True"/>
+	<table_filters element_count="20" row_count="5" use="True"/>
+	<big_element_filter height="40" width="55"/>
+	<contains_in_xpath value="False"/>
+	<default_area height="0" use="False" width="0" x="0" y="0"/>
+	<no_filtered_tags>
+		<tag name="button"/>
+		<tag name="strong"/>
+		<tag name="select"/>
+	</no_filtered_tags>
+</settings>

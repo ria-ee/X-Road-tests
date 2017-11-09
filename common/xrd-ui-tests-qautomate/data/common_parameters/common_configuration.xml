@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestData>
+	<Section name="member_mgm_configuration">
+		<parameter name="member_name" value="MemberMGM"/>
+		<parameter name="member_code" value="00000000"/>
+		<parameter name="instance_identifier" value="XRD1"/>
+		<parameter name="member_class" value="GOV"/>
+		<parameter name="member_class_description" value="Goverment"/>
+		<parameter name="subsystem_code" value="MANAGEMENT"/>
+		<parameter name="member_id" value="SUBSYSTEM : XRD1 : GOV : 00000000 : MANAGEMENT"/>
+	</Section>
+	<Section name="member1_configuration">
+		<parameter name="member_name" value="Member1"/>
+		<parameter name="member_code" value="00000001"/>
+		<parameter name="instance_identifier" value="XRD1"/>
+		<parameter name="member_class" value="GOV"/>
+		<parameter name="member_class_description" value="Goverment"/>
+		<parameter name="subsystem_code" value="SUB_MEMBER1"/>
+		<parameter name="member_id" value="SUBSYSTEM : XRD1 : GOV : 00000001 : SUB_MEMBER1"/>
+	</Section>
+	<Section name="member2_configuration">
+		<parameter name="member_name" value="Member2"/>
+		<parameter name="member_code" value="00000002"/>
+		<parameter name="instance_identifier" value="XRD1"/>
+		<parameter name="member_class" value="GOV"/>
+		<parameter name="member_class_description" value="Goverment"/>
+		<parameter name="subsystem_code" value="SUB_MEMBER2"/>
+		<parameter name="member_id" value="SUBSYSTEM : XRD1 : GOV : 00000002 : SUB_MEMBER2"/>
+	</Section>
+</TestData>

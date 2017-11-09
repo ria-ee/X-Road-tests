@@ -1,0 +1,69 @@
+<browser_settings>
+    <default>
+        <browser name="Chrome">
+            <add_extension if_case="enable_live_monitoring">GlobalUtils._CHROME_CACHE_CLEANER</add_extension>
+      
+            <add_experimental_option option="prefs">{"intl.accept_languages": tue.get_country_key(get_config_value("browser_language"))}</add_experimental_option>
+            
+            <add_argument if_case="enable_precise_memory">"--enable-precise-memory-info"</add_argument>
+            <add_argument>"--start-maximized"</add_argument>
+        </browser>
+        <browser name="Firefox">
+            <set_preference if_case="use_ff_proxy" option="network.proxy.type">int(settings_parser._proxy_type)</set_preference>
+            
+            <set_preference if_case="use_ff_proxy_type_1" option="network.proxy.http">"localhost"</set_preference>
+            <set_preference if_case="use_ff_proxy_type_1" option="network.proxy.http_port">3128</set_preference>
+            <set_preference if_case="use_ff_proxy_type_1" option="network.proxy.ssl">"localhost"</set_preference>
+            <set_preference if_case="use_ff_proxy_type_1" option="network.proxy.ssl_port">3128</set_preference>
+        
+            <set_preference if_case="project_proxy_type_http" option="network.proxy.type">int(settings_parser._project_proxy_type)</set_preference>
+            <set_preference if_case="project_proxy_type_http" option="network.proxy.http">settings_parser._project_proxy_ff</set_preference>
+            <set_preference if_case="project_proxy_type_http" option="network.proxy.ssl">settings_parser._project_proxy_ff</set_preference>
+            <set_preference if_case="project_proxy_type_http" option="network.proxy.ssl_port">int(settings_parser._project_proxy_port)</set_preference>
+            <set_preference if_case="project_proxy_type_http" option="network.proxy.http_port">int(settings_parser._project_proxy_port)</set_preference>
+            
+            <set_preference if_case="project_proxy_type_socks" option="network.proxy.type">int(settings_parser._project_proxy_type)</set_preference>
+            <set_preference if_case="project_proxy_type_socks" option="network.proxy.socks">settings_parser._project_proxy_ff</set_preference>
+            <set_preference if_case="project_proxy_type_socks" option="network.proxy.socks_port">int(settings_parser._project_proxy_port)</set_preference>
+            <set_preference if_case="project_proxy_type_socks" option="network.proxy.socks_version">5</set_preference>
+            
+            <set_preference option="browser.download.folderList">2</set_preference>
+            <set_preference option="browser.download.manager.alertOnEXEOpen">False</set_preference>
+            <set_preference option="browser.helperApps.neverAsk.saveToDisk">"application/msword, application/csv, application/ris, text/csv, image/png, application/pdf, text/html, text/plain, application/zip, application/x-zip, application/x-zip-compressed, application/download, application/octet-stream, application/xml"</set_preference>
+            <set_preference option="browser.download.manager.showWhenStarting">False</set_preference>
+            <set_preference option="browser.download.manager.focusWhenStarting">False</set_preference>
+            <set_preference option="browser.download.useDownloadDir">True</set_preference>
+            <set_preference option="browser.helperApps.alwaysAsk.force">False</set_preference>
+            <set_preference option="browser.download.manager.alertOnEXEOpen">False</set_preference>
+            <set_preference option="browser.download.manager.closeWhenDone">True</set_preference>
+            <set_preference option="intl.accept_languages">tue.get_country_key(get_config_value("browser_language"))</set_preference>
+
+            <set_capabilities option="marionette">True</set_capabilities>
+        </browser>
+        <browser name="Opera">
+            <desired_capabilities option="browserName">"opera"</desired_capabilities>
+            <desired_capabilities option="version">""</desired_capabilities>
+            <desired_capabilities option="platform">"ANY"</desired_capabilities>
+            <desired_capabilities option="opera.logging.level">"WARNING"</desired_capabilities>
+        </browser>
+        <browser name="Android Chrome">
+            <desired_caps option="deviceName">"Android"</desired_caps>
+            <desired_caps option="platformName">"Android"</desired_caps>
+            <desired_caps option="browserName">"chrome"</desired_caps>
+            <desired_caps option="platformVersion">"6.0"</desired_caps>
+            <desired_caps option="app-package">"com.android.chrome"</desired_caps>
+            <desired_caps option="app-activity">".com.google.android.apps.chrome.Main"</desired_caps>
+            <desired_caps option="newCommandTimeout">9999</desired_caps>
+        </browser>
+        <browser name="Android Application">
+            <desired_caps option="deviceName">"Android"</desired_caps>
+            <desired_caps option="platformName">"Android"</desired_caps>
+            <desired_caps option="browserName">""</desired_caps>
+            <desired_caps option="platformVersion">"6.0"</desired_caps>
+            <desired_caps option="app">PATH('..') + "/resources/WebTestToolApp.apk"</desired_caps>
+            <desired_caps option="app-package">"com.ixonos.ixowebp"</desired_caps>
+            <desired_caps option="app-activity">".WebTestToolApp"</desired_caps>
+            <desired_caps option="newCommandTimeout">9999</desired_caps>
+        </browser>
+    </default>
+</browser_settings>

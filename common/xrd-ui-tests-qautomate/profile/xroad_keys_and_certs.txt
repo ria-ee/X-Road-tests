@@ -1,0 +1,4 @@
+Xroad_keys_and_certs.test_generate_and_delete_cert_1=1
+Xroad_keys_and_certs.test_generate_cert_request_2=1
+Xroad_keys_and_certs.test_generate_cert_request_and_import_3=1
+Xroad_keys_and_certs.test_generate_cert_request_and_import_auth_4=1

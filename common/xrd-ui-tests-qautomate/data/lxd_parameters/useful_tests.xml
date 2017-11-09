@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestData>
+	<Section name="central_server_url">
+		<parameter name="url" pagemodel="open_application" value="https://xroad-lxd-cs.lxd:4000"/>
+		<parameter name="j_username" value="xrd"/>
+		<parameter name="j_password" value="secret"/>
+	</Section>
+	<Section name="security_server_url_ss0">
+		<parameter name="url" pagemodel="open_application" validation="" value="https://xroad-lxd-ss0.lxd:4000" verify=""/>
+		<parameter name="j_username" value="xrd"/>
+		<parameter name="j_password" value="secret"/>
+	</Section>
+	<Section name="security_server_url_ss1">
+		<parameter name="url" pagemodel="open_application" validation="" value="https://xroad-lxd-ss1.lxd:4000" verify=""/>
+		<parameter name="j_username" value="xrd"/>
+		<parameter name="j_password" value="secret"/>
+	</Section>
+	<Section name="security_server_url_ss2">
+		<parameter name="url" pagemodel="open_application" validation="" value="https://xroad-lxd-ss2.lxd:4000" verify=""/>
+		<parameter name="j_username" value="xrd"/>
+		<parameter name="j_password" value="secret"/>
+	</Section>
+</TestData>
