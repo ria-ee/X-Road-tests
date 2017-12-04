@@ -2,7 +2,7 @@
 import unittest
 from main.maincontroller import MainController
 import time
-from tests.xroad_client_registration_in_ss_221 import client_registration_in_ss_2_2_1
+from tests.xroad_client_registration_in_ss_221 import client_registration_in_ss
 from helpers import xroad, ssh_client
 import del_management
 
@@ -12,7 +12,7 @@ UC SS_42: Unregister an Authentication Certificate on Key Deletion
 RIA URL: https://jira.ria.ee/browse/XTKB-122
 Depends on finishing other test(s):
 Requires helper scenarios:
-X-Road version: 6.16
+X-Road version: 6.16.0
 """
 
 
@@ -86,7 +86,7 @@ class XroadDeleteUnregisteredAuthCert(unittest.TestCase):
             registration_in_progress_row = del_management.activate_cert(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=True)
             del_management.test_add_cert_to_ss(main, cs_host, cs_username, cs_password, client, cert_path,
                                      cs_ssh_host, cs_ssh_user, cs_ssh_pass)
-            client_registration_in_ss_2_2_1.approve_requests(main)
+            client_registration_in_ss.approve_requests(main)
             time.sleep(120)
 
             main.reload_webdriver(url=ss2_url, username=ss2_username, password=ss2_password)
@@ -115,7 +115,7 @@ class XroadDeleteUnregisteredAuthCert(unittest.TestCase):
 
             del_management.test_add_cert_to_ss(main, cs_host, cs_username, cs_password, client, cert_path,
                                      cs_ssh_host, cs_ssh_user, cs_ssh_pass)
-            client_registration_in_ss_2_2_1.approve_requests(main)
+            client_registration_in_ss.approve_requests(main)
 
             time.sleep(120)
 

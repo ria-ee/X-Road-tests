@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from selenium.webdriver.common.by import By
 from helpers import auditchecker
 from view_models import sidebar, keys_and_certificates_table, popups, log_constants
@@ -45,7 +47,7 @@ def software_token_logout(self):
     self.log('UC SS_26: 2.System logs out of the token.')
 
     '''Set "Log out from token" to logdata'''
-    self.logdata.append(log_constants.SOFTTOKEN_LOG_OUT)
+    self.logdata.append(log_constants.TOKEN_LOG_OUT)
 
     '''Click on Token row'''
     self.wait_until_visible(type=By.XPATH,
@@ -81,7 +83,7 @@ def software_token_login(self):
     key_label_input = self.wait_until_visible(type=By.NAME, element=popups.TOKEN_PIN_LABEL_AREA)
 
     '''Insert correct PIN'''
-    self.input(key_label_input, keys_and_certificates_table.SOFTTOKEN_PIN)
+    self.input(key_label_input, keys_and_certificates_table.TOKEN_PIN)
     self.wait_jquery
 
     '''Click "OK" button'''

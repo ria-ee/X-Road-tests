@@ -8,6 +8,7 @@ ERROR_MESSAGE_CLOSE_CSS = '.messages .error i'
 WARNING_MESSAGE_CSS = '#warning'
 NOTICE_MESSAGE_CSS = '.messages .notice'
 SERVICE_DISABLED_MESSAGE = 'Out of order'
+DESCRIPTION_CHANGED_SUCCESSFULLY = 'Description changed successfully'
 
 # {0} is replaced with WSDL file URL
 WSDL_ERROR_INVALID_URL = 'Failed to add WSDL: Malformed URL. WSDL URL must point to a WSDL file.'
@@ -35,7 +36,9 @@ INVALID_URL = '\'{0}\' is an invalid URL, examples of valid URL-s: \'http://www.
 INPUT_DATA_TOO_LONG = "Parameter '{0}' input exceeds 255 characters"
 MISSING_PARAMETER = "Missing parameter: {0}"
 INVALID_CERTIFICATE_PROFILE = "Certificate profile with name '{0}' does not exist."
-
+MEMBER_DELETED_FROM_GLOBAL_GROUP = 'Member \'{0}\' successfully deleted from global group \'{1}\''
+MEMBER_ADDED_TO_GLOBAL_GROUP = 'Member \'{0}\' successfully added to global group \'{1}\''
+ADD_MEMBER_TO_GLOBAL_GROUP = "Add member to global group"
 SERVICE_EDIT_INVALID_URL = INVALID_URL
 SERVICE_EDIT_INVALID_TIMEOUT = 'Timeout value must be a positive integer.'
 SERVICE_EDIT_INFINITE_TIMEOUT_WARNING = 'A timeout value of zero is interpreted as an infinite timeout.'
@@ -49,6 +52,7 @@ TSL_CERTIFICATE_INCORRECT_FILE_FORMAT = "Incorrect file format. Only PEM and DER
 CERTIFICATE_IMPORT_SUCCESSFUL = 'Certificate imported successfully'
 CA_ADD_SUCCESSFUL = 'Certification service added successfully'
 
+IMPORT_CERT_KEY_NOT_FOUND_ERROR = 'Failed to import certificate: key not found'
 AUTHCERT_DELETION_DISABLED = 'Services/authCertDeletion is disabled: Out of order'
 CERTIFICATE_NOT_VALID = 'Failed to import certificate: Certificate is not valid'
 CERTIFICATE_NOT_SIGNING_KEY = 'Failed to import certificate: Authentication certificate cannot be imported to signing keys'
@@ -59,6 +63,8 @@ WRONG_FORMAT_CERTIFICATE = 'Failed to import certificate: Incorrect file format.
 WRONG_FORMAT_OCSP_CERTIFICATE = 'Failed to upload OCSP responder certificate: Incorrect file format. Only PEM and DER files allowed.'
 CERTIFICATE_ALREADY_EXISTS = 'Failed to import certificate: Certificate already exists under key'
 CA_NOT_VALID_AS_SERVICE = 'Failed to import certificate: Cannot read member identifier from signing certificate: InternalError: Certificate is not issued by approved certification service provider.'
+INTERMEDIATE_CA_ADDED_SUCCESSFULLY = 'Intermediate CA added successfully'
+WRONG_FORMAT_INTERMEDIATE_CA_CERTIFICATE = 'Failed to upload intermediate CA certificate: Incorrect file format. Only PEM and DER files allowed.'
 WRONG_FORMAT_CA_CERTIFICATE = 'Failed to upload service CA certificate: Incorrect file format. Only PEM and DER files allowed.'
 WRONG_FORMAT_TS_CERTIFICATE = 'Failed to upload approved TSA certificate: Incorrect file format. Only PEM and DER files allowed.'
 GROUP_ALREADY_EXISTS_ERROR = 'A group with code \'{0}\' already exists'
@@ -93,8 +99,9 @@ ADD_CENTRAL_SERVICE_EXISTS_ERROR = 'Failed to save central service: \'{0}\' has 
 ADD_CENTRAL_SERVICE_PROVIDER_NOT_FOUND_ERROR = 'Failed to save central service: Provider with ID \'SUBSYSTEM:{0}/{1}/{2}/{3}\' not found'
 EDIT_CENTRAL_SERVICE_PROVIDER_NOT_FOUND_ERROR = 'Failed to update central service: Provider with ID \'SUBSYSTEM:{0}/{1}/{2}/{3}\' not found'
 
+UNREGISTER_CLIENT_SEND_REQUEST_FAIL = 'Failed to send deletion request: Service {0} is disabled: Out of order'
 GENERATE_CERTIFICATE_NOT_FOUND_ERROR = 'Failed to generate new key: /bin/sh: 1: {0}: not found'
-REGISTRATION_REQUEST_SENDING_FAILED = 'Failed to send registration request: Could not connect to any target host'
+REGISTRATION_REQUEST_SENDING_FAILED = 'Failed to send registration request: Service .* is disabled: Out of order'
 CERTIFICATE_DELETION_REQUEST_SENDING_FAILED = 'Failed to send certificate deletion request. Continue with certificate deletion anyway?'
 UNREGISTER_CERT_REQUEST_SENDING_FAILED = 'Failed to unregister certificate: Could not connect to any target host'
 SS_CONFIGURATION_BACKUP_ERROR = "Failed to back up configuration: Error making configuration backup, script exited with status code '1'"
@@ -111,6 +118,15 @@ UPLOAD_WRONG_FORMAT = 'Failed to upload new backup file: Content of uploaded fil
 UPLOAD_EXISTS = 'Backup file with name \'{0}\' already exists, do you want to overwrite it?'
 TOKEN_DETAILS_MISSING_PARAMETER = 'Missing parameter: friendly_name'
 TOKEN_PIN_INCORRECT = 'PIN incorrect'
+HARDTOKEN_PIN_INCORRECT = 'Login failed: CKR_PIN_INCORRECT'
+HARDTOKEN_PIN_INCORRECT_2TRY = 'Login failed: CKR_PIN_INCORRECT, tries left: 1'
+HARDTOKEN_PIN_INCORRECT_3TRY = 'Login failed: CKR_PIN_INCORRECT. PIN locked.'
+HARDTOKEN_PIN_INCORRECT_PIN_LOCKED = 'PIN locked'
+HARDTOKEN_PIN_INCORRECT_FORMAT = 'PIN format incorrect'
+HARDTOKEN_LOGIN_FAILED = 'Login failed: CKR_USER_PIN_NOT_INITIALIZED'
+HARDTOKEN_LOGOUT_FAILED = 'CKR_DEVICE_ERROR'
+HARDTOKEN_KEY_DELETE_FAILED = "Failed to delete key: Failed to delete private key \'{0}\' on token 'utimaco-UTIMACO CS000000-CryptoServer PKCS11 Token': iaik.pkcs.pkcs11.wrapper.PKCS11Exception: CKR_DEVICE_ERROR"
+
 
 MANAGEMENT_SERVICE_REGISTERED = 'Management service provider \'.*\' registered as security server \'.*\' client'
 MANAGEMENT_SERVICE_ADDED_COMMENT = 'Management service provider registration'
@@ -118,7 +134,15 @@ DECLINED_REQUEST_NOTICE = 'Successfully declined request with id \'{0}\''
 
 SECURITY_SERVER_CODE_ALREADY_REGISTRED = 'Failed to add new owned server request: Server with owner class \'{0}\', owner code \'{1}\' and server code \'{2}\' already exists.'
 AUTH_CERT_ALREADY_REGISTRED = "Failed to add new owned server request: Certificate is already registered, request id \'"
+RESTORE_CONFIGURATION_FAILED = 'Failed to restore configuration: Restoring configuration from file \'{0}\' failed.'
+BACKUP_CONFIGURATION_RESTORED_SUCCESSFUL = "Configuration restored successfully from file \'{0}\'."
 
+CP_CONF_DOWNLOAD_REQUEST_ERROR_1 = 'Failed to download configuration from any configuration location:'
+CP_CONF_DOWNLOAD_REQUEST_ERROR_2 = 'Error when downloading conf'
+CP_CONF_DOWNLOAD_REQUEST_ERROR_3 = 'HttpError: {0}'
+CP_DOWNLOAD_UPDATE_CONFIGURATION_ERROR = 'ERROR e.r.x.c.c.g.ConfigurationClient - Failed to download configuration from any configuration location:'
+CP_DOWNLOAD_UPDATE_CONFIGURATION_LOCATION_ERROR = 'location: http://{0}/internalconf?version=2; error: HttpError: {0}'
+CP_DOWNLOAD_SUCCESSFULL = 'Downloading configuration from http://{0}/internalconf?version=2'
 def get_error_message(self):
     '''
     Returns the first visible error message string (an element with class 'error' inside an element with class

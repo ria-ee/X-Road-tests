@@ -37,7 +37,7 @@ SUBSYSTEM_CODE_AREA_ID = 'securityserver_client_subsystem_code'
 MEMBERS_TABLE_ID = 'member_search'
 SELECT_MEMBER_BTN_XPATH = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="member_search_select"]'
 MEMBERS_SEARCH_TABLE_XPATH = '//div[@id = "member_search_wrapper"]//tbody'
-
+MEMBER_TABLE_CLICK_MEMBER = "//table[@id='members']//tr//td[text()='{0}']"
 # NEW CLIENT REGISTRATION REQUEST
 NEW_CLIENT_REGISTRATION_REQUEST_POPUP_XPATH = '//div[@aria-describedby="securityserver_client_register_dialog"]'
 SECURITYSERVER_CLIENT_REGISTER_SUBMIT_BTN_ID = 'securityserver_client_register_submit'

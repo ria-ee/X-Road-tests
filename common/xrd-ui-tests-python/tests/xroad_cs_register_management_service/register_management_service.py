@@ -10,9 +10,9 @@ class registerManagementService(unittest.TestCase):
         """
         MEMBER_57 Register the Management Service Provider as a Security Server Client
         RIA URL: https://jira.ria.ee/browse/XTKB-134
-        Depends on finishing other test(s): xroad_cs_delete_member_ss
+        Depends on finishing other test(s): MEMBER_25
         Requires helper scenarios:
-        X-Road version: 6.9.4
+        X-Road version: 6.16.0
         :return:
         """
         main = MainController(self)

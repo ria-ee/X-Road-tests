@@ -97,7 +97,7 @@ def delete_client(self, unregister=False):
 
 def test_add_client(case, client_name, client=None, client_id=None, duplicate_client=None, check_errors=False,
                     unregistered_member=None,
-                    ssh_host=None, ssh_user=None, ssh_pass=None):
+                    ssh_host=None, ssh_user=None, ssh_pass=None, client_unregistered = False):
     """
     UC MEMBER_47 main test method. Tries to add a new client to a security server and check logs if
     ssh_host is set.
@@ -111,6 +111,7 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
     :param ssh_host: str|None - if set, Central Server SSH host for checking the audit.log; if None, no log check
     :param ssh_user: str|None - CS SSH username, needed if cs_ssh_host is set
     :param ssh_pass: str|None - CS SSH password, needed if cs_ssh_host is set
+    :param client_unregistered: bool|None - if True, client will always be confirmed (skip a few tests)
     :return:
     """
     self = case
@@ -145,11 +146,12 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
              False],
             [[256 * 'A', client_data['class'], 256 * 'A'], "Parameter '{0}' input exceeds 255 characters", False],
             [['   {0}   '.format(client_data['code']), client_data['class'],
-              '   {0}   '.format(client_data['subsystem'])], None, True],
+              '   {0}   '.format(client_data['subsystem'])], None, True, True if client_unregistered else False],
         ]
 
         check_value_final = [
-            [client_data['code'], client_data['class'], client_data['subsystem']], None, False
+            [client_data['code'], client_data['class'], client_data['subsystem']], None, False,
+             True if client_unregistered else False
         ]
 
         # UC MEMBER_47 2, 3 - insert the X-Road identifier of the client and parse the user input
@@ -191,7 +193,7 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
 def test_delete_client(case, client=None, client_id=None, ssh_host=None, ssh_user=None, ssh_pass=None,
                        test_cancel=False, signature_deletion=False):
     """
-    UC_MEMBER_53 main test function. Tries to delete a security server client and checks logs if ssh_host is set.
+    UC MEMBER_53 main test function. Tries to delete a security server client and checks logs if ssh_host is set.
     :param client: dict|None - client data; this or client_id is required
     :param client_id: str|None - client data as string; this or client is required
     :param ssh_host: str|None - if set, Central Server SSH host for checking the audit.log; if None, no log check
@@ -238,9 +240,9 @@ def test_delete_client(case, client=None, client_id=None, ssh_host=None, ssh_use
             client_row = clients_table_vm.get_client_row_element(self, client=client_data)
             edit_client(self, client_row)
 
-        # Click the delete button
-        self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_DELETE_BUTTON_ID).click()
-        self.wait_jquery()
+            # Click the delete button again
+            self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_DELETE_BUTTON_ID).click()
+            self.wait_jquery()
 
         # UC MEMBER_53 3 - confirm deletion
         self.log('MEMBER_53 3 - confirm the deletion')
@@ -306,8 +308,8 @@ def test_register_client(case, client=None, client_id=None, system_exists=True, 
     self = case
 
     def t_register_client():
-        # UC MEMBER_53 1 - select to delete a security server client
-        self.log('MEMBER_48 1 - select to delete a security server client')
+        # UC MEMBER_48 1 - select to register security server client
+        self.log('MEMBER_48 1 - select to register security server client')
 
         self.logdata = []
 
@@ -498,7 +500,7 @@ def add_clients(self, check_values, instance=None, delete=False):
                                  'code': member_code.strip(),
                                  'subsystem': subsystem_code.strip()}
 
-            self.log('Find added member {0} : {1} {2}'.format(member_code, member_class, subsystem_code))
+            self.log('Find added member {0} : {1} : {2}'.format(member_code, member_class, subsystem_code))
             client_xpath = clients_table_vm.get_client_subsystem_xpath(self, added_client_data)
             client_id = self.wait_until_visible(type=By.XPATH, element=client_xpath)
             client_id_text = client_id.text

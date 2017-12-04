@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 
 from helpers import ssh_client, auditchecker, xroad
 from main.maincontroller import MainController
-from tests.xroad_client_registration_in_ss_221.client_registration_in_ss_2_2_1 import approve_requests
+from tests.xroad_client_registration_in_ss_221.client_registration_in_ss import approve_requests
 from tests.xroad_delete_csr_and_cert.XroadCertAndCSRDeletion import test_delete_csr_key_has_more_items, \
     test_delete_cert_key_has_more_items, test_delete_only_cert_from_only_key, test_delete_only_csr_from_only_key
 from tests.xroad_parse_users_inputs.xroad_parse_user_inputs import add_key_label
-from tests.xroad_ss_client_certification_213.client_certification_2_1_3 import register_cert, activate_cert, \
+from tests.xroad_ss_client_certification_213.client_certification import register_cert, activate_cert, \
     test_add_cert_to_ss, \
     test_generate_csr_and_import_cert
 from view_models import sidebar
@@ -22,8 +22,8 @@ class cert_and_csr_deletion_tests(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-100
     RIA URL: https://jira.ria.ee/browse/XTKB-126
     Depends on finishing other test(s):
-    Requires helper scenarios:
-    X-Road version: 6.16
+    Requires helper scenarios: SS_29, SS_30
+    X-Road version: 6.16.0
     """
 
     def test_cert_and_csr_deletion(self):

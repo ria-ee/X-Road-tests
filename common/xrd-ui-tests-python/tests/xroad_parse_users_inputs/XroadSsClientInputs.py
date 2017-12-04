@@ -12,7 +12,7 @@ class XroadSsClientInputs(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XT-399, https://jira.ria.ee/browse/XTKB-48
     Depends on finishing other test(s): None
     Requires helper scenarios: None
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
     def test_parse_ss_client_inputs(self):
         main = MainController(self)

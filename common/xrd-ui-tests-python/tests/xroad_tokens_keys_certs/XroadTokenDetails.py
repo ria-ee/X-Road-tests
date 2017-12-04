@@ -12,7 +12,7 @@ class XroadTokenDetails(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XT-333, https://jira.ria.ee/browse/XTKB-111
     Depends on finishing other test(s): None
     Requires helper scenarios: None
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
     def test_view_token_details_SS_20(self):
         main = MainController(self)

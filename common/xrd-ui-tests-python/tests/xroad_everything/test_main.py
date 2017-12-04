@@ -167,7 +167,7 @@ class TestAll(unittest.TestCase):
 
     # Test 2.9.1 Testing database in central
     def test_12_xroad_changing_database_rows_with_gui_in_central_server(self):
-        from tests.xroad_changing_database_rows_with_cs_gui_291.test_main import \
+        from tests.xroad_changing_database_rows_with_cs_gui_291.XroadChangingDatabaseRowsWithGUICentralServer import \
             XroadChangingDatabaseRowsWithGUICentralServer
         print('\n test_l2_xroad_changing_database_rows_with_gui_in_central_server STARTED\n')
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadChangingDatabaseRowsWithGUICentralServer)
@@ -182,7 +182,7 @@ class TestAll(unittest.TestCase):
 
     # Test 2.10.1 Testing database in security server
     def test_13_xroad_changing_database_rows_with_gui_in_security_server(self):
-        from tests.xroad_changing_database_rows_with_ss_gui_2101.test_main import \
+        from tests.xroad_changing_database_rows_with_ss_gui_2101.XroadChangingDatabaseRowsWithGUISecurityServer import \
             XroadChangingDatabaseRowsWithGUISecurityServer
         print('\n test_13_xroad_changing_database_rows_with_gui_in_security_server STARTED\n')
         suite = unittest.TestLoader().loadTestsFromTestCase(XroadChangingDatabaseRowsWithGUISecurityServer)

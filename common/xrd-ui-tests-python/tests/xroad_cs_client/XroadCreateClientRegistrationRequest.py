@@ -2,12 +2,17 @@ import unittest
 from main.maincontroller import MainController
 import cs_client_management
 from helpers import xroad
+from tests.xroad_ss_client import ss_client_management
 
 
 class XroadCreateClientRegistrationRequest(unittest.TestCase):
-    '''
+    """
     UC MEMBER_15 Create a Security Server Client Registration Request
-    '''
+    RIA URL: https://jira.ria.ee/browse/XT-367, https://jira.ria.ee/browse/XTKB-40
+    Depends on finishing other test(s):
+    Requires helper scenarios:
+    X-Road version: 6.16.0
+    """
 
     def test_xroad_register_client(self):
         main = MainController(self)
@@ -39,7 +44,7 @@ class XroadCreateClientRegistrationRequest(unittest.TestCase):
                                                                                 ssh_host=cs_ssh_host,
                                                                                 ssh_user=cs_ssh_user, ssh_pass=cs_ssh_pass)
 
-        test_delete_client = cs_client_management.test_delete_client(case=main, client_id=client_id, ssh_host=cs_ssh_host,
+        test_delete_client = ss_client_management.test_delete_client(case=main, client_id=client_id, ssh_host=cs_ssh_host,
                                                      ssh_user=cs_ssh_user, ssh_pass=cs_ssh_pass)
 
         try:

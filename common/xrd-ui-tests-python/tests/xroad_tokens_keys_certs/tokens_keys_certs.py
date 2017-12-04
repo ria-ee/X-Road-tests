@@ -222,6 +222,7 @@ def test_view_token_details():
 
         for token in tokens:
             '''SS_20 step 1. SS administrator selects to view the details of a token.'''
+
             self.log('''SS_20 step 1. SS administrator selects to view the details of a token.''')
             self.double_click(token)
             self.wait_jquery()
@@ -252,7 +253,7 @@ def test_view_token_details():
             assert token_type is 'Software' or 'Hardware'
             self.log('''SS_20 step 2.3. System displays the technical token status information - {0}'''.
                      format(token_type))
-
+            self.wait_jquery()
             '''Close token details by clicking on 'Cancel' button'''
             self.log('''Close token details by clicking on 'Cancel' button''')
             self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_DETAILS_POPUP_POPUP_CANCEL_BTN_XPATH)

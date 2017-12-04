@@ -3,25 +3,44 @@ from __future__ import absolute_import
 import unittest
 
 from main.maincontroller import MainController
-from tests.xroad_logging_in_cs_2111 import logging_in_cs_2_11_1
+from tests.xroad_logging_in_cs_2111 import logging_in_cs
 
 
 class XroadLoggingInCentralServer(unittest.TestCase):
     """
-    MEMBER_10 1-2, 4-7, 4a
-    MEMBER_11 1-2, 4-5
-    RIA URL: https://jira.ria.ee/browse/XTKB-38
-    RIA URL: https://jira.ria.ee/browse/XTKB-39
-    Depends on finishing other test(s): client_registration
+    Test logging in central server.
+    CS_01 Log In to the Graphical User Interface
+    CS_02 Log Out of the Graphical User Interface
+    MEMBER_10 1-2, 4-7, 4a Add an X-Road Member
+    MEMBER_11 Edit the Name of an X-Road Member
+    MEMBER_15 1, 5-8, 10 Create a Security Server Client Registration Request
+    MEMBER_39 1-5, 7 Revoke a Registration Request
+    MEMBER_26 1-8 Delete an X-Road Member
+    MEMBER_56 Add a Subsystem to an X-Road Member
+    SERVICE_32 1-6, 4a Add a Global Group
+    SERVICE_33 1-2, 3 (partial), 4 Add Members to a Global Group
+    SERVICE_39 1-3 Delete a Global Group
+    RIA URL: https://jira.ria.ee/browse/XT-302
+    RIA URL: https://jira.ria.ee/browse/XT-303
+    RIA URL: https://jira.ria.ee/browse/XT-362, https://jira.ria.ee/browse/XTKB-38
+    RIA URL: https://jira.ria.ee/browse/XT-363, https://jira.ria.ee/browse/XTKB-39
+    RIA URL: https://jira.ria.ee/browse/XT-367
+    RIA URL: https://jira.ria.ee/browse/XT-391
+    RIA URL: https://jira.ria.ee/browse/XT-378, https://jira.ria.ee/browse/XTKB-41
+    RIA URL:
+    RIA URL: https://jira.ria.ee/browse/XT-289
+    RIA URL: https://jira.ria.ee/browse/XT-290
+    RIA URL: https://jira.ria.ee/browse/XT-296
+    Depends on finishing other test(s):
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_loggin_in_central_server_2_11_1(self):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = '2.11.1'
+        main.test_number = 'MEMBER_10/MEMBER_11/MEMBER_15/MEMBER_39/MEMBER_26'
         main.test_name = self.__class__.__name__
 
         main.url = main.config.get('cs.host')
@@ -50,14 +69,13 @@ class XroadLoggingInCentralServer(unittest.TestCase):
                            'group': server_groups}
                  }
 
-        main.log('TEST: LOGGING TEST IN CENTRAL SERVER')
-        test_func = logging_in_cs_2_11_1.test_test(main.config.get('cs.ssh_host'),
-                                                   main.config.get('cs.ssh_user'),
-                                                   main.config.get('cs.ssh_pass'),
-                                                   group=group, server_id=server_id, client_id=client_id,
-                                                   client_name=client_name, client_name2=client_name2, users=users,
-                                                   existing_client_id=existing_client_id,
-                                                   existing_client_name=existing_client_name)
+        test_func = logging_in_cs.test_test(main.config.get('cs.ssh_host'),
+                                            main.config.get('cs.ssh_user'),
+                                            main.config.get('cs.ssh_pass'),
+                                            group=group, server_id=server_id, client_id=client_id,
+                                            client_name=client_name, client_name2=client_name2, users=users,
+                                            existing_client_id=existing_client_id,
+                                            existing_client_name=existing_client_name)
         test_func(main)
         main.tearDown()
 

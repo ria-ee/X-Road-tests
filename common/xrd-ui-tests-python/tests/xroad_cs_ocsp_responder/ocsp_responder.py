@@ -1,12 +1,16 @@
 # coding=utf-8
-
-from view_models import popups, messages, sidebar, certification_services, log_constants
-from selenium.webdriver.common.by import By
 import time
-from helpers import xroad, ssh_client, auditchecker
-from tests.xroad_ss_client_certification_213 import client_certification_2_1_3 as client_certification
-from tests.xroad_cs_ca import ca_management
 from collections import Counter
+
+from selenium.webdriver.common.by import By
+
+from helpers import xroad, ssh_client, auditchecker
+from tests.xroad_cs_ca import ca_management
+from tests.xroad_cs_ca.ca_management import edit_ca_settings
+from tests.xroad_ss_client_certification_213 import client_certification as client_certification
+from view_models import popups, messages, sidebar, certification_services, log_constants
+from view_models.certification_services import OCSP_RESPONSE_TAB, get_ocsp_by_td_text
+from view_models.sidebar import CERTIFICATION_SERVICES_CSS
 
 
 def open_ocsp_responders(self):
@@ -519,3 +523,19 @@ def check_inputs(self, input_element, final_value, save_btn, label_name='label',
 
     self.wait_jquery()
     return success_count, error_count, input_text_stripped
+
+
+def test_view_ocsp_responder(self, ca_name, ocsp_url):
+    def view_ocsp_responder():
+        self.log('Open certification services view')
+        self.wait_until_visible(type=By.CSS_SELECTOR, element=CERTIFICATION_SERVICES_CSS).click()
+        self.wait_jquery()
+        self.log('Open CA settings')
+        edit_ca_settings(self, ca_name)
+        self.log('TRUST_05 1. Open OCSP Responders tab')
+        self.wait_until_visible(type=By.XPATH, element=OCSP_RESPONSE_TAB).click()
+        self.wait_jquery()
+        self.log('TRUST_05 2. System displays the URL({}) of the OCSP server'.format(ocsp_url))
+        self.is_not_none(get_ocsp_by_td_text(ocsp_url))
+
+    return view_ocsp_responder

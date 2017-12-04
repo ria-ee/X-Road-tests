@@ -12,7 +12,7 @@ class XroadEditAddressServiceInputs(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XT-276, https://jira.ria.ee/browse/XTKB-55
     Depends on finishing other test(s): None
     Requires helper scenarios: None
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
     def test_parse_edit_address_service(self):
         main = MainController(self)

@@ -1,10 +1,32 @@
-import datetime
 import json
 import re
+
+import time
+
+import datetime
 
 import ssh_client
 from view_models import keys_and_certificates_table
 
+def exec_commands(self, sshclient, commands, timeout=1):
+    channel = sshclient.invoke_shell()
+    time.sleep(1)
+    channel.recv(9999)
+    output = None
+    for command in commands:
+        self.log('Sending "{}" to stdin'.format(command))
+        channel.send(command + "\n")
+        while not channel.recv_ready():  # Wait for the server to read and respond
+            time.sleep(0.1)
+        time.sleep(timeout)
+        output = channel.recv(9999) # read in
+        time.sleep(0.1)
+    channel.close()
+    return output
+
+def exec_as_xroad(sshclient, command):
+    stdout, stderr = sshclient.exec_command('sudo -Hu {0} {1}'.format('xroad', command), sudo=True)
+    return stdout, stderr
 
 def refresh_ocsp(sshclient):
     sshclient.exec_command(command='rm /var/cache/xroad/*ocsp', sudo=True)

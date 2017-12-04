@@ -7,11 +7,11 @@ from tests.xroad_cs_view_management_service.XroadViewManagementService import vi
 
 class xroad_view_management_service(unittest.TestCase):
     """
-        MEMBER_32 View the Configuration for Management Services
-        RIA URL: https://jira.ria.ee/browse/XTKB-136
-        Depends on finishing other test(s):
-        Requires helper scenarios:
-        X-Road version: 6.9.4
+    MEMBER_32 View the Configuration for Management Services
+    RIA URL: https://jira.ria.ee/browse/XT-384, https://jira.ria.ee/browse/XTKB-136
+    Depends on finishing other test(s): MEMBER_57
+    Requires helper scenarios:
+    X-Road version: 6.16.0
     """
     def test_view_management_service(self):
         main = MainController(self)

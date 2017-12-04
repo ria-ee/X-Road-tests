@@ -1,8 +1,34 @@
 CERTIFICATION_SERVICES_TABLE_ID = 'cas'
+INTERMEDIATE_CA_TAB_XPATH = '//a[@href="#intermediate_cas_tab"]'
+INTERMEDIATE_CA_ADD_BTN_ID = 'intermediate_ca_add'
+INTERMEDIATE_CA_CERT_UPLOAD_INPUT_ID = 'ca_cert_file'
+INTERMEDIATE_CA_OCSP_TAB_XPATH = '//a[@href="#intermediate_ca_ocsp_responders_tab"]'
+INTERMEDIATE_CA_OCSP_ADD_BTN_ID = 'intermediate_ca_ocsp_responder_add'
+INTERMEDIATE_CA_BY_NAME_XPATH = '//table[@id="intermediate_cas"]//td[text()="{}"]'
+INTERMEDIATE_CA_TR_BY_NAME_XPATH = '//table[@id="intermediate_cas"]//td[text()="{}"]/..'
+INTERMEDIATE_CA_DELETE_BTN_ID = 'intermediate_ca_delete'
+INTERMEDIATE_CA_TRS_CSS = '#intermediate_cas tbody tr'
+INTERMEDIATE_CA_EDIT_BTN_ID = 'intermediate_ca_edit'
+INTERMEDIATE_CA_SUBJECT_DN_ID = 'intermediate_ca_cert_subject_dn'
+INTERMEDIATE_CA_ISSUER_DN_ID = 'intermediate_ca_cert_issuer_dn'
+INTERMEDIATE_CA_VALID_FROM_ID = 'intermediate_ca_cert_valid_from'
+INTERMEDIATE_CA_VALID_TO_ID = 'intermediate_ca_cert_valid_to'
 
 DELETE_BTN_ID = 'ca_delete'
 ADD_BTN_ID = 'ca_add'
 DETAILS_BTN_ID = 'ca_details'
+DATE_REGEX = '(\d{4}[-]?\d{1,2}[-]?\d{1,2})'
+TIME_REGEX = '(\d{1,2}:\d{1,2}:\d{1,2})'
+DATE_TIME_REGEX = '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+
+CA_DETAILS_SUBJECT_DISTINGUISHED = 'top_ca_cert_subject_dn'
+CA_DETAILS_ISSUER_DISTINGUISHED = 'top_ca_cert_issuer_dn'
+CA_DETAILS_VALID_FROM = 'top_ca_cert_valid_from'
+CA_DETAILS_VALID_TO = 'top_ca_cert_valid_to'
+CA_DISTINGUISHED_NAME = '/C=EE/O=ASA/CN=ca.asa'
+CA_DETAILS_VIEW_CERT = 'top_ca_cert_view'
+CA_DETAILS_VIEW_CERT_SHA1 = 'cert_details_hash'
+CA_DETAILS_VIEW_CERT_DUMP = 'cert_details_dump'
 
 # Timestamp buttons
 TSDELETE_BTN_ID = 'tsp_delete'
@@ -21,6 +47,7 @@ ADD_CA_AUTH_ONLY_CHECKBOX_XPATH = '//div[@id="ca_settings_dialog"]//input[@name=
 EDIT_CA_AUTH_ONLY_CHECKBOX_XPATH = '//div[@id="ca_settings_tab"]//input[@name="authentication_only"]'
 CA_SETTINGS_TAB_XPATH = '//li[@aria-controls="ca_settings_tab"]'
 
+
 SUBMIT_CA_CERT_BTN_ID = 'ca_cert_submit'
 
 # Timestamp view certificate
@@ -36,6 +63,10 @@ OCSP_RESPONSE_TAB = '//li[@aria-controls="ocsp_responders_tab"]'
 OCSP_RESPONDER_ADD_BTN_ID = 'ocsp_responder_add'
 OCSP_RESPONDER_EDIT_BTN_ID = 'ocsp_responder_edit'
 OCSP_RESPONDER_DELETE_BTN_ID = 'ocsp_responder_delete'
+
+
+INTERMEDIATE_CA_TAB = '//li[@aria-controls="intermediate_cas_tab"]'
+
 
 IMPORT_OCSP_CERT_BTN_ID = 'ocsp_responder_cert_button'
 OCSP_RESPONDER_URL_AREA_ID = 'ocsp_responder_url'

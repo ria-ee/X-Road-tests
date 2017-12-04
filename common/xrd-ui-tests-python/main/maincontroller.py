@@ -67,7 +67,7 @@ class MainController(AssertHelper):
     empty_download_directory = True
     create_directories = True
 
-    test_number = ''  # Test number (eg 2.2.1)
+    test_number = ''  # Test number (eg CS_01)
     test_name = ''  # Test name (eg "System test")
 
     def __init__(self, case):

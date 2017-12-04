@@ -366,7 +366,7 @@ class SoapTestClient:
 
         # Default faults are the faults set as "success" faults
         if faults is None:
-            faults = self.faults_successful
+            faults = self.faults_unsuccessful
         return self.check_query_loop(url=url, body=body, params=params, query_timeout=query_timeout, faults=faults,
                                      fail_timeout=fail_timeout, retry_interval=retry_interval,
                                      verify_service=verify_service,

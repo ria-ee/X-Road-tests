@@ -4,17 +4,16 @@ import unittest
 
 from helpers import xroad
 from main.maincontroller import MainController
-from tests.xroad_ss_client_certification_213 import client_certification_2_1_3
+from tests.xroad_ss_client_certification_213 import client_certification
 
 
 class XroadSecurityServerClientRegistrationFailures(unittest.TestCase):
     """
-    SS_30 extensions(4a, 6a, 7a, 8a, 9a, 9b, 10a, 11a)
-    RIA URL: https://jira.ria.ee/browse/XTKB-102
-    RIA URL: https://jira.ria.ee/browse/XTKB-115
-    Depends on finishing other test(s): client_registration
+    SS_30 extensions (4a, 6a, 7a, 8a, 9a, 9b, 10a, 11a)
+    RIA URL: https://jira.ria.ee/browse/XT-343, https://jira.ria.ee/browse/XTKB-102, https://jira.ria.ee/browse/XTKB-115
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_registration_failures_213(self):
@@ -35,10 +34,10 @@ class XroadSecurityServerClientRegistrationFailures(unittest.TestCase):
         ss2_ssh_pass = main.config.get('ss2.ssh_pass')
 
         main.reset_webdriver(main.url, main.username, main.password)
-        fail_test_func = client_certification_2_1_3.failing_tests(client_name, member_class, member_code,
-                                                                  member_instance, ca_name=ca_name,
-                                                                  ss2_ssh_host=ss2_ssh_host, ss2_ssh_user=ss2_ssh_user,
-                                                                  ss2_ssh_pass=ss2_ssh_pass)
+        fail_test_func = client_certification.failing_tests(client_name, member_class, member_code,
+                                                            member_instance, ca_name=ca_name,
+                                                            ss2_ssh_host=ss2_ssh_host, ss2_ssh_user=ss2_ssh_user,
+                                                            ss2_ssh_pass=ss2_ssh_pass)
 
         fail_test_func(main)
         main.tearDown()

@@ -9,7 +9,7 @@ class XroadUploadBackupFile(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-105
     Depends on finishing other test(s):
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     '''
 
     def test_xroad_verify_ts(self):

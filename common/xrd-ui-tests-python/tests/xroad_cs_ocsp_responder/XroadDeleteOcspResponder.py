@@ -4,6 +4,13 @@ import ocsp_responder
 
 
 class XroadDeleteOcspResponder(unittest.TestCase):
+    """
+    TRUST_11 Delete an OCSP Responder of a CA
+    RIA URL: https://jira.ria.ee/browse/XT-437, https://jira.ria.ee/browse/XTKB-67
+    Depends on finishing other test(s): XroadAddOcspResponder
+    Requires helper scenarios:
+    X-Road version: 6.16.0
+    """
     '''
     UC TRUST_11 Delete an OCSP Responder of a CA
     '''

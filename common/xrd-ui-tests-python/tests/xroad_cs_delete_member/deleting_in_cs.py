@@ -4,13 +4,13 @@ import time
 from selenium.webdriver.common.by import By
 
 from helpers import ssh_server_actions, xroad, auditchecker
-from tests.xroad_client_registration_in_ss_221 import client_registration_in_ss_2_2_1
-from tests.xroad_client_registration_in_ss_221.client_registration_in_ss_2_2_1 import add_client_to_ss, \
+from tests.xroad_client_registration_in_ss_221 import client_registration_in_ss
+from tests.xroad_client_registration_in_ss_221.client_registration_in_ss import add_client_to_ss, \
     login_with_logout, add_sub_as_client_to_member, approve_requests, login
 from tests.xroad_global_groups_tests import global_groups_tests
-from tests.xroad_logging_in_cs_2111.logging_in_cs_2_11_1 import add_member_to_cs, add_group, \
+from tests.xroad_logging_in_cs_2111.logging_in_cs import add_member_to_cs, add_group, \
     add_client_to_group, delete_client
-from tests.xroad_ss_client_certification_213 import client_certification_2_1_3
+from tests.xroad_ss_client_certification_213 import client_certification
 from view_models import popups, sidebar, groups_table, cs_security_servers, members_table, keys_and_certificates_table, \
     messages, log_constants
 from view_models.cs_security_servers import SECURITY_SERVER_TABLE_CSS
@@ -32,19 +32,28 @@ def test_deleting_member_with_global_group(cs_ssh_host, cs_ssh_username, cs_ssh_
 
     def deleting_member_with_global_group(self):
         ssh_client = ssh_server_actions.get_client(cs_ssh_host, cs_ssh_username, cs_ssh_password)
-        self.log('Adding new member to central server')
+
+        # MEMBER_10 Add new X-Road Member
+        self.log('MEMBER_10 Add new X-Road Member')
         add_member_to_cs(self, ssh_client, user, member=client)
         popups.close_all_open_dialogs(self)
-        self.log('Adding new global group to central server')
+
+        # SERVICE_32 add new group
+        self.log('SERVICE_32 add new group')
         add_group(self, ssh_client, user, group=test_group)
-        self.log('Adding added member to added group')
+
+        # SERVICE_33 add the new subsystem to the new group
+        self.log('SERVICE_33 add the new subsystem to the new group')
         add_client_to_group(self, ssh_client, user, member=client, group=test_group)
-        self.log('MEMBER_36 6.a Delete member in global group from central server')
+
+        self.log('MEMBER_26 6.a Delete member in global group from central server')
         delete_client(self, ssh_client, user, member=client)
         self.wait_jquery()
+
         self.log('MEMBER_36 6.a1 System removes the member from global groups')
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.GLOBAL_GROUPS_CSS).click()
         self.wait_jquery()
+
         member_count_after_deletion = self.wait_until_visible(type=By.XPATH,
                                                               element=groups_table.get_global_group_member_count_by_code(
                                                                   test_group)).text
@@ -75,8 +84,11 @@ def test_deleting_member_with_subsystem_registered_as_client_to_ss(case, cs_memb
     def deleting_member_with_subsystem_registered_as_client_to_ss():
         self.log('MEMBER_26 5a The member\'s subsystems are clients of security servers')
         ssh_client = ssh_server_actions.get_client(cs_ssh_host, cs_ssh_username, cs_ssh_password)
-        self.log('Deleting member from central server')
+
+        # MEMBER_26 Delete the member from central server
+        self.log('MEMBER_26 Delete the member from central server')
         delete_client(self, ssh_client, user, member=cs_member)
+
         self.log('Open management requests')
         self.by_css(sidebar.MANAGEMENT_REQUESTS_CSS).click()
         requests_table = self.wait_until_visible(type=By.ID, element=members_table.MANAGEMENT_REQUEST_TABLE_ID)
@@ -123,9 +135,9 @@ def remove_client_and_key_from_ss(case, ss1_host, ss1_username, ss1_password, ss
         '''Open securtiy server homepage'''
         self.reload_webdriver(url=ss1_host, username=ss1_username, password=ss1_password)
         '''Remove added client'''
-        client_registration_in_ss_2_2_1.remove_client(self, client=ss_1_client, delete_cert=True)
+        client_registration_in_ss.remove_client(self, client=ss_1_client, delete_cert=True)
         '''Remove added client certificate'''
-        client_registration_in_ss_2_2_1.remove_certificate(self, client=ss_1_client)
+        client_registration_in_ss.remove_certificate(self, client=ss_1_client)
 
     return remove_client_and_key
 
@@ -147,6 +159,7 @@ def test_deleting_member_with_security_server(self, cs_ssh_host, cs_ssh_user, cs
         self.log('MEMBER_26 4a. Delete member from central server, which has owned security server')
         ssh_client = ssh_server_actions.get_client(cs_ssh_host, cs_ssh_user, cs_ssh_pass)
         delete_client(self, ssh_client, user, member=client)
+
         self.log('MEMBER_26 4a.1 System deletes the security server')
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.SECURITY_SERVERS_CSS).click()
         try:
@@ -271,7 +284,7 @@ def test_add_security_server_to_member(case, cs_host, cs_username, cs_password, 
             self.is_equal(expected_notice_msg, notice_msg)
             self.log('Revoke added security server request')
             self.reload_webdriver(cs_host, cs_username, cs_password)
-            client_registration_in_ss_2_2_1.revoke_requests(self, auth=True)
+            client_registration_in_ss.revoke_requests(self, auth=True)
             self.log('Add server to member without input parsing check')
             test_add_security_server_to_member(self, cs_host, cs_username, cs_password, cs_ssh_host, cs_ssh_user,
                                                cs_ssh_pass, client, cert_path)()
@@ -291,7 +304,7 @@ def test_add_security_server_to_member(case, cs_host, cs_username, cs_password, 
             '''Expected log message'''
             expected_log_msg = log_constants.ADD_SECURITY_SERVER_FAILED
             self.log('MEMBER_12 8a.1. System logs the event {0}'.format(expected_log_msg))
-            self.log('MEMBER_12 8a.2. System logs the event “Add security server failed” to the audit log')
+            self.log('MEMBER_12 8a.2. System logs the event "Add security server failed" to the audit log')
 
             logs_found = log_checker.check_log(expected_log_msg, from_line=current_log_lines)
             self.is_true(logs_found)
@@ -316,7 +329,7 @@ def test_add_security_server_to_member(case, cs_host, cs_username, cs_password, 
             '''Expected log message'''
             expected_log_msg = log_constants.ADD_SECURITY_SERVER_FAILED
             self.log('MEMBER_12 9a.1. System logs the event {0}'.format(expected_log_msg))
-            self.log('MEMBER_12 9a.2. System logs the event “Add security server failed” to the audit log')
+            self.log('MEMBER_12 9a.2. System logs the event "Add security server failed" to the audit log')
 
             logs_found = log_checker.check_log(expected_log_msg, from_line=current_log_lines)
             self.is_true(logs_found)
@@ -384,8 +397,11 @@ def add_central_server_member_delete_global_error_cert(case, cs_ssh_host, cs_ssh
         ssh_client = ssh_server_actions.get_client(cs_ssh_host, cs_ssh_user, cs_ssh_pass)
         self.log('Open members page')
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.MEMBERS_CSS).click()
-        self.log('Add  member to central server')
+
+        #MEMBER_10 Add new X-Road Member
+        self.log('MEMBER_10 Add new X-Road Member')
         add_member_to_cs(self, ssh_client, user, member=client)
+
         self.log('Wait until servers have synchronized')
         time.sleep(sync_timeout)
         self.log('Open security server, which was deleted from central server')
@@ -437,7 +453,7 @@ def setup_member_with_subsystem_as_ss_client(case, cs_host, cs_username, cs_pass
         self.log('Login to central server')
         login(self, host=cs_host, username=cs_username, password=cs_password)
         self.log('Adding new member to central server')
-        client_registration_in_ss_2_2_1.add_member_to_cs(self, cs_member)
+        client_registration_in_ss.add_member_to_cs(self, cs_member)
         self.log('Login to security server')
         login(self, host=ss1_host, username=ss1_username, password=ss1_password)
         self.log('Wait until data is synced between servers')
@@ -448,8 +464,8 @@ def setup_member_with_subsystem_as_ss_client(case, cs_host, cs_username, cs_pass
         self.log('Navigate to security server homepage')
         self.driver.get(ss1_host)
         self.log('Certificate added client')
-        client_certification_2_1_3.test_generate_csr_and_import_cert(client_code=ss_1_client['code'],
-                                                                     client_class=ss_1_client['class'])(self)
+        client_certification.test_generate_csr_and_import_cert(client_code=ss_1_client['code'],
+                                                               client_class=ss_1_client['class'])(self)
         self.log('Log out and log in to central server')
         login_with_logout(self, cs_host, cs_username, cs_password)
         self.log('Add subsystem to client')

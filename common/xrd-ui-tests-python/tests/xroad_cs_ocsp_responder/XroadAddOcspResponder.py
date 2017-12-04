@@ -4,9 +4,13 @@ import ocsp_responder
 
 
 class XroadAddOcspResponder(unittest.TestCase):
-    '''
-    UC TRUST_10 Add/Edit OCSP Responder of a CA
-    '''
+    """
+    TRUST_10 Add or Edit an OCSP Responder of a CA
+    RIA URL: https://jira.ria.ee/browse/XT-436, https://jira.ria.ee/browse/XTKB-20
+    Depends on finishing other test(s):
+    Requires helper scenarios:
+    X-Road version: 6.16.0
+    """
 
     def test_xroad_add_ocsp_responder(self):
         main = MainController(self)

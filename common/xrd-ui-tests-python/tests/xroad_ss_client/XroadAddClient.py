@@ -6,7 +6,11 @@ from helpers import xroad
 
 class XroadAddClient(unittest.TestCase):
     '''
-    UC MEMBER_47 Add a Client to the Security Server
+    UC MEMBER_47 Add a Client
+    RIA URL: https://jira.ria.ee/browse/XT-399, https://jira.ria.ee/browse/XTKB-40
+    Depends on finishing other test(s):
+    Requires helper scenarios:
+    X-Road version: 6.16.0
     '''
 
     def test_xroad_register_client(self):
@@ -40,7 +44,8 @@ class XroadAddClient(unittest.TestCase):
                                                                unregistered_member=unregistered_member,
                                                                ssh_host=ss_ssh_host,
                                                                ssh_user=ss_ssh_user, ssh_pass=ss_ssh_pass,
-                                                               check_errors=True)
+                                                               check_errors=True
+                                                               )
 
         test_delete_client = ss_client_management.test_delete_client(case=main, client_id=client_id)
 

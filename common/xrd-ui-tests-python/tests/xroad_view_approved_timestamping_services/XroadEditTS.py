@@ -10,7 +10,7 @@ class XroadEditTS(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-79
     Depends on finishing other test(s):
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
     def test_xroad_edit_ts(self):
         main = MainController(self)

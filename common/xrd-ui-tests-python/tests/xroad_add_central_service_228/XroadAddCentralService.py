@@ -1,30 +1,31 @@
 # coding=utf-8
 import unittest
 
-import add_central_service_2_2_8
+import add_central_service
 from helpers import xroad
 from main.maincontroller import MainController
-from tests.xroad_add_to_acl_218 import add_to_acl_2_1_8
-from tests.xroad_configure_service_222 import configure_service_2_2_2
+from tests.xroad_add_to_acl_218 import add_to_acl
+from tests.xroad_configure_service_222 import configure_service
 
 
 class XroadAddCentralService(unittest.TestCase):
     """
-    SERVICE_41 7, 4a, 5a Add central service
-    SERVICE_42 6 Edit central service
-    SERVICE_43 5 Delete central service
-    RIA URL: https://jira.ria.ee/browse/XTKB-30
-    RIA URL: https://jira.ria.ee/browse/XTKB-76
-    Depends on finishing other test(s): configure service
-    Requires helper scenarios:
-    X-Road version: 6.16
+    SERVICE_41 1-2, 3-7, 4a, 5a Add a Central Service
+    SERVICE_42 1-2, 4-6, 3a, 4a Edit the Implementing Service of a Central Service
+    SERVICE_43 Delete a Central Service
+    RIA URL: https://jira.ria.ee/browse/XT-298, https://jira.ria.ee/browse/XTKB-29, https://jira.ria.ee/browse/XTKB-76
+    RIA URL: https://jira.ria.ee/browse/XT-299, https://jira.ria.ee/browse/XTKB-30
+    RIA URL: https://jira.ria.ee/browse/XT-300, https://jira.ria.ee/browse/XTKB-35
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration, XroadConfigureService
+    Requires helper scenarios: xroad_configure_service_222, xroad_add_to_acl_218
+    X-Road version: 6.16.0
     """
 
     def test_add_central_service_2_2_8(self):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = '2.2.8'
+        main.test_number = 'SERVICE_41 / SERVICE_42'
         main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
@@ -54,86 +55,86 @@ class XroadAddCentralService(unittest.TestCase):
 
         requester_id = xroad.get_xroad_subsystem(requester)
 
-        # Configure the service (2.2.8-1 to 2.2.8-3)
-        add_central_service = add_central_service_2_2_8.test_add_central_service(main, provider=provider,
-                                                                                 requester=requester,
-                                                                                 central_service_name=central_service_name,
-                                                                                 sync_max_seconds=sync_max_seconds,
-                                                                                 wait_sync_retry_delay=wait_sync_retry_delay,
-                                                                                 try_same_code_twice=True,
-                                                                                 try_not_existing_member=True,
+        # Configure the service
+        add_central_service = add_central_service.test_add_central_service(main, provider=provider,
+                                                                           requester=requester,
+                                                                           central_service_name=central_service_name,
+                                                                           sync_max_seconds=sync_max_seconds,
+                                                                           wait_sync_retry_delay=wait_sync_retry_delay,
+                                                                           try_same_code_twice=True,
+                                                                           try_not_existing_member=True,
+                                                                           cs_ssh_host=cs_ssh_host,
+                                                                           cs_ssh_user=cs_ssh_user,
+                                                                           cs_ssh_pass=cs_ssh_pass)
+
+        # Configure a new service
+        configure_service = configure_service.test_configure_service(main, client=provider_2,
+                                                                     service_name=service_name,
+                                                                     check_add_errors=False,
+                                                                     check_edit_errors=False,
+                                                                     service_url=service_url,
+                                                                     check_parameter_errors=False)
+
+        # Add subject to ACL
+        configure_service_acl = add_to_acl.test_add_subjects(main, client=provider_2, wsdl_url=wsdl_url,
+                                                             service_name=service_name,
+                                                             service_subjects=[requester_id],
+                                                             remove_data=False, allow_remove_all=False)
+        # Enable new service
+        enable_service = configure_service.test_enable_service(main, client=provider_2, wsdl_url=wsdl_url)
+
+        # Delete new service (undo the changes we made)
+        delete_service = configure_service.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
+
+        # Configure central service
+        edit_central_service = add_central_service.test_edit_central_service(main,
+                                                                             provider=provider_2,
+                                                                             requester=requester,
+                                                                             central_service_name=central_service_name,
+                                                                             sync_max_seconds=sync_max_seconds,
+                                                                             wait_sync_retry_delay=wait_sync_retry_delay,
+                                                                             cs_ssh_host=cs_ssh_host,
+                                                                             cs_ssh_user=cs_ssh_user,
+                                                                             cs_ssh_pass=cs_ssh_pass,
+                                                                             try_not_existing_provider=True)
+
+        # Delete central service (undo changes we made)
+        delete_central_service = add_central_service.test_delete_central_service(main,
                                                                                  cs_ssh_host=cs_ssh_host,
                                                                                  cs_ssh_user=cs_ssh_user,
-                                                                                 cs_ssh_pass=cs_ssh_pass)
-
-        # Configure a new service (2.2.8-4)
-        configure_service = configure_service_2_2_2.test_configure_service(main, client=provider_2,
-                                                                           service_name=service_name,
-                                                                           check_add_errors=False,
-                                                                           check_edit_errors=False,
-                                                                           service_url=service_url,
-                                                                           check_parameter_errors=False)
-
-        # Add subject to ACL (2.2.8-4)
-        configure_service_acl = add_to_acl_2_1_8.test_add_subjects(main, client=provider_2, wsdl_url=wsdl_url,
-                                                                   service_name=service_name,
-                                                                   service_subjects=[requester_id],
-                                                                   remove_data=False, allow_remove_all=False)
-        # Enable new service (2.2.8-4)
-        enable_service = configure_service_2_2_2.test_enable_service(main, client=provider_2, wsdl_url=wsdl_url)
-
-        # Delete new service (undo the changes we made for 2.2.8-4)
-        delete_service = configure_service_2_2_2.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
-
-        # Configure central service (2.2.8-5 to 2.2.8-6)
-        edit_central_service = add_central_service_2_2_8.test_edit_central_service(main,
-                                                                                   provider=provider_2,
-                                                                                   requester=requester,
-                                                                                   central_service_name=central_service_name,
-                                                                                   sync_max_seconds=sync_max_seconds,
-                                                                                   wait_sync_retry_delay=wait_sync_retry_delay,
-                                                                                   cs_ssh_host=cs_ssh_host,
-                                                                                   cs_ssh_user=cs_ssh_user,
-                                                                                   cs_ssh_pass=cs_ssh_pass,
-                                                                                   try_not_existing_provider=True)
-
-        # Delete central service (undo changes we made for 2.2.8)
-        delete_central_service = add_central_service_2_2_8.test_delete_central_service(main,
-                                                                                       cs_ssh_host=cs_ssh_host,
-                                                                                       cs_ssh_user=cs_ssh_user,
-                                                                                       cs_ssh_pass=cs_ssh_pass,
-                                                                                       central_service_name=central_service_name,
-                                                                                       provider=provider_2,
-                                                                                       requester=requester,
-                                                                                       sync_max_seconds=sync_max_seconds,
-                                                                                       wait_sync_retry_delay=wait_sync_retry_delay)
+                                                                                 cs_ssh_pass=cs_ssh_pass,
+                                                                                 central_service_name=central_service_name,
+                                                                                 provider=provider_2,
+                                                                                 requester=requester,
+                                                                                 sync_max_seconds=sync_max_seconds,
+                                                                                 wait_sync_retry_delay=wait_sync_retry_delay)
 
         try:
-            # TEST PLAN 2.2.8-1, 2.2.8-2, 2.2.8-3 add central service
+            # Add central service
             main.log('XroadAddCentralService: Add central service')
             # Set Central Server UI
             main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)
             add_central_service()
 
-            # TEST PLAN 2.2.8-4 configure new provider for central service
-            main.log('XroadAddCentralService: Configure service parameters (using 2.2.2)')
+            # Configure new provider for central service
+            main.log('XroadAddCentralService: Configure service parameters (using xroad_configure_service_222)')
             # Set Security Server 2 and configure service parameters
             main.reload_webdriver(url=ss2_host, username=ss2_user, password=ss2_pass)
             configure_service()
 
-            # TEST PLAN 2.2.8-4 configure new provider for central service (set access using ACL)
-            main.log('XroadAddCentralService: Configure service ACL (using 2.1.8)')
+            # Configure new provider for central service (set access using ACL)
+            main.log('XroadAddCentralService: Configure service ACL (using xroad_add_to_acl_218)')
             # Go to SS2 main page (no need to login again) and configure ACL
             main.reload_webdriver(url=ss2_host)
             configure_service_acl()
 
-            # TEST PLAN 2.2.8-4 enable the new provider service
-            main.log('XroadAddCentralService: Enable service (using 2.2.2)')
+            # Eenable the new provider service
+            main.log('XroadAddCentralService: Enable service (using xroad_configure_service_222)')
             # Go to SS2 main page (no need to login again) and enable service
             main.reload_webdriver(url=ss2_host)
             enable_service()
 
-            # TEST PLAN 2.2.8-5, 2.2.8-6 edit and test the central service with the new provider
+            # Edit and test the central service with the new provider
             main.log('XroadAddCentralService: Edit central service')
             # Go to CS main page (login again if necessary) and edit the central service
             main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)

@@ -1,18 +1,26 @@
 # coding=utf-8
 import unittest
 
-import add_central_service_2_2_8
+import add_central_service
 from helpers import xroad
 from main.maincontroller import MainController
-from tests.xroad_configure_service_222 import configure_service_2_2_2
+from tests.xroad_configure_service_222 import configure_service
 
 
 class XroadDeleteCentralService(unittest.TestCase):
+    """
+    SERVICE_43 Delete a Central Service
+    RIA URL: https://jira.ria.ee/browse/XT-300, https://jira.ria.ee/browse/XTKB-35
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration, XroadConfigureService, XroadAddCentralService
+    Requires helper scenarios: xroad_configure_service_222, xroad_add_to_acl_218
+    X-Road version: 6.16.0
+    """
+
     def test_add_central_service_2_2_8(self):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = '2.2.8-del'
+        main.test_number = 'SERVICE_43'
         main.test_name = self.__class__.__name__
 
         main.start_mock_service()
@@ -40,18 +48,18 @@ class XroadDeleteCentralService(unittest.TestCase):
         wait_sync_retry_delay = main.config.get('services.request_sync_delay')
         sync_max_seconds = main.config.get('services.request_sync_timeout')
 
-        delete_service = configure_service_2_2_2.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
+        delete_service = configure_service.test_delete_service(main, client=provider_2, wsdl_url=wsdl_url)
 
-        delete_central_service = add_central_service_2_2_8.test_delete_central_service(main,
-                                                                                       cs_ssh_host=cs_ssh_host,
-                                                                                       cs_ssh_user=cs_ssh_user,
-                                                                                       cs_ssh_pass=cs_ssh_pass,
-                                                                                       provider=provider_2,
-                                                                                       requester=requester,
-                                                                                       central_service_name=central_service_name,
-                                                                                       sync_max_seconds=sync_max_seconds,
-                                                                                       wait_sync_retry_delay=wait_sync_retry_delay,
-                                                                                       cancel_deletion=True)
+        delete_central_service = add_central_service.test_delete_central_service(main,
+                                                                                 cs_ssh_host=cs_ssh_host,
+                                                                                 cs_ssh_user=cs_ssh_user,
+                                                                                 cs_ssh_pass=cs_ssh_pass,
+                                                                                 provider=provider_2,
+                                                                                 requester=requester,
+                                                                                 central_service_name=central_service_name,
+                                                                                 sync_max_seconds=sync_max_seconds,
+                                                                                 wait_sync_retry_delay=wait_sync_retry_delay,
+                                                                                 cancel_deletion=True)
 
         try:
             try:

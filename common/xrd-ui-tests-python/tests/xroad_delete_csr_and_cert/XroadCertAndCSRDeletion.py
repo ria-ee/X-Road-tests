@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from helpers import ssh_server_actions, ssh_client
-from tests.xroad_ss_client_certification_213.client_certification_2_1_3 import generate_csr, delete_csr, \
+from tests.xroad_ss_client_certification_213.client_certification import generate_csr, delete_csr, \
     test_generate_csr_and_import_cert, delete_cert_from_key, delete_all_but_one_sign_keys, delete_all_auth_keys
 from view_models import keys_and_certificates_table, sidebar
 

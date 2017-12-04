@@ -1,3 +1,5 @@
+import re
+
 from selenium.webdriver.common.by import By
 
 GENERATE_KEY_POPUP_KEY_LABEL_AREA_ID = 'label'
@@ -67,6 +69,48 @@ CLIENT_DETAILS_POPUP_GROUP_ADD_BTN_ID = 'group_add'
 CLIENT_DETAILS_POPUP_CLOSE_BTN_XPATH = '//div[@class="ui-dialog-buttonset"]//button[span="Close"]'
 CLIENT_DETAILS_POPUP_WSDL_URL_DETAILS_CLASS = 'closed'
 CLIENT_DETAILS_POPUP_WSDL_SERVICES_AUTHCERTDELETION_XPATH = '//table[@id="services"]//td[text()="authCertDeletion (0)"]'
+CLIENT_DETAILS_POPUP_LOCAL_GROUPS_TAB_XPATH = '//li[@aria-controls="local_groups_tab"]'
+CLIENT_DETAILS_POPUP_SERVICES_TAB_XPATH = '//li[@aria-controls="services_tab"]'
+
+LOCAL_GROUP_DETAILS_BUTTON_ADD_MEMBERS_ID = 'group_members_add'
+LOCAL_GROUP_DETAILS_BUTTON_REMOVE_SELECTED_MEMBERS = 'group_members_remove_selected'
+LOCAL_GROUP_DETAILS_BUTTON_SEARCH_XPATH = '//div[@id="members_search_simple_search_tab"]//button[text()="Search"]'
+LOCAL_GROUP_FOUNDED_MEMBERS_XPATH = '//table[@id="members_search"]//tbody/tr/td[1]'
+LOCAL_GROUP_FOUNDED_SUBSYSTEMS_XPATH = '//table[@id="members_search"]//tbody/tr/td[2]'
+LOCAL_GROUP_FOUNDED_MEMBER_ID_XPATH = '//table[@id="members_search"]//tbody/tr/td[2]/span[text()="{0}"]'
+LOCAL_GROUP_FOUNDED_MEMBER_ID_PARTIAL_XPATH = '//table[@id="members_search"]//tbody/tr/td[2]/span[contains(text(), "{0}")]'
+LOCAL_GROUP_ADD_GROUP_MEMBERS_XPATH = '//table[@id="group_members"]//tbody/tr/td[1]'
+LOCAL_GROUP_ADD_GROUP_MEMBERS_ID_XPATH = '//table[@id="group_members"]//tbody/tr/td[2]'
+LOCAL_GROUP_ADD_GROUP_MEMBERS_DATE_XPATH = '//table[@id="group_members"]//tbody/tr/td[3]'
+
+LOCAL_GROUP_ADD_SELECTED_TO_GROUP_BTN_ID = 'group_members_add_selected'
+LOCAL_GROUP_EMPTY_MEMBERS_SEARCH_TABLE_XPATH = '//table[@id="members_search"]//td[@class="dataTables_empty"]'
+LOCAL_GROUP_EMPTY_MEMBERS_TABLE_XPATH = '//table[@id="group_members"]//td[@class="dataTables_empty"]'
+LOCAL_GROUP_EMPTY_TABLE_XPATH = '//table[@id="groups"]//td[@class="dataTables_empty"]'
+LOCAL_GROUP_SEARCH_MEMBERS_TABLE_CANCEL_BTN_XPATH = '//div[@aria-describedby="group_members_add_dialog"]//div[@class="ui-dialog-buttonset"]//button[span="Cancel"]'
+LOCAL_GROUP_MEMBERS_COUNT_ID = 'group_details_member_count'
+LOCAL_GROUP_TABLE_MEMBERS_NAME_XPATH = '//table[@id="group_members"]//td[text()="{0}"]'
+LOCAL_GROUP_TABLE_SUB_IN_ID_XPATH = '//table[@id="group_members"]//span[contains(text(), "{0}")]'
+LOCAL_GROUP_REMOVE_ALL_MEMBERS_BTN_ID = 'group_members_remove_all'
+LOCAL_GROUP_REMOVE_SELECTED_MEMBERS_BTN_ID = 'group_members_remove_selected'
+LOCAL_GROUP_ADD_ALL_TO_GROUP_BTN_ID = 'group_members_add_all'
+LOCAL_GROUP_DELETE_GROUP_BTN_ID = 'group_delete'
+LOCAL_GROUP_DELETE_GROUP_CONFIRM_BTN_XPATH = '//button[@id="confirm"]'
+LOCAL_GROUP_DELETE_GROUP_CANCEL_BTN_XPATH = '//div[@aria-describedby="confirm"]//button/span[text()="Cancel"]'
+LOCAL_GROUP_EDIT_DESCRIPTION_BTN_XPATH = '//div[@id="group_details_dialog"]//button[@id="edit"]'
+LOCAL_GROUP_EDIT_DESCRIPTION_TEXT_FIELD_ID = 'group_description_edit'
+LOCAL_GROUP_EDIT_DESCRIPTION_OK_BTN_XPATH = '//div[@aria-describedby="group_description_edit_dialog"]//span[text()="OK"]'
+LOCAL_GROUP_EDIT_DESCRIPTION_CANCEL_BTN_XPATH = '//div[@aria-describedby="group_description_edit_dialog"]//span[text()="Cancel"]'
+LOCAL_GROUP_DETAILS_CLOSE_BTN_XPATH = '//div[@aria-describedby="group_details_dialog"]//div[@class="ui-dialog-buttonset"]//button/span[text()="Close"]'
+LOCAL_GROUP_DESCRIPTION_TEXT_FIELD_ID = 'group_details_description'
+LOCAL_GROUP_EDITED_DESCRIPTION_CLIENT_DETAILS_XPATH = '//table[@id="groups"]//tr//td[text()="{0}"]'
+LOCAL_GROUP_DELETE_CONFIRM_POP_UP_XPATH = '//div[@aria-describedby="confirm"]'
+
+WSDL_SERVICE_CODE_REGEX = '\w+\.[\w\d]+\s\(\d+\)'
+WSDL_SERVICE_CODE_DATE_REGEX = '\d{4}-\d{2}-\d{2}'
+WSDL_SERVICE_URL_REGEX = 'http[s]?://.+'
+WSDL_SERVICE_TIMEOUT_REGEX = '\d+'
+XROAD_IDENTIFIER_REGEX = '(.+:){4}.+'
 
 CENTRAL_SERVICE_POPUP = '//div[@aria-describedby="central_service_details_dialog"]'
 CENTRAL_SERVICE_POPUP_CENTRAL_SERVICE_CODE_ID = 'central_service_details_service_code'
@@ -82,9 +126,11 @@ CENTRAL_SERVICE_POPUP_CANCEL_BUTTON_ID = 'central_service_cancel'
 CENTRAL_SERVICE_POPUP_CLEAR_BUTTON_ID = 'central_service_details_clear_search'
 
 GROUP_ADD_POPUP_XPATH = '//div[@data-name="group_add_dialog"]'
+GROUP_EDIT_POPUP_XPATH = '//div[@data-name="group_description_edit_dialog"]'
 GROUP_ADD_POPUP_CODE_AREA_ID = 'add_group_code'
 GROUP_ADD_POPUP_CODE_DESCRIPTION_ID = 'add_group_description'
 GROUP_ADD_POPUP_OK_BTN_XPATH = GROUP_ADD_POPUP_XPATH + '//button[@data-name="ok"]'
+GROUP_EDIT_POPUP_OK_BTN_XPATH = GROUP_EDIT_POPUP_XPATH + '//button[@data-name="ok"]'
 
 REGISTRATION_DIALOG_OK_BUTTON_XPATH = '//div[@id="register_dialog"]/following::div[2]//button[@data-name="ok"]'
 ADD_WSDL_POPUP_XPATH = '//div[@data-name="wsdl_add_dialog"]'
@@ -107,6 +153,9 @@ EDIT_SERVICE_POPUP_XPATH = '//div[@data-name="service_params_dialog"]'
 EDIT_SERVICE_POPUP_URL_ID = 'params_url'
 EDIT_SERVICE_POPUP_TIMEOUT_ID = 'params_timeout'
 EDIT_SERVICE_POPUP_TLS_ID = 'params_sslauth'
+EDIT_SERVICE_POPUP_TIMEOUT_APPLY_ALL_CHECKBOX_ID = 'params_timeout_all'
+EDIT_SERVICE_POPUP_URL_APPLY_ALL_CHECKBOX_ID = 'params_url_all'
+EDIT_SERVICE_POPUP_TLS_APPLY_ALL_CHECKBOX_ID = 'params_sslauth_all'
 EDIT_SERVICE_POPUP_TLS_ENABLED_XPATH = '//input[@id="params_sslauth" and not(@disabled)]'
 EDIT_SERVICE_POPUP_CANCEL_BTN_XPATH = EDIT_SERVICE_POPUP_XPATH + '//button[@data-name="cancel"]'
 EDIT_SERVICE_POPUP_OK_BTN_XPATH = EDIT_SERVICE_POPUP_XPATH + '//button[@data-name="ok"]'
@@ -121,6 +170,7 @@ ACL_SUBJECTS_SEARCH_POPUP_RESULTS_TABLE_ID = 'acl_subjects_search'
 ACL_SUBJECTS_SEARCH_POPUP_ADD_SELECTED_TO_ACL_BUTTON_ID = 'acl_subjects_search_add_selected'
 ACL_SUBJECTS_SEARCH_POPUP_ADD_ALL_TO_ACL_BUTTON_ID = 'acl_subjects_search_add_all'
 ACL_SUBJECTS_SEARCH_POPUP_CANCEL_BTN_XPATH = ACL_SUBJECTS_SEARCH_POPUP + '//button[text()="Cancel"]'
+ACL_ADD_SUBJECTS_BY_NAME_XPATH = '//table[@id="acl_subjects_search"]//td[text()="{0}"]'
 
 ACL_SUBJECT_OPEN_SERVICES_ADD_POPUP = '//div[@aria-describedby="acl_subject_open_services_add_dialog"]'
 ACL_SUBJECT_OPEN_SERVICES_ADD_POPUP_ALL_SERVICES_TABLE_ID = 'services_all'
@@ -134,6 +184,7 @@ ACL_SUBJECT_OPEN_SERVICES_ADD_POPUP_REMOVE_ALL_SERVICES_BTN_ID = 'acl_subject_op
 ACL_SUBJECT_OPEN_SERVICES_POPUP = '//div[@aria-describedby="acl_subject_open_services_dialog"]'
 ACL_SUBJECT_OPEN_SERVICES_POPUP_CLOSE_SERVICES_BTN_XPATH = ACL_SUBJECT_OPEN_SERVICES_ADD_POPUP + \
                                                            '//div[@class= "ui-dialog-buttonset"]//button[@data-name="close"]'
+ACL_FOR_SERVICE_CLOSE_BTN_XPATH = '//div[@aria-describedby="service_acl_dialog"]//div[@class="ui-dialog-buttonset"]/button[span="Close"]'
 
 ADD_CLIENT_POPUP_XPATH = '//div[@aria-describedby="client_add_dialog"]'
 ADD_CLIENT_POPUP_MEMBER_CLASS_DROPDOWN_ID = 'add_member_class'
@@ -148,13 +199,8 @@ WARNING_POPUP = '//div[@aria-describedby="warning"]'
 WARNING_POPUP_CONTINUE_XPATH = WARNING_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Continue"]'
 WARNING_POPUP_CANCEL_XPATH = WARNING_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Cancel"]'
 
-
-
 SECURITY_SERVER_EDIT_POPUP = '//div[@aria-describedby="securityserver_edit_dialog"]'
 SECURITY_SERVER_EDIT_POPUP_CANCEL_XPATH = SECURITY_SERVER_EDIT_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Close"]'
-
-
-
 
 XROAD_ID_BY_INDEX_XPATH = '(.//span[@class="xroad-id"])[{0}]'  # Needs to be used with .format(index_string)
 XROAD_ID_BY_NAME_XPATH = u'.//span[@class="xroad-id"][text()="{0}"]'  # Needs to be used with .format(xroad_id)
@@ -169,7 +215,6 @@ YESNO_POPUP_YES_BTN_XPATH = YESNO_POPUP_XPATH + '//div[@class="ui-dialog-buttons
 YESNO_POPUP_NO_BTN_XPATH = YESNO_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="No"]'
 
 FILE_UPLOAD_ID = 'file_upload_button'
-
 TOKEN_DETAILS_POPUP_KEY_LABEL_AREA_ID = 'friendly_name'
 TOKEN_DETAILS_POPUP = '//div[@aria-describedby="token_details_dialog"]'
 TOKEN_DETAILS_POPUP_OK_BTN_XPATH = TOKEN_DETAILS_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="OK"]'
@@ -178,6 +223,7 @@ TOKEN_DETAILS_POPUP_CANCEL_BTN_XPATH = TOKEN_DETAILS_POPUP + '//div[@class="ui-d
 TOKEN_LOGIN_POPUP = '//div[@aria-describedby="activate_token_dialog"]'
 TOKEN_LOGIN_OK_BTN_XPATH = TOKEN_LOGIN_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="OK"]'
 TOKEN_LOGIN_CANCEL_BTN_XPATH = TOKEN_LOGIN_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Cancel"]'
+TOKEN_LOGIN_CLOSE_BTN_XPATH = TOKEN_LOGIN_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Close"]'
 
 TOKEN_PIN_LABEL_AREA = 'activate_token_pin'
 
@@ -186,7 +232,9 @@ MEMBER_DETAILS_MANAGEMENT_REGQUEST_CREATED_REGEX = '(\d{4}[-]?\d{1,2}[-]?\d{1,2}
 MEMBER_DETAILS_MANAGEMENT_REQUEST_TYPE = '(\D)'
 MEMBER_DETAILS_MANAGEMENT_REQUEST_STATUS = '(\D+)'
 
-
+LOCAL_GROUP_POPUP = '//div[@aria-describedby="group_details_dialog"]'
+LOCAL_GROUP_DELETE_GROUP_BTN_XPATH = LOCAL_GROUP_POPUP + '//div[@class="ui-dialog-buttonset"]//button[span="Delete Group"]'
+LOCAL_GROUPS_TAB = '//a[@href="#local_groups_tab"]'
 
 def confirm_dialog_visible(self):
     # Check if anything with a "Confirm" button is visible
@@ -262,12 +310,27 @@ def open_services_table_rows(self):
     :param self: MainController class object
     :return: list of open services. Rows' first td element text
     """
+    date_regex = '\d{4}-\d{2}-\d{2}'
     self.wait_jquery()
+    self.log('SERVICE_02 1. Viewing Access Rights of a Service client')
     open_services_table = self.wait_until_visible(type=By.ID,
                                                   element=ACL_SUBJECT_OPEN_SERVICES_ADD_POPUP_OPEN_SERVICES_TABLE_ID)
     open_rows_codes = []
+    self.log('SERVICE_02 2. System displays the list of security server clients services to '
+             'which the service client has access rights for.')
     for row in open_services_table.find_elements(By.CSS_SELECTOR, "tbody tr"):
-        open_rows_codes.append(row.find_element(By.TAG_NAME, 'td').text)
+        tds = row.find_elements_by_tag_name('td')
+        service_code = tds[0].text
+        title = tds[1].text
+        access_rights_date = tds[2].text
+        self.log('SERVICE_02 2. The code of the service is displayed: {}'.format(service_code))
+        self.is_not_none(service_code)
+        self.log('SERVICE_02 2. The title of the service is displayed: {}'.format(title))
+        self.is_not_none(title)
+        self.log('SERVICE_02 2. The date of when the access right of this service '
+                 'was granted to the service client: \n{}'.format(access_rights_date))
+        self.is_true(re.match(date_regex, access_rights_date))
+        open_rows_codes.append(service_code)
     return open_rows_codes
 
 
@@ -313,3 +376,11 @@ def close_all_open_dialogs(self, limit=0):
 
 def get_wsdl_url_row(wsdl_url):
     return "//td[text()='WSDL DISABLED ({0})']".format(wsdl_url)
+
+
+def get_local_group_row_by_code(code):
+    return "//table[@id='groups']//td[text()='{0}']".format(code)
+
+
+def get_service_url_row(service_url):
+    return "//table[@id='services']//td[text()='{0}']".format(service_url)

@@ -5,7 +5,11 @@ import ca_management
 
 class XroadEditCa(unittest.TestCase):
     '''
-    UC TRUST_09 Edit an Approved Certification Service
+    UC TRUST_09 Edit the Settings of a Certification Service
+    RIA URL: https://jira.ria.ee/browse/XT-435, https://jira.ria.ee/browse/XTKB-68
+    Depends on finishing other test(s): XroadAddCa
+    Requires helper scenarios:
+    X-Road version: 6.16.0
     '''
 
     def test_xroad_add_ca(self):

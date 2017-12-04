@@ -10,7 +10,7 @@ from main.maincontroller import MainController
 from tests.xroad_configure_service_222.wsdl_validator_errors import wait_until_server_up
 from tests.xroad_cs_delete_member.deleting_in_cs import test_add_security_server_to_member
 from tests.xroad_cs_delete_member_ss.XroadDeleteMemberSS import delete_member_ss
-from tests.xroad_ss_client_certification_213.client_certification_2_1_3 import register_cert, activate_cert
+from tests.xroad_ss_client_certification_213.client_certification import register_cert, activate_cert
 from view_models.keys_and_certificates_table import DELETE_BTN_ID, GLOBAL_ERROR_CERTIFICATE_ROW_XPATH
 from view_models.popups import confirm_dialog_click
 from view_models.sidebar import KEYSANDCERTIFICATES_BTN_CSS
@@ -19,11 +19,11 @@ from view_models.sidebar import KEYSANDCERTIFICATES_BTN_CSS
 class deleteMemberSS(unittest.TestCase):
     def test_delete_member_ss(self):
         """
-        MEMBER_25 Deleting security server
-        RIA URL: https://jira.ria.ee/browse/XTKB-133
+        MEMBER_25 Delete a Security Server
+        RIA URL: https://jira.ria.ee/browse/XT-377, https://jira.ria.ee/browse/XTKB-133
         Depends on finishing other test(s):
         Requires helper scenarios: client_certification
-        X-Road version: 6.9.4
+        X-Road version: 6.16.0
         :return:
         """
         main = MainController(self)

@@ -65,17 +65,24 @@ MANAGEMENT_REQUESTS_TAB = '//li[@aria-controls="member_management_requests_tab"]
 
 ADD_SUBSYSTEM_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="add_subsystem"]'
 DELETE_SUBSYSTEM_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="delete_subsystem"]'
+CONFIRM_DELETE_SUBSYSTEM_BTN_XPATH = "//div[@aria-describedby='confirm']//button[@id='confirm']"
 REGISTER_SECURITYSERVER_CLIENT_ADD_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="register_securityserver_client"]'
 ADD_MEMBER_TO_GLOBAL_GROUP_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="add_global_group_membership"]'
+DELETE_MEMBER_FROM_GLOBAL_GROUP_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="delete_global_group_membership"]'
+GLOBAL_GROUP_MEMBERSHIP_TABLE_XPATH = '//table[contains(@class, "member_global_group_membership")]//tbody'
 
 SUBSYSTEM_POPUP_XPATH = '//div[@aria-describedby="subsystem_add_dialog"]'
 GROUP_POPUP_XPATH = '//div[@aria-describedby="member_to_group_add_dialog"]'
 GROUP_POPUP_OK_BTN_XPATH = GROUP_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="OK"]'
 SUBSYSTEM_CODE_AREA_ID = 'subsystem_add_code'
 SUBSYSTEM_POPUP_OK_BTN_XPATH = SUBSYSTEM_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="OK"]'
+SUBSYSTEM_POPUP_CANCEL_BTN_XPATH = SUBSYSTEM_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="Cancel"]'
 SUBSYSTEM_TABLE_XPATH = '//table[contains(@class, "member_subsystems")]//tbody'
+SUBSYSTEM_CODE_XPATH = '//div[@id="member_subsystems_tab"]//tbody/tr/td[1]'
 
 GROUP_SELECT_ID = 'member_to_group_add_select_group'
+MEMBER_DETAILS_GLOBAL_GROUP_MEMBERS_ADD_BTN = 'member_to_group_add_select_subsystem'
+
 
 CLIENT_REGISTRATION_REQUEST_EDIT_POPUP_XPATH = '//div[@aria-describedby="client_reg_request_edit_dialog"]'
 CLIENT_REGISTRATION_REQUEST_EDIT_POPUP_OK_BTN_XPATH = CLIENT_REGISTRATION_REQUEST_EDIT_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="Close"]'
@@ -95,9 +102,11 @@ SUBSYSTEM_TR_BY_CODE_XPATH = '//tr[contains(., "{0}")]'
 USED_SERVERS_TABLE_XPATH = '//table[contains(@class, "member_used_servers")]//tbody'
 MEMBER_MANAGEMENT_TABLE_XPATH = '//table[contains(@class, "member_management_requests")]//tbody'
 DELETE_REGISTER_SECURITYSERVER_CLIENT_BTN_ID = '//div[not(contains(@style,"display:none")) and contains(@class, "ui-dialog")]//button[@id="remove_securityserver_client"]'
-
-
-
+CERTIFICATE_REGISTRATION = 'Certificate registration'
+CLIENT_REGISTRATION = 'Client registration'
+CERTIFICATE_DELETION = 'Certificate deletion'
+CLIENT_DELETION = 'Client deletion'
+REQUEST_SOURCES = ['X-Road center', 'Security server']
 
 def get_requests_row_by_td_text(text):
     return '//table[@id = "management_requests_all"]//tbody//tr//td[contains(text(), "' + text + '")]/parent:: *'
@@ -127,3 +136,7 @@ def get_member_data_from_table(nr, text):
 
 def get_member_used_servers(row, column):
     return "//div[@id='member_used_servers_tab']//tr[{0}]/td[{1}]".format(row, column)
+
+
+def get_subsystem_row_by_name(sub):
+    return "//td[text()='{0}']".format(sub)

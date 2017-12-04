@@ -56,6 +56,8 @@ SERVICE_TIMEOUTS_DATA = [[0, '', True, 'Missing parameter: {0}', 'params_timeout
                          ]
 
 ADD_CLIENT_BTN_ID = 'client_add'
+SERVICE_CLIENT_NAME_XPATH = '//table[@id="acl_subjects"]//tbody//td[1]'
+SERVICE_CLIENT_IDENTIFIER_XPATH = '//table[@id="acl_subjects"]//tbody//td[2]'
 
 CLIENT_TABLE_ID = 'clients'
 DETAILS_TAB_CSS = 'li[data-tab="#details_tab"]'
@@ -77,7 +79,19 @@ SELECT_CLIENT_POPUP_OK_BTN_XPATH = SELECT_CLIENT_POPUP_XPATH + '//div[@class="ui
 
 CLIENT_STATUS_SAVED = 'saved'
 CLIENT_STATUS_REGISTRATION = 'registration in progress'
+SERVICE_CLASS_NAME = 'service'
 
+TEST_DATA = 'test1'
+def subsystem_ss(client_instance, client_class, client_code, random_code):
+ return 'SUBSYSTEM : {0} : {1} : {2} : {3}'.format(client_instance, client_class, client_code, random_code)
+
+def server_cs(client_instance, client_class, client_code, client_subsystem):
+    return 'SERVER:{0}/{1}/{2}/{3}'.format(client_instance, client_class, client_code, client_subsystem)
+def subsystem_cs(client_instance, client_class, client_code, random_code):
+    return 'SUBSYSTEM:{0}/{1}/{2}/{3}'.format(client_instance, client_class, client_code, random_code)
+
+def get_client_id(partial_id):
+    return '//table[@id="clients"]//span[contains(text(), "{0}")]'.format(partial_id)
 
 def open_acl_subjects_popup(self, client_name):
     print('Open clients view')
@@ -550,3 +564,18 @@ def find_service_url_by_text(self, text):
 def find_service_timeout_by_text(self, url, timeout):
     return self.wait_until_visible(type=By.XPATH,
                                    element='//table[@id="services"]//td[text()="' + url + '"]/../td[text()="' + timeout + '"]')
+
+def get_client_id(partial_id):
+    return '//table[@id="clients"]//span[contains(text(), "{0}")]'.format(partial_id)
+
+
+def get_service_timeout_by_index(self, index):
+    return get_service_by_index(self, index).find_elements_by_tag_name('td')[4].text
+
+
+def get_service_url_by_index(self, index):
+    return get_service_by_index(self, index).find_elements_by_tag_name('td')[3].text
+
+
+def get_service_by_index(self, index):
+    return self.wait_until_visible(type=By.CLASS_NAME, element=SERVICE_CLASS_NAME, multiple=True)[index]

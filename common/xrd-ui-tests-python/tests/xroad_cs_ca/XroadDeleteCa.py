@@ -4,9 +4,13 @@ import ca_management
 
 
 class XroadDeleteCa(unittest.TestCase):
-    '''
-    UC TRUST_14 Delete Certification Service
-    '''
+    """
+    TRUST_14 Delete an Approved Certification Service
+    RIA URL: https://jira.ria.ee/browse/XT-440, https://jira.ria.ee/browse/XTKB-69
+    Depends on finishing other test(s): XroadAddCa
+    Requires helper scenarios:
+    X-Road version: 6.16.0
+    """
 
     def test_xroad_delete_ca(self):
         main = MainController(self)

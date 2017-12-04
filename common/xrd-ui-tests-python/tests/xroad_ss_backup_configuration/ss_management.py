@@ -525,3 +525,174 @@ def successful_upload(self, local_path, backup_conf_file_name):
     self.logdata.append(ss_system_parameters.UPLOAD_BACKUP_SUCCESSFUL)
 
     return self.logdata
+
+
+def test_ss_restore_backup_conf(case, ssh_host=None, ssh_username=None, ssh_password=None):
+    '''
+
+    :param case: MainController object
+    :param ssh_host: str|None - if set, Central Server SSH host for checking the audit.log; if None, no log check
+    :param ssh_username: str|None SSH username
+    :param ssh_password: str|None SSH password
+    :return:
+    '''
+    self = case
+
+    def backup_conf_restore():
+        '''Click "Back Up and Restore" button'''
+        self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.BACKUP_AND_RESTORE_BTN_CSS).click()
+        self.wait_jquery()
+        time.sleep(1)
+        self.log(
+            'SS_15 1. SS administrator selects to restore security server configuration from a backup file saved in the system configuration.')
+        '''Click on "Restore" button'''
+        self.by_xpath(ss_system_parameters.RESTORE).click()
+        self.wait_jquery()
+
+        self.log('SS_15 2. System prompts for confirmation.')
+
+        self.log('SS_15 3. SS administrator cancels the restoring of the configuration from the backup file')
+        '''Click "Cancel" button'''
+        self.wait_until_visible(type=By.XPATH,
+                                element=ss_system_parameters.SELECT_CLIENT_POPUP_CANCEL_BTN_XPATH).click()
+        self.wait_jquery()
+
+        '''Write file to ss2 to cause error message'''
+        create_empty_file = 'sh -c "echo \'\' > {0}"'.format(ss_system_parameters.BACKUP_CORRUPTION_FILE2)
+        self.log('Connecting ssh client to write empty file for error testing')
+        self.ssh_client = ssh_client.SSHClient(host=ssh_host, username=ssh_username, password=ssh_password)
+        '''Write file to ss'''
+        self.ssh_client.exec_command(command=create_empty_file, sudo=True)
+
+        '''Reload page and wait until additional data is loaded using jQuery'''
+        self.driver.refresh()
+        self.wait_jquery()
+
+        self.log('SS_15 2. System prompts for confirmation.')
+
+        '''Click on "Restore" button'''
+        self.by_xpath(ss_system_parameters.RESTORE).click()
+        self.wait_jquery()
+
+        self.log('SS_15 3. SS administrator confirms')
+
+        '''Confirm restore'''
+        popups.confirm_dialog_click(self)
+
+        '''Save message error message'''
+        error_message = self.wait_until_visible(type=By.CSS_SELECTOR, element=messages.ERROR_MESSAGE_CSS).text
+
+        '''Get file name'''
+        corrupt_file_name = ss_system_parameters.BACKUP_CORRUPTION_FILE2.split('/')[-1]
+
+        self.log('SS_15 4a.1System displays the error message {0}'.format(error_message))
+
+        '''Verify error message'''
+        self.is_true(error_message == messages.RESTORE_CONFIGURATION_FAILED.format(corrupt_file_name),
+                     msg='Wrong error message')
+
+        '''Remove empty file for making successful test'''
+        remove_file = 'rm {0}'.format(ss_system_parameters.BACKUP_CORRUPTION_FILE2)
+        self.ssh_client.exec_command(command=remove_file, sudo=True)
+        '''Close popup'''
+        popups.close_console_output_dialog(self)
+
+        self.log('SS_15 3. SS administrator confirms')
+
+        '''Reload page and wait until additional data is loaded using jQuery'''
+        self.driver.refresh()
+        self.wait_jquery()
+
+        '''Click on "Restore" button'''
+        self.by_xpath(ss_system_parameters.RESTORE).click()
+        self.wait_jquery()
+
+        '''Get confrimation message'''
+        confirmation_message = self.wait_until_visible(type=By.XPATH,
+                                                       element=ss_system_parameters.BACKUP_CONFIRMATION_TEXT).text
+        '''Get restored file name'''
+        file_name = confirmation_message.split("'")[1]
+
+        '''Confirm restore'''
+        popups.confirm_dialog_click(self)
+        self.log('SS_15 4a. a. verifies that the file is a valid backup file;')
+
+        '''Save "Backup Script Output" message'''
+        restore_script_output = messages.get_console_output(self)
+
+        self.log('SS_15 4b. Verifies the label of the backup file:')
+
+        self.is_true(ss_system_parameters.BACKUP_DUMP_VER in restore_script_output,
+                     msg='Dump contains different version of the security server software')
+
+        self.log('SS_15 4c. clears shared memory;')
+        '''Verify dump file:  clears shared memory')'''
+        self.is_true(ss_system_parameters.RESTORE_DUMP_CLEARING_SHARED_MEMORY in restore_script_output,
+                     msg='No clears shared memory found in dump')
+
+        self.log('SS_15 4d. Stops all system services, except for xroad-jetty')
+
+        '''Verify dump file: stops all system services, except for xroad-jetty')'''
+        self.is_true(ss_system_parameters.BACKUP_STOPPING_SERVICES in restore_script_output,
+                     msg='STOPPING REGISTERED SERVICES not found in dump')
+
+        self.log('SS_15 4e. Creates a pre-restore backup of the system configuration')
+
+        '''Verify dump file location /var/lib/xroad/dbdump.dat '''
+        self.is_true(ss_system_parameters.RESTORE_DUMP_PRERESTORE in restore_script_output,
+                     msg='Creating pre-restore backup archive to /var/lib/xroad/conf_prerestore_backup.tar: not found in dump')
+
+        self.log(
+            'SS_15 f. Deletes the content of the following directories')
+        self.log(
+            'SS_15 h. restores the content of the directories /etc/xroad/ and /etc/nginx/sites-enabled/ from the backup file')
+
+        '''Verify dump file location /etc/xroad/ '''
+        self.is_true(ss_system_parameters.BACKUP_DUMP_DIR1 in restore_script_output,
+                     msg='Directory /etc/xroad/ not found in dump')
+
+        '''Verify dump file location /etc/nginx/sites-enabled/ '''
+        self.is_true(ss_system_parameters.BACKUP_DUMP_DIR2 in restore_script_output,
+                     msg='Directory /etc/nginx/sites-enabled/ not found in dump')
+
+        self.log('SS_15 4g. Writes the database dump from the backup file to /var/lib/xroad/dbdump.dat')
+
+        '''Verify dump file:  writes the database dump from the backup file to /var/lib/xroad/dbdump.dat')'''
+        self.is_true(ss_system_parameters.RESTORE_DUMP_CREATION in restore_script_output,
+                     msg='Writes the database dump from the backup file to /var/lib/xroad/dbdump.dat not found in dump')
+
+        self.log(
+            'SS_15 4i. Restores the database data (including the schema) from the dump file /var/lib/xroad/dbdump.dat')
+
+        '''Verify dump file: restores the database data (including the schema) from the dump file /var/lib/xroad/dbdump.dat')'''
+        self.is_true(ss_system_parameters.BACKUP_RESTORING_DATABASE_DUMP in restore_script_output,
+                     msg='Restores the database data (including the schema) from the dump file /var/lib/xroad/dbdump.dat not forun in dump')
+
+        self.log('SS_15 4j. Restarts all the services that were previously stopped.')
+        '''Verify dump file:  clears shared memory')'''
+        self.is_true(ss_system_parameters.BACKUP_RESTARTING_SERVICES in restore_script_output,
+                     msg='RESTARTING REGISTERED SERVICES not found in dump')
+
+        '''Verify successful backup restoration notice'''
+        expected_notice_msg = messages.BACKUP_CONFIGURATION_RESTORED_SUCCESSFUL.format(file_name)
+
+        self.log('SS_15 5. System displays the message:{0}'.format(expected_notice_msg))
+
+        notice_message = self.wait_until_visible(type=By.CSS_SELECTOR, element=messages.NOTICE_MESSAGE_CSS).text
+        self.is_equal(expected_notice_msg, notice_message)
+        '''Close popup'''
+        popups.close_console_output_dialog(self)
+        self.wait_jquery()
+        self.driver.refresh()
+
+        # if ssh_host is not None:
+        #     # Check logs for entries
+        #     self.log(
+        #         'System logs the event "Back up configuration" to the audit log')
+        #     logs_found = log_checker.check_log(self.logdata, from_line=current_log_lines + 1)
+        #     self.is_true(logs_found,
+        #                  msg='Some log entries were missing. Expected: "{0}", found: "{1}"'.format(self.logdata,
+        #                                                                                            log_checker.found_lines))
+        #
+
+    return backup_conf_restore

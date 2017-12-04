@@ -3,10 +3,10 @@ import unittest
 
 from helpers import xroad, auditchecker, ssh_client
 from main.maincontroller import MainController
-from tests.xroad_configure_service_222 import wsdl_validator_errors, configure_service_2_2_2
+from tests.xroad_configure_service_222 import wsdl_validator_errors, configure_service
 from tests.xroad_configure_service_222.wsdl_validator_errors import set_wsdl_validator_invalid_command, \
     remove_wsdl_validator_from_conf, set_wsdl_validator_not_executable
-from tests.xroad_refresh_wsdl_225.refresh_wsdl_2_2_5 import webserver_set_wsdl
+from tests.xroad_refresh_wsdl_225.refresh_wsdl import webserver_set_wsdl
 
 
 class XroadWsdlValidatorErrors(unittest.TestCase):
@@ -17,9 +17,9 @@ class XroadWsdlValidatorErrors(unittest.TestCase):
     so the whole test worst case running time is around 40 minutes
     RIA URL: https://jira.ria.ee/browse/XTKB-22
     RIA URL: https://jira.ria.ee/browse/XTKB-26
-    Depends on finishing other test(s): client_registration
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration
     Requires helper scenarios: add wsdl, refresh wsdl
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_xroad_wsdl_validator_errors(self):
@@ -102,10 +102,10 @@ class XroadWsdlValidatorErrors(unittest.TestCase):
             client_id=client_id,
             client_name=client_name,
             log_checker=log_checker)
-        delete_service = configure_service_2_2_2.test_delete_service(main, client_name=client_name,
-                                                                     client_id=client_id,
-                                                                     wsdl_url=wsdl_url,
-                                                                     try_cancel=False)
+        delete_service = configure_service.test_delete_service(main, client_name=client_name,
+                                                               client_id=client_id,
+                                                               wsdl_url=wsdl_url,
+                                                               try_cancel=False)
         try:
             main.log('Copy wsdl with warning file to testservice wsdl')
             main.ssh_client = ssh_client.SSHClient(ssh_host, ssh_user, ssh_pass)

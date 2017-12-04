@@ -13,7 +13,7 @@ class XroadParseKeyLabelInputs(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XT-85
     Depends on finishing other test(s): None
     Requires helper scenarios: None
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
 
     def test_parse_key_label_inputs(self):

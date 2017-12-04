@@ -4,16 +4,16 @@ import unittest
 
 from helpers import xroad, auditchecker
 from main.maincontroller import MainController
-from tests.xroad_ss_client_certification_213 import client_certification_2_1_3
+from tests.xroad_ss_client_certification_213 import client_certification
 
 
 class XroadSecurityServerClientCertificateDeletion(unittest.TestCase):
     """
-    SS_36 5 Delete a Key from a Software Token
-    RIA URL: https://jira.ria.ee/browse/XTKB-88
-    Depends on finishing other test(s): client registration, client certification
+    SS_36 Delete a Key from a Software Token
+    RIA URL: https://jira.ria.ee/browse/XT-348, https://jira.ria.ee/browse/XTKB-88, https://jira.ria.ee/browse/XTKB-32
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_security_server_certificate_deletion(self):
@@ -21,7 +21,7 @@ class XroadSecurityServerClientCertificateDeletion(unittest.TestCase):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = '2.1.3-del'
+        main.test_number = 'SS_36'
         main.test_name = self.__class__.__name__
 
         main.url = main.config.get('ss2.host')
@@ -43,8 +43,8 @@ class XroadSecurityServerClientCertificateDeletion(unittest.TestCase):
             main.reset_webdriver(main.url, main.username, main.password)
             # Delete the key
             log_checker = auditchecker.AuditChecker(ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass)
-            client_certification_2_1_3.delete_added_key(main, member_name, member_class, cancel_deletion=True,
-                                                        log_checker=log_checker)
+            client_certification.delete_added_key(main, member_name, member_class, cancel_deletion=True,
+                                                  log_checker=log_checker)
         except AssertionError:
             raise
         except:

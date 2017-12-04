@@ -2,19 +2,19 @@ import unittest
 
 from helpers import xroad
 from main.maincontroller import MainController
-from tests.xroad_changing_database_rows_with_cs_gui_291.changing_database_rows_with_cs_gui_2_9_1 import USERNAME
+from tests.xroad_changing_database_rows_with_cs_gui_291.changing_database_rows_with_cs_gui import USERNAME
 from tests.xroad_cs_delete_member import deleting_in_cs
 from tests.xroad_global_groups_tests import global_groups_tests
-from tests.xroad_ss_client_certification_213 import client_certification_2_1_3
+from tests.xroad_ss_client_certification_213 import client_certification
 
 
 class XroadCsDeleteMemberWithSubSystem(unittest.TestCase):
     """
     MEMBER_26 Delete an X-Road Member 5.a The member's subsystems are clients of security servers
-    RIA URL: https://jira.ria.ee/browse/XTKB-41
+    RIA URL: https://jira.ria.ee/browse/XT-378, https://jira.ria.ee/browse/XTKB-41
     Depends on finishing other test(s): XroadSecurityServerClientDeletion or run as first test
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_xroad_cs_delete_member_with_subsystem(self):
@@ -82,7 +82,7 @@ class XroadCsDeleteMemberWithGlobalGroup(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-41
     Depends on finishing other test(s): XroadSecurityServerClientDeletion or run as first test
     Requires helper scenarios: remove global group
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_xroad_cs_delete_member_with_global_group(self):
@@ -140,7 +140,7 @@ class XroadCsDeleteMemberWithSecurityServer(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-138
     Depends on finishing other test(s): XroadSecurityServerClientDeletion or run as first test
     Requires helper scenarios: revoke requests, add member, import certificate, generate csr
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_xroad_cs_delete_member_with_security_server(self):
@@ -216,13 +216,13 @@ class XroadCsDeleteMemberWithSecurityServer(unittest.TestCase):
                                                                                                   cert_used_already=True,
                                                                                                   check_server=False)
 
-        test_register_cert = client_certification_2_1_3.register_cert(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass,
-                                                                      cs_host=cs_ssh_host, client=client,
-                                                                      ca_ssh_host=ca_ssh_host, ca_ssh_user=ca_ssh_user,
-                                                                      ca_ssh_pass=ca_ssh_pass,
-                                                                      check_inputs=True, cert_path=cert_path)
-        test_activate_cert = client_certification_2_1_3.activate_cert(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass,
-                                                                      registered=True)
+        test_register_cert = client_certification.register_cert(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass,
+                                                                cs_host=cs_ssh_host, client=client,
+                                                                ca_ssh_host=ca_ssh_host, ca_ssh_user=ca_ssh_user,
+                                                                ca_ssh_pass=ca_ssh_pass,
+                                                                check_inputs=True, cert_path=cert_path)
+        test_activate_cert = client_certification.activate_cert(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass,
+                                                                registered=True)
         try:
             main.reload_webdriver(url=cs_host, username=cs_username, password=cs_password)
             test_deleting_member_with_security_server()

@@ -7,11 +7,11 @@ from tests.xroad_cs_edit_management_service.XroadEditManagementService import ed
 
 class test_edit_management_service(unittest.TestCase):
     """
-    MEMBER_33 Changing the Management Service Provider
-    RIA URL: https://jira.ria.ee/browse/XTKB-135
-    Depends on finishing other test(s):
+    MEMBER_33 Change the Management Services' Provider
+    RIA URL: https://jira.ria.ee/browse/XT-385, https://jira.ria.ee/browse/XTKB-135
+    Depends on finishing other test(s): MEMBER_57
     Requires helper scenarios:
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
     def test_edit_management_service(self):
         main = MainController(self)

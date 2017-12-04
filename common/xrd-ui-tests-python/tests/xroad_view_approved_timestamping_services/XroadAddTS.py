@@ -12,7 +12,7 @@ class XroadAddTS(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XTKB-75
     Depends on finishing other test(s): Delete test must run before (xroad_view_approved_timestamping_services\XroadDeleteTS.py)
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
 

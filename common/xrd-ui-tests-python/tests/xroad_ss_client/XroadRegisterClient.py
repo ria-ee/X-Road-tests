@@ -6,7 +6,11 @@ from helpers import xroad
 
 class XroadRegisterClient(unittest.TestCase):
     '''
-    UC MEMBER_48 Add a Client to the Security Server
+    UC MEMBER_48 Register a Security Server Client
+    RIA URL: https://jira.ria.ee/browse/XT-400, https://jira.ria.ee/browse/XTKB-46, https://jira.ria.ee/browse/XTKB-92
+    Depends on finishing other test(s): XroadAddClient
+    Requires helper scenarios:
+    X-Road version: 6.16.0
     '''
 
     def test_xroad_register_client(self):
@@ -21,28 +25,20 @@ class XroadRegisterClient(unittest.TestCase):
         ss_pass = main.config.get('ss2.pass')
 
         client_id = main.config.get('ss2.client_id')
-        client_name = main.config.get('ss2.client_name')
 
-        existing_client = xroad.split_xroad_subsystem(main.config5.get('ss2.client2_id'))
+        existing_client = xroad.split_xroad_subsystem(main.config.get('ss2.client2_id'))
         existing_client['name'] = main.config.get('ss2.client2_name')
-
-        unregistered_member = xroad.split_xroad_subsystem(
-            '{0} : {1} : _UNREGISTERED : _unregistered'.format(existing_client['instance'], existing_client['class']))
 
         ss_ssh_host = main.config.get('ss2.ssh_host')
         ss_ssh_user = main.config.get('ss2.ssh_user')
         ss_ssh_pass = main.config.get('ss2.ssh_pass')
 
         # Configure the service
-        test_add_client = ss_client_management.test_add_client(case=main,
-                                                               client_name=client_name,
-                                                               client_id=client_id, duplicate_client=existing_client,
-                                                               unregistered_member=unregistered_member,
+        test_add_client = ss_client_management.test_register_client(case=main,
+                                                               client_id=client_id,
                                                                ssh_host=ss_ssh_host,
                                                                ssh_user=ss_ssh_user, ssh_pass=ss_ssh_pass,
                                                                check_errors=True)
-
-        test_delete_client = ss_client_management.test_delete_client(case=main, client_id=client_id)
 
         try:
             # Open webdriver
@@ -51,16 +47,8 @@ class XroadRegisterClient(unittest.TestCase):
             # Run the test
             test_add_client()
         except:
-            main.log('XroadAddClient: Failed to add client')
+            main.log('XroadRegisterClient: Failed to register client')
             main.save_exception_data()
-            try:
-                # Delete service
-                main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
-
-                test_delete_client()
-            except:
-                main.log('XroadAddClient: Failed to delete added data.')
-                main.save_exception_data()
             assert False
         finally:
             # Test teardown

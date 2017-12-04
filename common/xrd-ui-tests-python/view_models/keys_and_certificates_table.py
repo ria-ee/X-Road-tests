@@ -20,6 +20,7 @@ KEY_LABEL_TEXT_AND_RESULTS = [[256 * 'S', True, "Parameter '{0}' input exceeds 2
                               ['', False, None, None, False],
                               [KEY_LABEL_TEXT, False, None, None, False]]
 
+KEY_USAGE_CLASS = 'key-usage'
 KEY_USAGE_TYPE_SIGN = 'sign'
 DETAILS_BTN_ID = 'details'
 CERT_ACTIVE_CSS = '.cert-active'
@@ -41,13 +42,15 @@ SUBMITTED_FOR_APPROVAL_STATE = 'SUBMITTED FOR APPROVAL'
 WAITING_STATE = 'WAITING'
 REVOKED_STATE = 'REVOKED'
 DECLINED_STATE = 'DECLINED'
-
+CERT_INACTIVE_ROW_BY_DATA_ID = '//tr[@data-id="{0}"]//following::tr[contains(@class, "cert-inactive")]'
+CERT_INACTIVE_ROW_BY_DATA_ID_IMPORT_BTN = '{0}//button'.format(CERT_INACTIVE_ROW_BY_DATA_ID)
 KEYS_AND_CERTIFICATES_TABLE_ID = 'keys'
 KEYS_AND_CERTIFICATES_TABLE_ROWS_CSS = '.keys tbody tr'
 GLOBAL_ERROR_CERTIFICATE_ROW_XPATH = '//td[text()="global error"]'
 SAVED_CERTIFICATE_ROW_XPATH = '//td[text()="saved"]'
 REG_IN_PROGRESS_CERTIFICATE_ROW_XPATH = '//td[text()="registration in progress"]'
 DEL_IN_PROGRESS_CERTIFICATE_ROW_XPATH = '//td[text()="deletion in progress"]'
+DEL_IN_PROGRESS_CERTIFICATE_ROW_XPATH = '//td[text()="Token: utimaco-UTIMACO CS000000-CryptoServer PKCS11 Token-0"]'
 
 REGISTER_DIALOG_ADDRESS_INPUT_ID = 'address'
 
@@ -55,11 +58,17 @@ GENERATED_KEYS_TABLE_ROW_CSS = '.key'
 CERT_REQUESTS_TABLE_ROW_CSS = ".cert-request"
 KEY_TABLE_ROW_BY_LABEL_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "key")]//td[contains(text(), \"{0}\")]'
 KEY_TABLE_CERT_ROW_BY_LABEL_XPATH = KEY_TABLE_ROW_BY_LABEL_XPATH + '/../following::tr[contains(@class, "cert-active")]'
+KEY_CSR_BY_KEY_LABEL_XPATH = KEY_TABLE_ROW_BY_LABEL_XPATH + '/../following::tr[contains(@class, "cert-request")]'
 GENERATED_KEY_TABLE_ROW_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "key")]//td[contains(text(), \"' + KEY_LABEL_TEXT + '\")]'
 SOFTTOKEN_TABLE_ROW_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "token")]/td[div="Token: softToken-0"]'
 SOFTTOKEN_TABLE_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "token")]/td'
+HARDTOKEN_TABLE_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "token")]/td[div="Token: utimaco-UTIMACO CS000000-CryptoServer PKCS11 Token-0"]'
+HARDTOKEN_BY_LABEL_XPATH = '//table[contains(@id, "keys")]//tr[contains(@class, "token")]/td[div="{0}"]'
+HARDTOKEN_NEXT_NOT_EMPTY_TR = '{0}/..//following::tr[not(contains(@class, "empty"))]'.format(HARDTOKEN_BY_LABEL_XPATH)
+HARDTOKEN_TABLE_XPATH2 = '//table[contains(@id, "keys")]//tr[contains(@class, "token")]/td[div="Token: utimaco-UTIMACO CS000000-CryptoServer PKCS11 Token-2"]'
 TOKEN_NAMES_CLASS = "token-name"
 CERT_BY_KEY_LABEL = '//tr[contains(., "{0}")]/following::tr[2]'
+HARD_TOKEN_CERT_BY_KEY_LABEL = '//tr//td[contains(., "{0}")]/following::tr[2]'
 TOKEN_DETAILS_ERROR_PARAMETER = 'friendly_name'
 TOKEN_DETAILS_MISSING_PARAMETER = 'Missing parameter: friendly_name'
 SOFTTOKEN_FRIENDLY_NAME = 'softToken-0'
@@ -67,11 +76,21 @@ SOFTTOKEN_TABLE_ROW_XPATH2 = "//div[@class='left token-name']"
 SOFTTOKEN_KEY_ROW = "//tr[@class='key token-available token-inactive key-unavailable']"
 SOFTTOKEN_FRIENDLY_NAME_WHITESPACES = '           test               '
 SOFTTOKEN_LOGOUT = '//button[@class="deactivate_token"]'
+HARDTOKEN_LOGOUT = '(//button[@class="deactivate_token"])[2]'
+HARDTOKEN_LOGOUT2 = '(//button[@class="deactivate_token"])[4]'
 SOFTTOKEN_LOGIN = '//button[@class="activate_token"]'
+HARDTOKEN_TABLE_ROW_XPATH4 = "(//div[@class='left token-name'])[4]"
+HARDTOKEN_LOCKED = '//span[@class="locked"]'
+HARDTOKEN_LOGIN = '(//button[@class="activate_token"])[2]'
+HARDTOKEN_ERROR_LOGIN = '(//button[@class="activate_token"])[3]'
+HARDTOKEN_ERROR_LOGIN2 = '(//button[@class="activate_token"])[4]'
 SOFTTOKEN_PIN_WHITESPACES = '  1234  '
 SOFTTOKEN_LOGOUT_TEXT = 'LOGOUT'
-SOFTTOKEN_PIN = '1234'
+TOKEN_PIN = '1234'
 SOFTTOKEN_PIN_ERROR_PARAMETER = 'pin'
+CERT_BY_KEY_AND_FRIENDLY_NAME = KEY_TABLE_ROW_BY_LABEL_XPATH + '//following::td[@class="cert-friendly-name" and text()="{1}"]/..'
+HARDTOKEN_CERT_IMPORT_BTN = '//tr[contains(@class, "cert-inactive")]//button'
+HARDTOKEN_KEY = '{0}//following::tr[contains(@class, "token-active") and not(contains(@class, "unsaved"))]'.format(HARDTOKEN_BY_LABEL_XPATH)
 
 
 

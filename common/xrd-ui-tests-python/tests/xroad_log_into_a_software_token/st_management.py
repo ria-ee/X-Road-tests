@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from selenium.webdriver.common.by import By
 from helpers import auditchecker
 from view_models import sidebar, keys_and_certificates_table, popups, messages, log_constants
@@ -65,7 +67,7 @@ def successful_login(self):
     self.log('SS_24 2.SS administrator enters the PIN code of the token.')
 
     '''Insert correct PIN'''
-    self.input(key_label_input, keys_and_certificates_table.SOFTTOKEN_PIN)
+    self.input(key_label_input, keys_and_certificates_table.TOKEN_PIN)
     self.wait_jquery
 
     '''Click "OK" button'''
@@ -74,7 +76,7 @@ def successful_login(self):
     self.log('SS_24 4.System verifies that the PIN code is correct and logs in to the token.')
 
     '''Set "Log in to token" to logdata'''
-    self.logdata.append(log_constants.SOFTTOKEN_LOG_OUT)
+    self.logdata.append(log_constants.TOKEN_LOG_OUT)
 
     self.logdata.append(log_constants.SOFTTOKEN_LOGIN_SUCCESS)
     time.sleep(1)
@@ -88,7 +90,7 @@ def find_errors_login(self):
         [256 * 'S', messages.INPUT_EXCEEDS_255_CHARS.format(keys_and_certificates_table.SOFTTOKEN_PIN_ERROR_PARAMETER),
          None, False],
         ['', messages.MISSING_PARAMETER.format(keys_and_certificates_table.SOFTTOKEN_PIN_ERROR_PARAMETER), None, False],
-        [keys_and_certificates_table.SOFTTOKEN_PIN[::-1], messages.TOKEN_PIN_INCORRECT, None, False]]
+        [keys_and_certificates_table.TOKEN_PIN[::-1], messages.TOKEN_PIN_INCORRECT, None, False]]
 
     # Loop through different key label names and expected results
     counter = 1

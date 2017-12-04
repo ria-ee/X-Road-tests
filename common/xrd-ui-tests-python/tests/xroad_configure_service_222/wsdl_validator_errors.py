@@ -4,8 +4,8 @@ import requests
 import urllib3
 
 from helpers import ssh_client
-from tests.xroad_configure_service_222 import configure_service_2_2_2
-from tests.xroad_refresh_wsdl_225 import refresh_wsdl_2_2_5
+from tests.xroad_configure_service_222 import configure_service
+from tests.xroad_refresh_wsdl_225 import refresh_wsdl
 from view_models import clients_table_vm, ss_system_parameters
 from view_models.log_constants import ADD_WSDL_FAILED, REFRESH_WSDL_FAILED
 from view_models.messages import WSDL_ERROR_VALIDATOR_COMMAND_NOT_EXECUTABLE, \
@@ -27,7 +27,7 @@ def test_wsdl_validator_crash(self, wsdl_url, ssh_host, ssh_username, ssh_passwo
         self.log('Open client services tab')
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
         self.log('Try to add wsdl')
-        warning, error, console = configure_service_2_2_2.add_wsdl(self, wsdl_url=wsdl_url)
+        warning, error, console = configure_service.add_wsdl(self, wsdl_url=wsdl_url)
         expected_error_msg = WSDL_ERROR_VALIDATION_FAILED.format(wsdl_url)
         self.log('SERVICE_44 1c.1 System displays the error message "{0}"'.format(expected_error_msg))
         self.is_equal(expected_error_msg, error)
@@ -60,7 +60,7 @@ def test_adding_wsdl_validator_not_set(self, wsdl_url, ss_host, ss_user, ss_pass
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
 
         self.log('SERVICE_08 6a. Adding wsdl when wsdl validator is not set, wsdl will not be checked')
-        warning, error, console = configure_service_2_2_2.add_wsdl(self, wsdl_url=wsdl_url)
+        warning, error, console = configure_service.add_wsdl(self, wsdl_url=wsdl_url)
         self.log('SERVICE_08 6a.1. System skips the process of validation: ')
         self.log('Checking if no issues occured, while adding service with warning')
         self.is_none(warning)
@@ -91,7 +91,7 @@ def test_refreshing_wsdl_validator_not_set(self, wsdl_url, ss_host, ss_user, ss_
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
         clients_table_vm.client_services_popup_select_wsdl(self, wsdl_url=wsdl_url)
         self.log('Refresh added wsdl(wsdl with error)')
-        warning, error, console = refresh_wsdl_2_2_5.refresh_wsdl(self)
+        warning, error, console = refresh_wsdl.refresh_wsdl(self)
         self.log('SERVICE_14 3a.1 System skips the process of validation')
         self.log('Check if wsdl was refreshed successfully')
         self.is_none(warning)
@@ -145,7 +145,7 @@ def test_adding_wsdl_validator_invalid_command(self, ss_host,
 
         current_log_lines = log_checker.get_line_count()
         self.log('Trying to add wsdl to client')
-        warning, error, console = configure_service_2_2_2.add_wsdl(self, wsdl_url=wsdl_warning_url)
+        warning, error, console = configure_service.add_wsdl(self, wsdl_url=wsdl_warning_url)
         expected_error_msg = WSDL_ADD_ERROR_VALIDATOR_COMMAND_NOT_FOUND
         self.log('SERVICE_08 6d.1 System displays the error message "{0}"'.format(expected_error_msg))
         self.is_equal(expected_error_msg, error)
@@ -184,7 +184,7 @@ def test_refreshing_wsdl_validator_invalid_command(self, wsdl_url, ss_host,
         self.log('SERVICE_14 3d. The address of the WSDL validator program is incorrect and '
                  'system was not able to run the validation program.')
         self.log('Refreshing wsdl')
-        warning, error, console = refresh_wsdl_2_2_5.refresh_wsdl(self)
+        warning, error, console = refresh_wsdl.refresh_wsdl(self)
         expected_error_msg = WSDL_REFRESH_ERROR_VALIDATOR_COMMAND_NOT_FOUND
         self.log('SERVICE_14 3d.1 System displays the error message "{0}"'.format(expected_error_msg))
         self.is_equal(expected_error_msg, error)
@@ -235,7 +235,7 @@ def test_adding_wsdl_validator_not_executable(self, wsdl_warning_url, ss_host,
         clients_table_vm.open_client_popup_services(self, client_name=client_name, client_id=client_id)
 
         self.log('Try to add wsdl')
-        warning, error, console = configure_service_2_2_2.add_wsdl(self, wsdl_url=wsdl_warning_url)
+        warning, error, console = configure_service.add_wsdl(self, wsdl_url=wsdl_warning_url)
         expected_error_msg = WSDL_ERROR_VALIDATOR_COMMAND_NOT_EXECUTABLE
         self.log('SERVICE_08 6e.1 System displays the error message "{0}"'.format(expected_error_msg))
         self.is_equal(expected_error_msg, error)
@@ -271,7 +271,7 @@ def test_refreshing_wsdl_validator_not_executable(self, wsdl_url, ss_host, ss_us
         clients_table_vm.client_services_popup_select_wsdl(self, wsdl_url=wsdl_url)
         current_log_lines = log_checker.get_line_count()
         self.log('Refreshing wsdl')
-        warning, error, console = refresh_wsdl_2_2_5.refresh_wsdl(self)
+        warning, error, console = refresh_wsdl.refresh_wsdl(self)
         expected_error_msg = WSDL_REFRESH_ERROR_VALIDATOR_COMMAND_NOT_EXECUTABLE
         self.log('SERVICE_14 3e.1 System displays the error message "{0}"'.format(expected_error_msg))
         self.is_equal(expected_error_msg, error)

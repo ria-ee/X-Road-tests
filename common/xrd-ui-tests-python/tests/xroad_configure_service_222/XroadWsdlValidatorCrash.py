@@ -12,9 +12,9 @@ class XroadWsdlValidatorCrash(unittest.TestCase):
     """
     SERVICE_44 1c WSDL validation program crashes while validating the WSDL file
     RIA URL: https://jira.ria.ee/browse/XTKB-30
-    Depends on finishing other test(s): client_registration
+    Depends on finishing other test(s): XroadSecurityServerClientRegistration
     Requires helper scenarios:
-    X-Road version: 6.16
+    X-Road version: 6.16.0
     """
 
     def test_xroad_wsdl_validator_crash(self):
@@ -35,7 +35,7 @@ class XroadWsdlValidatorCrash(unittest.TestCase):
             main.config.get('wsdl.service_wsdl_warning_filename'))
         wsdl_validator_wrapper_path = ss_system_parameters.WSDL_VALIDATOR_WRAPPER_LOCATION
 
-        test_wsdl_validator_crash = wsdl_validator_errors.test_wsdl_validator_crash(case=main,
+        test_wsdl_validator_crash = wsdl_validator_errors.test_wsdl_validator_crash(self=main,
                                                                                     ssh_host=ssh_host,
                                                                                     ssh_username=ssh_user,
                                                                                     ssh_password=ssh_pass,

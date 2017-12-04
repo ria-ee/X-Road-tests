@@ -35,9 +35,9 @@ def test_generate_csr_and_import_cert(client_code, client_class, check_inputs=Fa
                 os.remove(fpath)
             except:
                 pass
-        # TEST PLAN 2.1.3-1 generate key for authentication device, and
-        # TEST PLAN 2.1.3-2 generate certificate request for the key and save it to local system
-        self.log('2.1.3-1, 2.1.3-2 generate key and certificate request using that key')
+
+        # Generate key for authentication device and generate certificate request for the key and save it to local system
+        self.log('Generate key and certificate request using that key')
         log_checker = None
         if ss2_ssh_host is not None:
             log_checker = auditchecker.AuditChecker(ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass)
@@ -64,15 +64,15 @@ def test_generate_csr_and_import_cert(client_code, client_class, check_inputs=Fa
         # Get the certificate local path
         local_cert_path = self.get_download_path(cert_path)
 
-        # TEST PLAN 2.1.3-3 upload certificate request to CA and get the signing certificate from CA
-        self.log('2.1.3-3 upload certificate request to CA and get the siging certificate')
+        # UC SS_29/SS_30 Upload certificate request to CA and get the signing certificate from CA
+        self.log('SS_29/SS_30 Upload certificate request to CA and get the siging certificate')
         get_cert(client, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
         time.sleep(6)
 
         file_cert_path = glob.glob(local_cert_path)[0]
 
-        # TEST PLAN 2.1.3-4 import the certificate to security server
-        self.log('2.1.3-4 import certificate to security server')
+        # UC SS_30 Import the certificate to security server
+        self.log('*** SS_30 Import certificate to security server')
         import_cert(self, file_cert_path)
 
         if check_success:
@@ -83,7 +83,7 @@ def test_generate_csr_and_import_cert(client_code, client_class, check_inputs=Fa
                 log_check = log_checker.check_log(log_constants.IMPORT_CERTIFICATE_FROM_FILE,
                                                   from_line=current_log_lines + 1, strict=False)
                 self.is_true(log_check)
-            self.log('2.1.3-4 check if import succeeded')
+            self.log('SS_30 16. Check if import succeeded')
             check_import(self, client_class, client_code)
 
     return test_case
@@ -405,7 +405,7 @@ def generate_csr(self, client_code, client_class, server_name, check_inputs=Fals
         current_log_lines = log_checker.get_line_count()
     '''Key label'''
     key_label = keyscertificates_constants.KEY_LABEL_TEXT + '_' + client_code + '_' + client_class
-    # TEST PLAN SS_28_4 System verifies entered key label
+    # SS_28 4. System verifies entered key label
     if check_inputs:
         parse_key_label_inputs(self)
         parse_csr_inputs(self)
@@ -492,9 +492,9 @@ def generate_csr(self, client_code, client_class, server_name, check_inputs=Fals
         self.wait_jquery()
 
         options = filter(lambda y: str(y) is not '', map(lambda x: x.text, select.options))
-        # Assertion for 2.1.3-2 check 1
-        # assert len(filter(lambda x: self.config.get('ca.ssh_host').upper() in x, options)) == 1
-        self.log('2.1.3-2 check 1 CA can be chosen')
+
+        # UC SS_29 2. Check if CA can be chosen
+        self.log('SS_29 2. Check 1: CA can be chosen')
         filter(lambda x: self.config.get('ca.ssh_host').upper() in x.text, select.options).pop().click()
 
         self.log('Click on "OK" button')
@@ -522,22 +522,21 @@ def generate_csr(self, client_code, client_class, server_name, check_inputs=Fals
     select = Select(self.wait_until_visible(type=By.ID,
                                             element=keyscertificates_constants.GENERATE_CSR_SIGNING_REQUEST_CSR_FORMAT_DROPDOWN_ID))
 
-    # TEST PLAN 2.1.3-2 check 2: Check that DER and PEM are in the key list
+    # UC SS_29 2. Check if DER and PEM exist in format selection
+    self.log('SS_29 2. Check if DER and PEM exist in format selection')
     assert 'DER' in map(lambda x: x.text, select.options)
     assert 'PEM' in map(lambda x: x.text, select.options)
-    self.log('2.1.3-2 check 2 DER and PEM exist in options')
     select.select_by_visible_text('DER')
 
-    # TEST PLAN 2.1.3-2 check 1: Check that the certification authority can be chosen
-    self.log('Select "certification service"')
+    # UC SS_29 2. Check that the certification authority can be chosen
+    self.log('SS_29 2. Check that the certification authority can be chosen')
     select = Select(self.wait_until_visible(type=By.ID,
                                             element=keyscertificates_constants.GENERATE_CSR_SIGNING_REQUEST_APPROVED_CA_DROPDOWN_ID))
     self.wait_jquery()
 
     options = filter(lambda y: str(y) is not '', map(lambda x: x.text, select.options))
-    # Assertion for 2.1.3-2 check 1
+    # Assertion for CA check 1
     assert len(filter(lambda x: self.config.get('ca.ssh_host').upper() in x, options)) == 1
-    self.log('2.1.3-2 check 1 CA can be chosen')
     filter(lambda x: self.config.get('ca.ssh_host').upper() in x.text, select.options).pop().click()
 
     # Select client from the list
@@ -551,28 +550,30 @@ def generate_csr(self, client_code, client_class, server_name, check_inputs=Fals
     self.wait_until_visible(type=By.XPATH,
                             element=keyscertificates_constants.GENERATE_CSR_SIGNING_REQUEST_POPUP_OK_BTN_XPATH).click()
     self.wait_jquery()
-    self.log('CHECK CSR FIELDS')
+
+    # UC SS_29 3. Check CSR fields
+    self.log('SS_29 3. Check CSR fields')
     self.wait_until_visible(type=By.XPATH,
                             element=keyscertificates_constants.SUBJECT_DISTINGUISHED_NAME_POPUP_XPATH)
 
-    # TEST PLAN 2.1.3-2 check 3: Check that the instance identifier matches
-    self.log('Check Instance Identifier')
+    # UC SS_29 3. Check that the instance identifier matches
+    self.log('SS_29 3. Check Instance Identifier')
     assert self.wait_until_visible(type=By.XPATH,
                                    element=keyscertificates_constants.SUBJECT_DISTINGUISHED_NAME_POPUP_C_XPATH).get_attribute(
         'value') == server_name
 
-    # TEST PLAN 2.1.3-2 check 3: Check that the member class matches
-    self.log('Check Member Class')
+    # UC SS_29 3. Check that the member class matches
+    self.log('SS_29 3. Check Member Class')
     assert self.wait_until_visible(type=By.XPATH,
                                    element=keyscertificates_constants.SUBJECT_DISTINGUISHED_NAME_POPUP_O_XPATH).get_attribute(
         'value') == client_class
 
-    # TEST PLAN 2.1.3-2 check 3: Check that the member code matches
-    self.log('Check Member Code')
+    # UC SS_29 3. Check that the member code matches
+    self.log('SS_29 3. Check Member Code')
     assert self.wait_until_visible(type=By.XPATH,
                                    element=keyscertificates_constants.SUBJECT_DISTINGUISHED_NAME_POPUP_CN_XPATH).get_attribute(
         'value') == client_code
-    self.log('2.1.3-2 check 3 client data correct')
+    self.log('SS_29 3. Client data correct')
 
     self.wait_until_visible(type=By.XPATH,
                             element=keyscertificates_constants.SUBJECT_DISTINGUISHED_NAME_POPUP_OK_BTN_XPATH).click()
@@ -687,7 +688,9 @@ def import_cert(self, cert_path):
     :return: None
     '''
 
-    # TEST PLAN 2.1.3-4 import certificate
+    # UC SS_30 1. Select to import certificate file
+    self.log('SS_30 1. Select to import certificate file')
+
     self.log('Open keys and certificates tab')
     self.driver.get(self.url)
     self.wait_jquery()
@@ -719,16 +722,15 @@ def check_import(self, client_class, client_code):
     :param client_code: str - client XRoad code
     :return: None
     '''
-    # TEST PLAN 2.1.3-4 check if certificate import succeeded
+    # UC SS_30 13-14. Check if certificate import succeeded
     self.wait_jquery()
     time.sleep(0.5)
     td = self.wait_until_visible(type=By.XPATH,
                                  element=keyscertificates_constants.get_generated_row_row_by_td_text(
                                      ' : '.join([client_class, client_code])))
     tds = td.find_element_by_xpath(".//ancestor::tr").find_elements_by_tag_name('td')
-    self.log('2.1.3-4 check for OCSP response and status: {0}'.format(
+    self.log('SS_30 13-14. Check for OCSP response and status: {0}'.format(
         (str(tds[2].text) == 'good') & (str(tds[4].text) == 'registered')))
-    # assert ((str(tds[2].text) == 'good') & (str(tds[4].text) == 'registered'))
 
 
 def added_client_row(self, client):
@@ -769,7 +771,7 @@ def generate_auth_csr(self, ca_name, change_usage=True):
                                                 GENERATE_CSR_SIGNING_REQUEST_USAGE_DROPDOWN_ID))
         select.select_by_visible_text('Auth')
 
-    # TEST PLAN 2.1.3-2 check 1: Check that the certification authority can be chosen
+    # Check that the certification authority can be chosen
     self.log('Select "certification service"')
     select = Select(self.wait_until_visible(type=By.ID,
                                             element=keyscertificates_constants.

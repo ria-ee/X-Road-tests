@@ -12,7 +12,7 @@ class XroadEditWsdlInputs(unittest.TestCase):
     RIA URL: https://jira.ria.ee/browse/XT-266, https://jira.ria.ee/browse/XTKB-53
     Depends on finishing other test(s): None
     Requires helper scenarios: None
-    X-Road version: 6.9.4
+    X-Road version: 6.16.0
     """
     def test_edit_wsdl_inputs(self):
         main = MainController(self)

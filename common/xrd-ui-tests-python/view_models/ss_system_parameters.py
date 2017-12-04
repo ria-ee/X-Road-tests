@@ -16,6 +16,10 @@ BACKUP_DUMP_VER = 'security_XROAD_6.8_KS1/GOV/TS2OWNER/TS2'
 BACKUP_CORRUPTION_FILE = '/etc/xroad/conf.d/deletethisfile.ini'
 BACKUP_CORRUPTION_FILE2 = '/var/lib/xroad/backup/deletethisfile.tar'
 BACKUP_CREATED = '/var/lib/xroad/backup//conf_backup_'
+BACKUP_STOPPING_SERVICES = 'STOPPING REGISTERED SERVICES'
+BACKUP_RESTARTING_SERVICES = 'RESTARTING REGISTERED SERVICES'
+BACKUP_RESTORING_DATABASE_DUMP = 'RESTORING DATABASE FROM /var/lib/xroad/dbdump.dat'
+BACKUP_CONFIRMATION_TEXT = '//div[@aria-describedby="confirm"]//div[@id="confirm"]'
 DELETE = "//button[contains(.,'Delete')]"
 RESTORE = "//button[contains(.,'Restore')]"
 DOWNLOAD = "//button[contains(.,'Download')]"
@@ -38,5 +42,6 @@ INVALID_CHARACTER_FILE = '@.tar'
 EMPTY_TAR_FILE = 'test.tar'
 SELECT_CLIENT_POPUP_XPATH = '//div[@aria-describedby = "confirm"]'
 SELECT_CLIENT_POPUP_OK_BTN_XPATH = SELECT_CLIENT_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="Confirm"]'
+SELECT_CLIENT_POPUP_CANCEL_BTN_XPATH = SELECT_CLIENT_POPUP_XPATH + '//div[@class="ui-dialog-buttonset"]//button[span="Cancel"]'
 REGISTER_MANAGEMENT_SERVICE_BTN_ID = 'service_provider_security_server_register'
 SECURITY_SERVER_TR_BY_TEXT = '//table[@id="used_server_search_all"]//td[text()="{0}"]'

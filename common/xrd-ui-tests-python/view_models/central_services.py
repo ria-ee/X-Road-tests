@@ -1,5 +1,6 @@
 SERVICES_TABLE_ID = 'central_services'
 SERVICES_TABLE_ROWS_XPATH = '//table[@id="central_services"]//tbody/tr'
+SERVICES_TABLE_ROW_CSS = '#central_services tbody tr'
 
 SERVICE_ADD_BUTTON_ID = 'central_service_add'
 SERVICE_EDIT_BUTTON_ID = 'central_service_details'

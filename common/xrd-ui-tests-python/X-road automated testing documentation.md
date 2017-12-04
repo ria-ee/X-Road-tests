@@ -149,17 +149,262 @@ This package holds different helper classes and methods for easier access to res
 
 _Table 2. List of files in helpers package_
 
-| **Filename** | **Description** |
-| --- | --- |
-| confreader.py | ConfReader class, described later. |
-| mockrunner.py | MockRunner class, described later. |
-| soaptestclient.py | SoapTestClient class, described later. |
-| ssh\_client.py | SSHClient class, described later. |
-| login.py | Holds login, logout and login-checking methods. |
-| ssh\_server\_actions.py | Helper functions for checking XRoad logs and other server specific methods. |
-| ssh\_user\_actions.py | Helper functions for manipulating Linux users. |
-| webdriver\_init.py | Helper functions for creating browser instances. |
-| xroad.py | Helper functions for XRoad datatypes. |
+| **Filename** | **Description** | **Methods** | **Description** | **Parameters**|
+| --- | --- | --- | --- | --- |
+| auditchecker.py | AuditChecker class, connects to security or central server over SSH and gets the last audit.log rows from it, then compares them to specified log entries and checks if they match. Used for checking if certain log entries have been added in some tests|def __init__(self, host, username, password, logfile=None, sudo=False)|Sets up the class instance and default parameters. Opens connection to the server.|self: MainController object|
+|	|	|	|	|host: str - hostname of the server|
+|	|	|	|	|username: str - SSH username|
+|	|	|	|	|password: str - SSH password|
+|	|	|	|	|logfile: str - logfile path in the server|
+|	|	|	|	|sudo: bool - use sudo for reading logfile. If set, user should be in sudoers list with NOPASSWD.|
+|	|	|	|	|return: None|
+|	|	|def get_regex(self):|Returns the compiled regex object created from self.line_regex variable.|self: MainController object|
+|	|	|def get_line_count(self):|Returns the current logfile line count using "wc -l" command. Can be used to limit the number of rows retrieved|self: MainController object|
+|	|	|def get_log_lines(self, lines=None, from_line=None):|Gets a specified number of lines from the end of the logfile. Behaviour with both "lines" and "from_line" set is undefined, use only one of them.|self: MainController object|
+|	|	|	|	|int / None - if set, number of lines to return.|
+|	|	|	|	|int / None - if set, return rows from this line number|
+|	|	|	|	|return: list[str] | None - lines from the end of the logfile as a list; None if an error occurs|
+|	|	|def reorder_lines(self, reverse_match):|Reverse the internal lists if they have been saved as reversed {reverse_match=True when using check_log)|self: MainController object|
+|	|	|	|	|reverse_match: bool - reverse the internal lists or not|
+|	|	|	|	|return: None|
+|	|	|def check_log(self, check, lines=None, from_line=None, reverse_match=True, skip_invalid_lines=True, strict=True):|Checks if log contains an entry or entries.|self: MainController object|
+|	|	|	|	|check: list[str]|str|list[dict]|dict - an entry or a list of entries to be checked for|
+|	|	|	|	|lines: int / None - if set, number of lines to get from the logfile|
+|	|	|	|	|from_line: int / None - if set, get logfile rows from this line number|
+|	|	|	|	|reverse_match: bool - True to check from the end to the beginning (default)|
+|	|	|	|	|skip_invalid_lines: bool - skip lines from the logfile if they cannot be parsed or are empty; otherwise the function will fail when encountering a line like that.
+|	|	|	|	|strict: bool / None - if False, skip log lines until the next specified entry is found; True to fail right when first one does not match; None to be strict only with reverse_match=True
+|	|	|	|	|return: bool - True if all entries were found; False otherwise|
+| confreader.py | ConfReader class, Reads different configuration files, stores the data into a key-value list and allows getting the values from there.|def parse_config_value(val):|Parses string values read from different sources to None, bool, int, float or string.|val: str - value to parse|
+|	|	|	|	|return: str - parsed value|
+|	|	|def clear_config(self):|Clears the internal dictionary|self: MainController object|
+|	|	|	|	|return: None|
+|	|	|def set_config(self, conf):|Appends/overwrites the internal configuration. Will not delete values that do not exist in dict conf|self: MainController object|
+|	|	|	|	|conf: dict - dictionary with keys and values|
+|	|	|	|	|return: None|
+|	|	|def set(self, key, value):|Sets a single key and value|self: MainController object|
+|	|	|	|	|key: str - key|
+|	|	|	|	|return: None|
+|	|	|def read_command_line_arguments(self):|Reads command-line arguments and updates configuration.|self: MainController object|
+|	|	|	|	|return: None|
+|	|	|def read_ini(self, ini_file):|Reads an ini file.|self: MainController object|
+|	|	|	|	|ini_file: str - path of the file to be parsed|
+|	|	|	|	|return: None|
+|	|	|def read_key_value_pairs(self, file):|Read file with key=value pairs|self: MainController object|
+|	|	|	|	|file: path of configuration file|
+|	|	|	|	|return: None|
+|	|	|def read_json(self, file):|Reads JSON file.|self: MainController object|
+|	|	|	|	|file: path to JSON file|
+|	|	|	|	|return: None|
+|	|	|def get(self, key, default=None):|Get a value using a key, or default if not found.|self: MainController object|
+|	|	|	|	|key: str - key to look for|
+|	|	|	|	|default: default value if key is not found. None by default.|
+|	|	|	|	|return: value or default value|
+|	|	|def get_string(self, key, default=''):|Gets a string by key, or default is value is not a string.|self: MainController object|
+|	|	|	|	|key: str - key|
+|	|	|	|	|default: str - default value|
+|	|	|	|	|return: str or default value|
+|	|	|def get_int(self, key, default=0):|Gets an integer by key, or default is value is not an integer.|self: MainController object|
+|	|	|	|	|key: str - key|
+|	|	|	|	|default: int - default value|
+|	|	|	|	|return: int or default value|
+|	|	|def get_float(self, key, default=0.0):|Gets a float by key, or default is value is not a float.|self: MainController object|
+|	|	|	|	|key: str - key|
+|	|	|	|	|default: float - default value|
+|	|	|	|	|return: float or default value|
+|	|	|def get_bool(self, key, default=False):|Gets a boolean by key, or default is value is not a boolean.|self: MainController object|
+|	|	|	|	|key: str - key|
+|	|	|	|	|default: bool - default value|
+|	|	|	|	|return: bool or default value|
+|	|	|def __init__(self, default=None, init_command_line=True, ini_path=None, config_path=None, json_path=None):|Initialize the class.|self: MainController object|
+|	|	|	|	|default: dict / None - default configuration to load automatically|
+|	|	|	|	|init_command_line: bool - initialize with command-line arguments automatically|
+|	|	|	|	|ini_path: str / None - path to configuration INI file to be loaded automatically or None if not used|
+|	|	|	|	|config_path: str / None - path to configuration key=value pairs file to be loaded automatically or None if not used|
+|	|	|	|	|json_path: str / None - path to configuration JSON to be loaded automatically or None if not used|
+|	|	|	|	|return: None|
+| login.py | Holds login, logout and login-checking methods.|def login(self, username, password, login_with_enter=False):|Try to log in to a server (central or security) with the specified username and password.|self: MainController object|
+|	|	|	|	|username: str - Username to log in with|
+|	|	|	|	|password: str - Password to log in with|
+|	|	|	|	|login_with_enter: bool - send "Enter" key instead of clicking the login button|
+|	|	|	|	|return: bool - True if login succeeded or already logged in; False otherwise|
+|	|	|def check_login(self, username, wait=False):|Check if user is already logged in (field visible and username matches)|self: MainController object|
+|	|	|	|	|username: str - check for login username|
+|	|	|	|	|return: bool - True if logged in and username matches; False otherwise|
+|	|	|def logout(self, url=None):|Log out by going to logout URL.|self: MainController object|
+|	|	|	|	|url: host where logout is needed, string|
+|	|	|	|	|return: None|
+| mockrunner.py | MockRunner class, Class that tries to control the mock service script (SoapUI MockRunner) over an SSH connection. Uses ssh_helper.SSHClient component.|def __init__(self, host, username, password, command, ready_regex='.*\[SoapUIMockServiceRunner\] Started.*', ready_timeout=60, stop_keycode=3):|Initialize the class and open the SSH connection.|self: MainController object|
+|	|	|def start(self):|Tries to start the mock service.|self: MainController object|
+|	|	|	|	|return: None|
+|	|	|def restart(self):|Restart mock service.|self: MainController object|
+|	|	|	|	|return: bool - if the service was started|
+|	|	|def stop(self):|Stop the mock service.|self: MainController object|
+|	|	|	|	|return: None|
+|	|	|def get_error(self):|Returns the last error.|self: MainController object|
+|	|	|	|	|return: str|None - last error message|
+| soaptestclient.py | SoapTestClient class, Test client to send SOAP queries to the test services. Uses XML ElementTree for parsing XML and UUID to generate unique IDs for requests.|def __init__(self, url=None, body=None, client_certificate=None, server_certificate=None, query_timeout=None, retry_interval=None, fail_timeout=None, headers=None, xroad_namespace=None, xroad_identifiers_namespace=None, faults_successful=None, faults_unsuccessful=None, verify_service=None, params=None, log=None):|Initializes the class and sets default values for all necessary parameters (if specified).|self: MainController object|
+|	|	|	|	|url: str - service URL|
+|	|	|	|	|body: str - request body|
+|	|	|	|	|client_certificate: (client_certificate, client_key) - paths of the client certificate and key files|
+|	|	|	|	|server_certificate: str - path of the server certificate for verification of the service|
+|	|	|	|	|query_timeout: int - single query timeout in seconds|
+|	|	|	|	|retry_interval: int - retry interval to check the same condition multiple times|
+|	|	|	|	|fail_timeout: int - retry time limit|
+|	|	|	|	|headers: [str] - override default HTTP headers|
+|	|	|	|	|xroad_namespace: str - override default XRoad namespace|
+|	|	|	|	|xroad_identifiers_namespace: str - override default XRoad namespace|
+|	|	|	|	|faults_successful: [str] - fault codes for a successful query (other codes are considered a success)|
+|	|	|	|	|faults_unsuccessful: [str] - fault codes for an unsuccessful query (other codes are considered a success)|
+|	|	|	|	|erify_service: dict{} - verify specified service parameters; if one doesn't match, query fails|
+|	|	|	|	|params: dict{}/None - default parameters for query|
+|	|	|	|	|log: logging function|
+|	|	|	|	|return: None|
+|	|	|def log(self, str):|Default logging function.|self: MainController object|
+|	|	|	|	|str: str - text to be logged|
+|	|	|	|	|return: None|
+|	|	|def query(self, url=None, body=None, params=None, timeout=None):|Log out by going to logout URL.|Sends a query to the service. All parameters are optional and if not set, they're replaced with default ones that were supplied to the init method.|self: MainController object|
+|	|	|	|	|url: str/None - URL of the service|
+|	|	|	|	|body: str/None - request body (XML)|
+|	|	|	|	|params: dict/None - parameters to be replaced in the body;|
+|	|	|	|	|timeout: int - query timeout in seconds|
+|	|	|	|	|return: bool - True if the query succeeded and no Fault element was found in the result; False otherwise|
+|	|	|def check_query_success(self, url=None, body=None, params=None, query_timeout=None, faults=None):|Sends the query and checks if the result was a success or not. Uses the same parameters as the query() method, but can be additionally supplied with a list of faults that are considered errors. If the faults list is specified, the function returns True even if there was a fault but it wasn't in the list; otherwise False. Wildcards can be used in the end of the fault strings and will only check for a match in the beginning of the fault code.|self: MainController object|
+|	|	|	|	|url: str/None - URL of the service|
+|	|	|	|	|body: str/None - request body (XML)|
+|	|	|	|	|params: dict/None - parameters to be replaced in the body|
+|	|	|	|	|query_timeout: int - query timeout in seconds|
+|	|	|	|	|faults: str|[str]|None/bool - string or list of strings of the codes to be considered real faults, None or True for all, False for none|
+|	|	|	|	|return: bool - True if the query succeeded and didn't get a (specified) fault; False otherwise|
+|	|	|def check_query_loop(self, url=None, body=None, params=None, query_timeout=None, faults=None, fail_timeout=None, retry_interval=None, verify_service=None, check_success=True):|Checks for query result like check_query_success but in a loop. Depending on check_success=True (check if the query succeeds) or check_success=False (check if the query fails) it tries the query again after retry_interval seconds until the condition is met or a timeout (specified by fail_timeout seconds) occurs. If the condition is met and, if specified, verify_service conditions match the result service, returns True; otherwise False is returned.|self: MainController object|
+|	|	|	|	|url: str/None - URL of the service|
+|	|	|	|	|body: str/None - request body (XML)|
+|	|	|	|	|params: dict/None - parameters to be replaced in the body;|
+|	|	|	|	|query_timeout: int - query timeout in seconds|
+|	|	|	|	|faults: str/[str]|None|bool - string or list of strings of the codes to be considered real faults, None or True for all, False for none|
+|	|	|	|	|fail_timeout: int - checking failed if this number of seconds pass|
+|	|	|	|	|retry_interval: int - number of seconds until first try or retry (after failing)|
+|	|	|	|	|verify_service: dict - parameters to check in the result|
+|	|	|	|	|check_success: bool - True to wait until the query succeeds; False to wait until it fails|
+|	|	|	|	|return: bool - True if success condition is met and verify_service matches result service; False otherwise|
+|	|	|def check_success(self, url=None, body=None, params=None, query_timeout=None, faults=None, fail_timeout=None, retry_interval=None, verify_service=None):|Re-checks a query until no (specified) faults are returned and service data verified (if verify_service dictionary is set) every retry_interval seconds until timeout occurs. If no specified faults are returned by the service and it passes verification, returns True; otherwise returns False.|self: MainController object|
+|	|	|	|	|url: str/None - URL of the service|
+|	|	|	|	|body: str/None - request body (XML)|
+|	|	|	|	|params: dict/None - parameters to be replaced in the body|
+|	|	|	|	|query_timeout: int - query timeout in seconds|
+|	|	|	|	|faults: str/[str]|None|bool - string or list of strings of the codes to be considered real faults, None or True for all, False for none|
+|	|	|	|	|fail_timeout: int - checking failed if this number of seconds pass|
+|	|	|	|	|retry_interval: int - number of seconds until first try or retry (after failing)|
+|	|	|	|	|erify_service: dict - parameters to check in the result|
+|	|	|	|	|return: bool - True if success condition is met and verify_service matches result service; False otherwise|
+|	|	|def check_fail(self, url=None, body=None, params=None, query_timeout=None, faults=None, fail_timeout=None, retry_interval=None, verify_service=None):|Re-checks a query until a (specified) fault is returned and service data verified (if verify_service dictionary is set) every retry_interval seconds until timeout occurs. If specified fault is returned by the service and it passes verification, returns True; otherwise returns False.|self: MainController object|
+|	|	|	|	|url: str|None - URL of the service|
+|	|	|	|	|body: str|None - request body (XML)|
+|	|	|	|	|params: dict|None - parameters to be replaced in the body|
+|	|	|	|	|query_timeout: int - query timeout in seconds|
+|	|	|	|	|faults: str|[str]|None|bool - string or list of strings of the codes to be considered real faults, None or True for all, False for none|
+|	|	|	|	|fail_timeout: int - checking failed if this number of seconds pass|
+|	|	|	|	|retry_interval: int - number of seconds until first try or retry (after failing)|
+|	|	|	|	|verify_service: dict - parameters to check in the result|
+|	|	|	|	|return: bool - True if success condition is met and verify_service matches result service; False otherwise|
+|	|	|def get_service(self):|Returns service parameters from last result XML or None on error.|self: MainController object|
+|	|	|	|	|return: dict{instance, class, code, subsystem, service, service_version} - service data dictionary|
+|	|	|def verify_service(self, service=None):|Verifies that the parameters set match the ones returned in the last XML result. If parameter service is a match or a subset of the last service data, returns True; otherwise False|self: MainController object|
+|	|	|	|	|service: dict - service parameters to verify|
+|	|	|	|	|return: bool - True if service is a subset of last XML service data; False otherwise|
+| ssh\_client.py | SSHClient class, Simple SSH Client class using Paramiko library. Connects to an SSH server and allows to execute commands and use stdin, stdout, stderr.|def __init__(self, host, username, password):|Connects to host. If sudo is needed in connection, user to connect as should also be in sudoers| self: MainController object|
+|	|	|	|	|host: string (only hostname)|
+|	|	|	|	|username: string|
+|	|	|	|	|password: string\|None|
+|	|	|	|	|key\_file: string\|None|
+|	|	|	|	|key\_password: string\|None|
+|	|	|	|	|return: None|
+|	|	|def get_client(self):|Returns the internal paramiko.SSHClient instance.|self: MainController object|
+|	|	|	|	|return: paramiko.SSHClient|
+|	|	|def exit_status(self):|Get the latest command's exit status code.|self: MainController object|
+|	|	|	|	|return: int - status code|
+|	|	|def write(self, str, flush=False):|Using stdin, send text to server and, if specified, flush the buffer.|self: MainController object|
+|	|	|	|	|str: str - text to send|
+|	|	|	|	|flush: bool - flush the buffer after sending|
+|	|	|	|	|return: bool - True if stdin exists, False otherwise|
+|	|	|def write_flush(self, str, linefeed=True):|Using stdin, send text or line to server and flush it.|self: MainController object|
+|	|	|	|	|str: str - text to send|
+|	|	|	|	|linefeed: bool - add a newline character to the string if True|
+|	|	|	|	|return: bool - True if stdin exists, False otherwise|
+|	|	|def writeline(self, line):|Using stdin, send a line (adding a linefeed character to specified text) to server and flush it.|self: MainController object|
+|	|	|	|	|line: str - text to send, without the linefeed|
+|	|	|	|	|return: bool - True if stdin exists, False otherwise|
+|	|	|def readline(self):|Reads a line from stdout, excluding newline characters.|self: MainController object|
+|	|	|	|	|str/None - data from stdout, or None if stdout does not exist|
+|	|	|def exec_command(self, command, sudo=False, timeout=None):|Executes the command. To enable sudo, param must be true, default False. Returns console ouput as string array(each line one element) removes '\n' from lines.|self: MainController object|
+|	|	|	|	|ommand: string - command to send|
+|	|	|	|	|sudo: bool - True to send sudo before command|
+|	|	|	|	|return: string array|
+|	|	|def open(self, host, username, password):|Connects to host. If sudo is needed in connection, user to connect as should also be in sudoers|self: MainController object|
+|	|	|	|	|host: string (only hostname)|
+|	|	|	|	|username: string|
+|	|	|	|	|password: string\|None|
+|	|	|	|	|key\_file: string\|None|
+|	|	|	|	|key\_password: string\|None|
+|	|	|	|	|return: None|
+|	|	|def close(self):|Close the connection.|self: MainController object|
+|	|	|	|	|return: None|
+| ssh\_server\_actions.py | Helper functions for checking XRoad logs and other server specific methods.|def get_server_time(ssh_host, ssh_username, ssh_password):|Creates connection to ss_host with ssh_username and ssh_password and retrieves server date|ssh_host: string (only hostname)|
+|	|	|	|	|ssh_password: string|
+|	|	|	|	|ssh_username: string|
+|	|	|	|	|return: datettime object of current server systen time|
+|	|	|def get_key_conf_keys_count(sshclient, key_type):|Gets count of keys of specified type in system configuration|sshclient: obj - sshclient instance|
+|	|	|	|	|key_type: str - key type|
+|	|	|	|	|return: None|
+|	|	|def get_key_conf_token_count(sshclient):|Gets count of device objects in system configuration|sshclient: obj - sshclient instance|
+|	|	|	|	|return: None|
+|	|	|def get_key_conf_csr_count(sshclient):|Gets count of csr objects in system configuration|sshclient: sshclient instance|
+|	|	|	|	|return: None|
+| ssh\_user\_actions.py | Helper functions for manipulating Linux users. |def add_user(client, username, password, group=None):|Creates new user to connected server. Server connections comes from client param|client: ssh_helper object|
+|	|	|	|	|username: string (username to create)|
+|	|	|	|	|password: string (password to assign to user)|
+|	|	|	|	|group: string (group to add user, empty don't want to add to group)|
+|	|	|	|	|return: None|
+|	|	|def delete_user(client, username):|Deletes user from connected server. Server connection comes from client param|client: ssh_helper object|
+|	|	|	|	|username: string (username to delete)|
+|	|	|	|	|return: None|
+| webdriver\_init.py | Helper functions for creating browser instances.|def get_webdriver(type=webdriver.Firefox, download_dir='', log_dir='', marionette=False):|Gets the webdriver object depending on the type set.|type: RemoteWebDriver - type of the WebDriver, allowed: Firefox, Chrome, Ie|
+|	|	|	|	|download_dir: str - path of the download directory|
+|	|	|	|	|log_dir: str - path of the logfile|
+|	|	|	|	|marionette: bool - used only for Firefox; True for Selenium 3; False for Selenium 2|
+|	|	|	|	|return: WebDriver object|
+|	|	|def get_ie(download_dir='', log_dir=''):|Stub for getting Internet Explorer WebDriver.|download_dir: str - path of the download directory|
+|	|	|	|	|log_dir: str - path of the logfile|
+|	|	|	|	|return: WebDriver object|
+|	|	|def get_chrome(download_dir='', log_dir=''):|Stub for getting Chrome WebDriver|download_dir: str - path of the download directory|
+|	|	|	|	|log_dir: str - path of the logfile|
+|	|	|	|	|return: WebDriver object|
+|	|	|def get_firefox(download_dir='', log_dir='', marionette=False):|Returns a Firefox WebDriver that accepts untrusted certificates, will no ask to resume from crashes, does not use cache, uses specified download directory and logfile, downloads files automatically.|download_dir: str - path of the download directory|
+|	|	|	|	|log_dir: str - path of the logfile|
+|	|	|	|	|marionette: bool - False to use Selenium 2, True for Selenium 3|
+|	|	|	|	|return: WebDriver object|
+| xroad.py | Helper functions for XRoad datatypes.|def split_xroad_id(xroad_id, type=None):|Creates a dictionary {type, instance, class, code, subsystem} from an XRoad ID string.|def split_xroad_id(xroad_id, type=None):|Creates a dictionary {type, instance, class, code, subsystem} from an XRoad ID string.|xroad_id: str - XRoad ID string|
+|	|	|	|	|type: str - member type|
+|	|	|	|	|return: dict{type, instance, class, code, subsystem}|
+|	|	|def get_service_name(service):|Returns service part of string service.version|service: service full name|
+|	|	|	|	|return: str - service name|
+|	|	|def get_service_version(service):|Returns version part of string service.version; empty string if not specified.|service: service full name|
+|	|	|	|	|return: str - service version or empty string|
+|	|	|def get_xroad_id(xroad_data):|Returns the XRoad ID string using an xroad data dict. Type (member/subsystem) is automatically detected from 'subsystem' value - if it exists, return a subsystem; if not, return a member.|xroad_data: dict - XRoad data from get_xroad_id()|
+|	|	|	|	|return: str - XRoad ID string|
+|	|	|def get_xroad_member(xroad_data, xroad_type='MEMBER'):|Returns an XRoad ID member string using an xroad data dict.|xroad_data: dict - XRoad data from get_xroad_id()|
+|	|	|	|	|xroad_type: str - subsystem type string, default=MEMBER|
+|	|	|	|	|return: str - XRoad ID string|
+|	|	|def get_xroad_subsystem(xroad_data, xroad_type='SUBSYSTEM'):|Returns an XRoad ID subsystem string using an xroad data dict.|xroad_data: dict - XRoad data from get_xroad_id()|
+|	|	|	|	|xroad_type: str - subsystem type string, default=SUBSYSTEM|
+|	|	|	|	|return: str - XRoad ID string|
+|	|	|def fill_upload_input(self, upload_button_element, local_path):|Fills upload element input[type="file"] without using the file open dialog.|self: MainController object|
+|	|	|	|	|upload_button_element: WebElement - "Upload" or "Browse" button (label[class="upload"])|
+|	|	|	|	|local_path: str - file path on local computer|
+|	|	|	|	|return: None|
+|	|	|def get_xroad_path(client, client_type=None):|Returns an X-Road path.|client: dict - client data|
+|	|	|	|	|return: client_type: str/None - if set, used as client type; otherwise the type is extracted from client parameter|
+|	|	|	|	|return: str - X-Road path|
 
 ## 2.4 ConfReader class (confreader.py)
 
@@ -432,22 +677,22 @@ _Table 11. Test example architecture_
 
 _Table 12. Test dependencies and requirements_
 
-| Test number | Depends on finishing other test(s) | Requires helper scenarios |
+| Test class | Depends on finishing other test(s) | Requires helper scenarios |
 | --- | --- | --- |
-| 2.1.3 | None |   |
-| 2.1.8 | None |   |
-| 2.1.9 | None |   |
-| 2.2.1 | None | 2.1.3 |
-| 2.2.2 | 2.2.1 | 2.1.8 |
-| 2.2.5 | 2.2.2 |   |
-| 2.2.6 | 2.2.2 |   |
-| 2.2.7 | 2.2.2 |   |
-| 2.2.8 | 2.2.2 | 2.1.8 |
-| 2.2.9 | 2.2.2 | 2.1.8 |
-| 2.9.1 | None |   |
-| 2.10.1 | None |   |
-| 2.11.1 | None |   |
-| 2.11.2 | None | 2.1.3, 2.1.8 |
+| XroadSecurityServerClientRegistration | None |   |
+| XroadAddToAcl | None |   |
+| XroadAddToAclFromClient | None |   |
+| XroadSecurityServerClientRegistration | None | client_registration_in_ss |
+| XroadConfigureService | XroadSecurityServerClientRegistration | add_to_acl |
+| XroadRefreshWsdl | XroadConfigureService |   |
+| XroadDeactivateWsdl | XroadConfigureService |   |
+| XroadLocalTls | XroadConfigureService |   |
+| XroadAddCentralService | XroadConfigureService | add_to_acl |
+| XroadMemberAccess | XroadConfigureService | add_to_acl |
+| XroadChangingDatabaseRowsWithGUICentralServer | None |   |
+| XroadChangingDatabaseRowsWithGUISecurityServer | None |   |
+| XroadCsLogging | None |   |
+| XroadSsLogging | None | client_registration_in_ss, add_to_acl |
 
 ## 2.14 Mock Service
 
