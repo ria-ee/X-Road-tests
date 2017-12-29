@@ -17,7 +17,7 @@ class Cs_conf_mgm_external(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160804132215
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/configuration_management
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/configuration_management
     # Pagemodel area: (272, 38, 1640, 826)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -43,9 +43,9 @@ class Cs_conf_mgm_external(CommonUtils):
     # Links found: 0
     # Page model constants:
     ID_HEADING = (By.ID, u'heading') # x: 290 y: 51 width: 249 height: 22, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
-    INTERNAL_CONFIGURATION = (By.ID, u'ui-id-3') # x: 856 y: 108 width: 171 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/configuration_management#source_tab
-    EXTERNAL_CONFIGURATION = (By.ID, u'ui-id-4') # x: 1028 y: 108 width: 173 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/configuration_management#source_tab
-    TRUSTED_ANCHORS = (By.ID, u'ui-id-5') # x: 1202 y: 108 width: 132 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/configuration_management#trusted_anchors_tab
+    INTERNAL_CONFIGURATION = (By.ID, u'ui-id-3') # x: 856 y: 108 width: 171 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    EXTERNAL_CONFIGURATION = (By.ID, u'ui-id-4') # x: 1028 y: 108 width: 173 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    TRUSTED_ANCHORS = (By.ID, u'ui-id-5') # x: 1202 y: 108 width: 132 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     ANCHOR = (By.XPATH, u'//div[1]/div[1]/div[1]/span[1]') # x: 300 y: 163 width: 65 height: 26, tag: span, type: , name: None, form_id: , checkbox: , table_id: conf_parts, href: None
     ID_GENERATE_SOURCE_ANCHOR = (By.ID, u'generate_source_anchor') # x: 1665 y: 163 width: 96 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
     ID_DOWNLOAD_SOURCE_ANCHOR = (By.ID, u'download_source_anchor') # x: 1771 y: 163 width: 109 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:

@@ -12,7 +12,7 @@ class Ss_keys_and_cert_dlg_import_cert(CommonUtils):
 
     """
     # Pagemodel timestamp: 20161107081755
-    # Pagemodel url: https://test-ss1.i.palveluvayla.com:4000/keys
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/keys
     # Pagemodel area: (609, 369, 706, 230)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

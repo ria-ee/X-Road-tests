@@ -17,7 +17,7 @@ class Cs_initial_configuration(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160802084240
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/init
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/init
     # Pagemodel area: Full screen
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

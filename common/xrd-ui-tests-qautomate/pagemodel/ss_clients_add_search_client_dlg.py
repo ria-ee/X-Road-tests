@@ -17,7 +17,7 @@ class Ss_clients_add_search_client_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160909115934
-    # Pagemodel url: https://test-ss2.i.palveluvayla.com:4000/clients
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/clients
     # Pagemodel area: (625, 234, 674, 506)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

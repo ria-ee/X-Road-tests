@@ -17,7 +17,7 @@ class Cs_conf_mgm(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160330092643
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/configuration_management
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/configuration_management
     # Pagemodel area: (270, 0, 1647, 885)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -43,9 +43,9 @@ class Cs_conf_mgm(CommonUtils):
     # Links found: 0
     # Page model constants:
     ID_HEADING = (By.ID, u'heading') # x: 290 y: 14 width: 249 height: 22, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
-    INTERNAL_CONFIQURATION = (By.ID, u'ui-id-3') # x: 856 y: 71 width: 171 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/configuration_management#source_tab
-    EXTERNAL_CONFIGURATION = (By.ID, u'ui-id-4') # x: 1028 y: 71 width: 173 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/configuration_management#source_tab
-    TRUSTED_ANCHOR = (By.ID, u'ui-id-5') # x: 1202 y: 71 width: 132 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/configuration_management#trusted_anchors_tab
+    INTERNAL_CONFIQURATION = (By.ID, u'ui-id-3') # x: 856 y: 71 width: 171 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    EXTERNAL_CONFIGURATION = (By.ID, u'ui-id-4') # x: 1028 y: 71 width: 173 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    TRUSTED_ANCHOR = (By.ID, u'ui-id-5') # x: 1202 y: 71 width: 132 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     ANCHOR = (By.XPATH, u'//div[1]/div[1]/div[1]/span[1]') # x: 300 y: 126 width: 65 height: 26, tag: span, type: , name: None, form_id: , checkbox: , table_id: conf_parts, href: None
     ID_GENERATE_SOURCE_ANCHOR = (By.ID, u'generate_source_anchor') # x: 1665 y: 126 width: 96 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
     ID_DOWNLOAD_SOURCE_ANCHOR = (By.ID, u'download_source_anchor') # x: 1771 y: 126 width: 109 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
@@ -71,8 +71,8 @@ class Cs_conf_mgm(CommonUtils):
     # Dynamic objects:
     SIGNINGKEYS = (By.ID, u'signing_keys') # x: 301 y: 531 width: 1578 height: 43, tag: table, type: , name: None, form_id: , checkbox: , table_id: , href:
     CONFPARTS = (By.ID, u'conf_parts') # x: 301 y: 707 width: 1578 height: 30, tag: table, type: , name: None, form_id: , checkbox: , table_id: , href:
-    OK_PIN_LOGIN_BUTTON = (By.XPATH, u'//div[8]/div[3]/div[1]/button[1]') # x: 1111 y: 539 width: 44 height: 36, tag: button, type: button, name: None, form_id: , checkbox: , table_id: , href:
     LOGIN = (By.CLASS_NAME, u'login') # x: 1778 y: 536 width: 70 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
+    CONFPARTS1 = (By.ID, u'conf_parts') # x: 301 y: 636 width: 1568 height: 185, tag: table, type: , name: None, form_id: , checkbox: , table_id: , href:
 
     def click_link_internal_configuration(self):
         """
@@ -81,7 +81,6 @@ class Cs_conf_mgm(CommonUtils):
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.INTERNAL_CONFIQURATION*
         """
-        # AutoGen method click_link: https://test-cs.i.palveluvayla.com:4000/configuration_management#source_tab
         self.click_element(self.INTERNAL_CONFIQURATION)
 
     def click_link_external_configuration(self):
@@ -91,7 +90,6 @@ class Cs_conf_mgm(CommonUtils):
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.EXTERNAL_CONFIGURATION*
         """
-        # AutoGen method click_link: https://test-cs.i.palveluvayla.com:4000/configuration_management#source_tab
         self.click_element(self.EXTERNAL_CONFIGURATION)
 
     def click_button_id_generate_source_anchor(self):
@@ -164,15 +162,6 @@ class Cs_conf_mgm(CommonUtils):
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.LOGIN*
         """
         self.click_element(self.LOGIN)
-
-    def click_element_ok_pin_login_button(self):
-        """
-        Click button to ok pin login
-
-        **Test steps:**
-            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.OK_PIN_LOGIN_BUTTON*
-        """
-        self.click_element(self.OK_PIN_LOGIN_BUTTON)
 
     def verify_hash_value_is_visible(self):
         """
@@ -249,7 +238,7 @@ class Cs_conf_mgm(CommonUtils):
     def click_oldest_signing_key(self):
         """
         Click oldest signing key on the signing keys table
-        
+
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.wait_until_jquery_ajax_loaded`
         """
@@ -260,3 +249,73 @@ class Cs_conf_mgm(CommonUtils):
         rows = [row for row in rows if len(row.find_elements_by_xpath(".//td"))]
         oldest = min(rows, key=lambda p: p.find_elements_by_xpath(".//td")[1].text)
         oldest.click()
+
+    def verify_signing_keys(self):
+        """
+        Verify that signing keys does not contain 'Signing key'
+        """
+        locator = self.SIGNINGKEYS
+        table = self.find_element(locator)
+        rows = table.find_elements_by_xpath(".//tr")
+
+        for row in rows:
+            columns = row.find_elements_by_xpath(".//td")
+            if len(columns):
+                assert(all(column.text for column in columns)), "Signing key info is empty"
+
+    def click_element_from_table_conf_parts(self, text=u'foo.xml'):
+        """
+
+        :param text:  String value for text
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *element*
+        """
+        # Element search
+        locator = self.CONFPARTS1
+        value = text
+        row = u'TBODY/TR'
+        cell = u'TD'
+        element_info = self.get_table_column_and_row_by_text(locator, value, row, cell)
+
+        # Searched element info
+        row_number = element_info[2]
+        column_number = element_info[3]
+        row_element = element_info[0]
+        element = element_info[1]
+
+        # Action for the element
+        self.click_element(element)
+
+    def click_conf_upload(self):
+        """
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.ID_UPLOAD_CONF_PART*
+        """
+        self.click_element(self.ID_UPLOAD_CONF_PART)
+
+    def click_download(self, parameters=None):
+        """
+
+        :param parameters:  Test data section dictionary
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.ID_DOWNLOAD_CONF_PART*
+        """
+        self.click_element(self.ID_DOWNLOAD_CONF_PART)
+
+    def get_newest_key_id(self, parameters=None):
+        """
+        
+        :param parameters:  Test data section dictionary
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.wait_until_jquery_ajax_loaded`
+        """
+        self.wait_until_jquery_ajax_loaded()
+        locator = self.SIGNINGKEYS
+        table = self.find_element(locator)
+        rows = table.find_elements_by_xpath(".//tr")
+        rows = [row for row in rows if len(row.find_elements_by_xpath(".//td"))]
+        newest = max(rows, key=lambda p: p.find_elements_by_xpath(".//td")[1].text)
+        return newest.text.split(" ")[1]

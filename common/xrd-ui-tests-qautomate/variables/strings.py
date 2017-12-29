@@ -8,6 +8,7 @@ login_user_failed = u'Log in user failed'
 
 login_token = u'Log in to token'
 logout_token = u'Log out from token'
+login_token_failed = u'Log in to token failed'
 
 add_timestamping_services = u'Add timestamping service'
 add_timestamping_services_failed = u'Add timestamping service failed'
@@ -18,15 +19,10 @@ set_ui_language = u'Set UI language'
 edit_cs_address = u'Edit central server address'
 edit_cs_address_failed = u'Edit central server address failed'
 
-recreate_internal_configuration_anchor = u'Re-create internal configuration anchor'
-generate_internal_config_signing_key = u'Generate internal configuration signing key'
-activate_internal_config_signing_key = u'Activate internal configuration signing key'
-delete_internal_config_signing_key = u'Delete internal configuration signing key'
-
-recreate_external_configuration_anchor = u'Re-create external configuration anchor'
-generate_external_config_signing_key = u'Generate external configuration signing key'
-activate_external_config_signing_key = u'Activate external configuration signing key'
-delete_external_config_signing_key = u'Delete external configuration signing key'
+recreate_configuration_anchor = u'Re-create {} configuration anchor'
+generate_config_signing_key = u'Generate {} configuration signing key'
+activate_config_signing_key = u'Activate {} configuration signing key'
+delete_config_signing_key = u'Delete {} configuration signing key'
 
 restore_backup_failed_audit_log = u'Restore configuration failed'
 restore_configuration_audit_log = u'Restore configuration'
@@ -35,6 +31,9 @@ upload_backup_audit_log = u'Upload backup file'
 upload_backup_failed_audit_log = u'Upload backup file failed'
 generate_backup_audit_log = u'Back up configuration'
 failed_generate_backup_audit_log = u'Back up configuration failed'
+
+configuration_part_upload_audit_log = u'Upload configuration part'
+failed_configuration_part_upload_audit_log = u'Upload configuration part failed'
 
 # Ui strings
 authentication_failed = u'Authentication failed'
@@ -49,6 +48,7 @@ reg_auth_cert_deletion = u'Authentication certificate deletion'
 key_success_deleted_from_cs = u'Key successfully deleted from central server configuration'
 internal_conf_anchor_generated_success = u'Internal configuration anchor generated successfully'
 token_key_removed = u'Key successfully deleted from token'
+token_key_removed_fail = u"Failed to delete key from token '{}': Key '{}' not found"
 change_address_error = u'Central server address must be DNS name or IP address'
 external_conf_anchor_generated_success = u'External configuration anchor generated successfully'
 restore_failed = u"Failed to restore configuration: Restoring configuration from file '{}' failed."
@@ -60,6 +60,15 @@ backup_file_uploaded = u'New backup file uploaded successfully'
 backup_file_upload_invalid_char = u"Failed to upload new backup file: Filename '{}' contains invalid characters. Valid characters include: (A-Z), (a-z), (0-9), (_), (.), (-)."
 backup_file_uploaded_invalid_extension = u"Failed to upload new backup file: Uploaded file name '{}' has an invalid extension, the only valid one is 'tar'"
 backup_file_uploaded_invalid_format = u"Failed to upload new backup file: Content of uploaded file must be in tar format"
+configuration_file_upload = u"Configuration file for content identifier '{}' uploaded successfully."
+configuration_file_upload_validation_fail = u"Failed to upload configuration part: Validation of configuration file with content identifier '{}' failed."
+configuration_file_upload_missing_validation_fail = u"Failed to upload configuration part: Validation program '{}' does not exist in the file system."
+
+
+login_software_token_missing_pin = u"Missing parameter: pin"
+login_software_token_invalid_pin = u'PIN incorrect'
+
+failed_to_activae_signing_key = u'Failed to activate signing key: token or key not available'
 
 lanquage_eng = u'ENGLISH (EN)'
 
@@ -78,6 +87,8 @@ backup_directory = "/var/lib/xroad/backup"
 
 invalid_backup_file_name = "invalid.tar"
 invalid_backup_file = os.path.join(backup_directory, invalid_backup_file_name)
+
+configuration_parts_directory = "/etc/xroad/configuration-parts"
 
 devices_file = "/etc/xroad/devices.ini"
 

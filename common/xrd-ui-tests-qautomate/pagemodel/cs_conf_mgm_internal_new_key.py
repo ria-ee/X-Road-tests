@@ -17,7 +17,7 @@ class Cs_conf_mgm_internal_new_key(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161101080519
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/configuration_management
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/configuration_management
     # Pagemodel area: (708, 385, 504, 204)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

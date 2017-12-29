@@ -17,7 +17,7 @@ class Ss_softoken_enter_pin(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160330125409
-    # Pagemodel url: https://test-rh1.i.palveluvayla.com:4000/keys
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/keys
     # Pagemodel area: (271, 1, 1640, 302)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -42,7 +42,7 @@ class Ss_softoken_enter_pin(CommonUtils):
     # Pagemodel type: normal
     # Links found: 0
     # Page model constants:
-    PLEASE_ENTER_SOFTTOKEN_PIN = (By.CSS_SELECTOR, u'p>a') # x: 883 y: 10 width: 154 height: 17, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-rh1.i.palveluvayla.com:4000/keys
+    PLEASE_ENTER_SOFTTOKEN_PIN = (By.CSS_SELECTOR, u'p>a') # x: 883 y: 10 width: 154 height: 17, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     ID_HEADING = (By.ID, u'heading') # x: 290 y: 51 width: 184 height: 22, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
     KEYS_FILTER_TEXT = (By.CSS_SELECTOR, u'#keys_filter>label>input') # x: 346 y: 113 width: 179 height: 33, tag: input, type: text, name: None, form_id: , checkbox: , table_id: , href:
     CERTIFICATE = (By.XPATH, u'//div[1]/table[1]/thead[1]/tr[1]/th[1]') # x: 291 y: 152 width: 613 height: 54, tag: th, type: , name: None, form_id: , checkbox: , table_id: keys, href:

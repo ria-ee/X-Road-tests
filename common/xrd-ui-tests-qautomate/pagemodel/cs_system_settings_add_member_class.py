@@ -17,7 +17,7 @@ class Cs_system_settings_add_member_class(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161007091041
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/system_settings
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/system_settings
     # Pagemodel area: (710, 363, 503, 248)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

@@ -17,7 +17,7 @@ class Cs_conf_mgm_enter_pin(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160811111146
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/configuration_management
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/configuration_management
     # Pagemodel area: (759, 387, 402, 201)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -47,8 +47,10 @@ class Cs_conf_mgm_enter_pin(CommonUtils):
     TITLE = (By.ID, u'ui-id-8') # x: 770 y: 400 width: 67 height: 21, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
     PIN = (By.XPATH, u'//div[9]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]') # x: 775 y: 451 width: 57 height: 43, tag: td, type: , name: None, form_id: , checkbox: , table_id: 5, href:
     ID_ACTIVATE_TOKEN_PIN = (By.ID, u'activate_token_pin') # x: 836 y: 456 width: 306 height: 33, tag: input, type: password, name: activate_token_pin, form_id: , checkbox: , table_id: 5, href:
-    BUTTON_CLOSE = (By.XPATH, u'//div[9]/div[3]/div[1]/button[2]') # x: 1033 y: 544 width: 67 height: 37, tag: button, type: button, name: None, form_id: , checkbox: , table_id: 5, href:
     BUTTON_OK = (By.XPATH, u'//div[9]/div[3]/div[1]/button[1]') # x: 1110 y: 544 width: 45 height: 37, tag: button, type: button, name: None, form_id: , checkbox: , table_id: 5, href:
+    # Dynamic objects:
+    CLOSE_BUTTON = (By.XPATH, u'(//div[@aria-describedby = \'activate_token_dialog\']//span[@class = \'ui-button-text\' and text() = \'Close\'])[2]') # x: 1049 y: 555 width: 39 height: 18, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    OK_BUTTON = (By.XPATH, u'//*[contains(@aria-describedby,\"activate_token_dialog\")]/div/div/button[1]/span') # x: 1124 y: 559 width: 18 height: 18, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
 
     def input_text_to_id_activate_token_pin(self, parameters=None):
         """
@@ -65,9 +67,27 @@ class Cs_conf_mgm_enter_pin(CommonUtils):
     def click_button_ok(self):
         """
         Click button to ok the dialog
-        
+
         **Test steps:**
-            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.BUTTON_OK*
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.OK_BUTTON*
         """
         # AutoGen method
-        self.click_element(self.BUTTON_OK)
+        self.click_element(self.OK_BUTTON)
+
+    def close_dialog(self, parameters=None):
+        """
+
+        :param parameters:  Test data section dictionary
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.CLOSE_BUTTON*
+        """
+        self.click_element(self.CLOSE_BUTTON)
+
+    def verify_pin_dialog_is_open(self):
+        """
+        Verify pin dialog
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.element_should_be_present`, *self.ID_ACTIVATE_TOKEN_PIN*
+        """
+        self.element_should_be_present(self.ID_ACTIVATE_TOKEN_PIN)

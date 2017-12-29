@@ -19,29 +19,21 @@ from common_lib.component_ss_clients import Component_ss_clients
 from common_lib.component_ss_initial_conf import Component_ss_initial_conf
 from common_lib.component_ss_keys_and_certs import Component_ss_keys_and_certs
 from common_lib.component_ss_services import Component_ss_services
-from pagemodel.cs_members import Cs_members
-from pagemodel.cs_members_subsystems_dlg import Cs_members_subsystems_dlg
-from pagemodel.ss_clients_dlg_services import Ss_clients_dlg_services
-from pagemodel.ss_softoken_enter_pin import Ss_softoken_enter_pin
-from pagemodel.cs_conf_mgm_enter_pin import Cs_conf_mgm_enter_pin
-from pagemodel.ss_clients_add_search_client_dlg import Ss_clients_add_search_client_dlg
-from pagemodel.cs_sidebar import Cs_sidebar
-from pagemodel.ss_clients import Ss_clients
-from pagemodel.ss_keys_and_cert import Ss_keys_and_cert
-from pagemodel.cs_sec_servers import Cs_sec_servers
-from pagemodel.cs_login import Cs_login
-from pagemodel.cs_conf_mgm import Cs_conf_mgm
-from pagemodel.cs_system_settings import Cs_system_settings
-from pagemodel.ss_clients_add_client import Ss_clients_add_client
-from pagemodel.cs_members_add_subsystem_dlg import Cs_members_add_subsystem_dlg
-from pagemodel.ss_enter_pin_dlg import Ss_enter_pin_dlg
-from pagemodel.cs_sec_servers_mgm_requests import Cs_sec_servers_mgm_requests
-from pagemodel.ss_sidebar import Ss_sidebar
-from pagemodel.open_application import Open_application
-from pagemodel.cs_remove_member_dlg import Cs_remove_member_dlg
-from pagemodel.cs_members_details_dlg import Cs_members_details_dlg
 from common_lib.component_cs_sidebar import Component_cs_sidebar
 from common_lib.component_ss_sidebar import Component_ss_sidebar
+from pagemodel.cs_members import Cs_members
+from pagemodel.cs_sidebar import Cs_sidebar
+from pagemodel.cs_sec_servers import Cs_sec_servers
+from pagemodel.cs_conf_mgm import Cs_conf_mgm
+from pagemodel.cs_system_settings import Cs_system_settings
+from pagemodel.cs_sec_servers_mgm_requests import Cs_sec_servers_mgm_requests
+from pagemodel.ss_clients_dlg_services import Ss_clients_dlg_services
+from pagemodel.ss_clients_add_search_client_dlg import Ss_clients_add_search_client_dlg
+from pagemodel.ss_clients import Ss_clients
+from pagemodel.ss_keys_and_cert import Ss_keys_and_cert
+from pagemodel.ss_clients_add_client import Ss_clients_add_client
+from pagemodel.ss_enter_pin_dlg import Ss_enter_pin_dlg
+from pagemodel.ss_sidebar import Ss_sidebar
 
 class Xroad_install_ui_configuration(SetupTest):
     """
@@ -67,30 +59,22 @@ class Xroad_install_ui_configuration(SetupTest):
     component_ss_initial_conf = Component_ss_initial_conf()
     component_ss_keys_and_certs = Component_ss_keys_and_certs()
     component_ss_services = Component_ss_services()
-    cs_members = Cs_members()
-    cs_members_subsystems_dlg = Cs_members_subsystems_dlg()
-    ss_clients_dlg_services = Ss_clients_dlg_services()
-    ss_softoken_enter_pin = Ss_softoken_enter_pin()
-    cs_conf_mgm_enter_pin = Cs_conf_mgm_enter_pin()
-    ss_clients_add_search_client_dlg = Ss_clients_add_search_client_dlg()
-    cs_sidebar = Cs_sidebar()
-    ss_clients = Ss_clients()
-    ss_keys_and_cert = Ss_keys_and_cert()
-    cs_sec_servers = Cs_sec_servers()
-    cs_login = Cs_login()
-    cs_conf_mgm = Cs_conf_mgm()
-    cs_system_settings = Cs_system_settings()
-    ss_clients_add_client = Ss_clients_add_client()
-    cs_members_add_subsystem_dlg = Cs_members_add_subsystem_dlg()
-    ss_enter_pin_dlg = Ss_enter_pin_dlg()
-    cs_sec_servers_mgm_requests = Cs_sec_servers_mgm_requests()
-    ss_sidebar = Ss_sidebar()
-    open_application = Open_application()
-    cs_remove_member_dlg = Cs_remove_member_dlg()
-    cs_members_details_dlg = Cs_members_details_dlg()
     component_cs_sidebar = Component_cs_sidebar()
     component_ss_sidebar = Component_ss_sidebar()
-
+    ss_clients_dlg_services = Ss_clients_dlg_services()
+    ss_clients_add_search_client_dlg = Ss_clients_add_search_client_dlg()
+    ss_keys_and_cert = Ss_keys_and_cert()
+    ss_clients_add_client = Ss_clients_add_client()
+    ss_clients = Ss_clients()
+    ss_enter_pin_dlg = Ss_enter_pin_dlg()
+    ss_sidebar = Ss_sidebar()
+    cs_members = Cs_members()
+    cs_sidebar = Cs_sidebar()
+    cs_sec_servers = Cs_sec_servers()
+    cs_conf_mgm = Cs_conf_mgm()
+    cs_system_settings = Cs_system_settings()
+    cs_sec_servers_mgm_requests = Cs_sec_servers_mgm_requests()
+    
     @classmethod
     def setUpTestSet(self):
         """
@@ -356,7 +340,7 @@ class Xroad_install_ui_configuration(SetupTest):
                 * :func:`~common_lib.component_cs_system_settings.Component_cs_system_settings.add_init_member_class`, *u'member_mgm_configuration'*
             * **Step 3: add ca certification services in central server**
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_certification_services_view`
-                * :func:`~common_lib.component_cs_cert_services.Component_cs_cert_services.add_certification_service_and_upload_ca_root_to_cs`, *u'paths'*, *u'cs_url'*, *u'server_environment'*
+                * :func:`~common_lib.component_cs_cert_services.Component_cs_cert_services.add_certification_service_and_upload_ca_root_to_cs`
             * **Step 4: add timestamping to central server**
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_timestamping_services_view`
                 * :func:`~common_lib.component_cs_tsp_services.Component_cs_tsp_services.add_timestamping_service_to_cs`, *u'paths'*, *u'cs_url'*
@@ -370,11 +354,12 @@ class Xroad_install_ui_configuration(SetupTest):
                 * :func:`~common_lib.component_cs_system_settings.Component_cs_system_settings.edit_mgm_service_provider_in_cs`, *u'member_mgm_configuration'*
             * **Step 8: set global conf internal conf key in central server**
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_global_configuration_view`
-                * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.generate_new_internal_config_key_in_cs`
+                * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.generate_config_key`, *key_type="internal"*
                 * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.try_insert_pin_code`, *u'cs_url'*
                 * :func:`~webframework.extension.util.common_utils.CommonUtils.wait_until_jquery_ajax_loaded`
             * **Step 9: set global conf external key in central server**
-                * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.generate_new_external_config_key_in_cs`
+                * :func:`~pagemodel.cs_conf_mgm.Cs_conf_mgm.click_link_external_configuration`
+                * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.generate_config_key`, *key_type="external"*
                 * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.try_insert_pin_code`, *u'cs_url'*
                 * :func:`~webframework.extension.util.common_utils.CommonUtils.wait_until_jquery_ajax_loaded`
             * **Step 10: set ocsp responder in central server**
@@ -461,7 +446,9 @@ class Xroad_install_ui_configuration(SetupTest):
 
         # Step Add CA certification services in central server
         self.component_cs_sidebar.open_certification_services_view()
-        self.component_cs_cert_services.add_certification_service_and_upload_ca_root_to_cs(u'paths', u'cs_url', u'server_environment')
+        self.component_cs_cert_services.add_certification_service_and_upload_ca_root_to_cs(u'paths',
+                                                                                           u'cs_url',
+                                                                                           u'server_environment')
 
         # Step Add timestamping to central server
         self.component_cs_sidebar.open_timestamping_services_view()
@@ -480,12 +467,13 @@ class Xroad_install_ui_configuration(SetupTest):
 
         # Step Set global conf internal conf key in central server
         self.component_cs_sidebar.open_global_configuration_view()
-        self.component_cs_conf_mgm.generate_new_internal_config_key_in_cs()
+        self.component_cs_conf_mgm.generate_config_key(key_type="internal")
         self.component_cs_conf_mgm.try_insert_pin_code(u'cs_url')
         self.common_utils.wait_until_jquery_ajax_loaded()
 
         # Step Set global conf external key in central server
-        self.component_cs_conf_mgm.generate_new_external_config_key_in_cs()
+        self.cs_conf_mgm.click_link_external_configuration()
+        self.component_cs_conf_mgm.generate_config_key(key_type="external")
 
         ## Might show double pin dialog
         self.component_cs_conf_mgm.try_insert_pin_code(u'cs_url')

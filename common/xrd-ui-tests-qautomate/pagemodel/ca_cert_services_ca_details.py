@@ -17,7 +17,7 @@ class Ca_cert_services_ca_details(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161007172134
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/approved_cas
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/approved_cas
     # Pagemodel area: (484, 260, 952, 453)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -45,10 +45,10 @@ class Ca_cert_services_ca_details(CommonUtils):
     MENUBAR_MAXIMIZE = (By.XPATH, u'//div[9]/div[1]/div[1]/button[1]') # x: 1333 y: 261 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: 3, href:
     MENUBAR_CLOSE = (By.XPATH, u'//div[9]/div[1]/div[1]/button[2]') # x: 1384 y: 261 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: 3, href:
     TITLE = (By.ID, u'ui-id-5') # x: 495 y: 275 width: 217 height: 21, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
-    CA_CERTIFICATE = (By.ID, u'ui-id-6') # x: 714 y: 327 width: 112 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#top_ca_cert_tab
-    CA_SETTINGS = (By.ID, u'ui-id-7') # x: 827 y: 327 width: 97 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#ca_settings_tab
-    OCSP_RESPONDERS = (By.ID, u'ui-id-8') # x: 925 y: 327 width: 143 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#ocsp_responders_tab
-    INTERMEDIATE_CAS = (By.ID, u'ui-id-9') # x: 1068 y: 327 width: 138 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#intermediate_cas_tab
+    CA_CERTIFICATE = (By.ID, u'ui-id-6') # x: 714 y: 327 width: 112 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    CA_SETTINGS = (By.ID, u'ui-id-7') # x: 827 y: 327 width: 97 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    OCSP_RESPONDERS = (By.ID, u'ui-id-8') # x: 925 y: 327 width: 143 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    INTERMEDIATE_CAS = (By.ID, u'ui-id-9') # x: 1068 y: 327 width: 138 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     SUBJECT_DISTINGUISHED_NAME = (By.XPATH, u'//div[9]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]') # x: 500 y: 372 width: 202 height: 43, tag: td, type: , name: None, form_id: , checkbox: , table_id: 3, href:
     ID_TOP_CA_CERT_SUBJECT_DN = (By.ID, u'top_ca_cert_subject_dn') # x: 707 y: 377 width: 711 height: 33, tag: p, type: , name: None, form_id: , checkbox: , table_id: 3, href:
     ISSUER_DISTINGUISHED_NAME = (By.XPATH, u'//div[9]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]') # x: 500 y: 415 width: 202 height: 43, tag: td, type: , name: None, form_id: , checkbox: , table_id: 3, href:

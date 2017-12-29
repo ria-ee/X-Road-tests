@@ -107,14 +107,11 @@ class Xroad_keys_and_certs(SetupTest):
                 * **Step 2:** :func:`~pagemodel.start_log_time = self.Start_log_time = self.common_lib`
                 * **Step 3:** :func:`~common_lib.common_lib_ssh.Common_lib_ssh.empty_all_logs_from_server`, *"ss1_url"*
                 * **Step 4:** :func:`~common_lib.common_lib_ssh.Common_lib_ssh.empty_all_logs_from_server`, *"cs_url"*
-                * **Step 5:** :func:`~common_lib.common_lib.Common_lib.get_version_information`
         """
         self.common_lib.remove_cert_from_downloads(TESTDATA[u'paths'])
         self.start_log_time = self.common_lib.get_log_utc_time()
         self.common_lib_ssh.empty_all_logs_from_server("ss1_url")
         self.common_lib_ssh.empty_all_logs_from_server("cs_url")
-        if "test-" in TESTDATA[u'ss1_url']['url']:
-            self.common_lib.get_version_information()
 
     def tearDown(self):
         """

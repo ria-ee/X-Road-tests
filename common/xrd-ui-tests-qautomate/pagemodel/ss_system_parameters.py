@@ -17,7 +17,7 @@ class Ss_system_parameters(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160414093455
-    # Pagemodel url: https://test-ss1.i.palveluvayla.com:4000/sysparams
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/sysparams
     # Pagemodel area: (271, 1, 1641, 669)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

@@ -17,7 +17,7 @@ class Cs_time_stamping_services(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160801133201
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/tsps
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/tsps
     # Pagemodel area: (272, 2, 1640, 562)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

@@ -17,7 +17,7 @@ class Cs_members_mgm_requests_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160427104507
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/
     # Pagemodel area: (458, 234, 1003, 504)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -44,12 +44,12 @@ class Cs_members_mgm_requests_dlg(CommonUtils):
     # Page model constants:
     MENUBAR_MAXIMIZE = (By.XPATH, u'//div[21]/div[1]/div[1]/button[1]') # x: 1358 y: 235 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: DataTables_Table_4, href:
     TITLE = (By.ID, u'ui-id-26') # x: 470 y: 249 width: 113 height: 21, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
-    MEMBER_DETAILS = (By.ID, u'ui-id-27') # x: 536 y: 301 width: 129 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_details_tab
-    OWNED_SERVERS = (By.ID, u'ui-id-28') # x: 666 y: 301 width: 124 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_owned_servers_tab
-    GLOBAL_GROUP_MEMBERSHIP = (By.ID, u'ui-id-29') # x: 791 y: 301 width: 202 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_group_membership_tab
-    SUBSYSTEMS = (By.ID, u'ui-id-30') # x: 994 y: 301 width: 101 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_subsystems_tab
-    USED_SERVERS = (By.ID, u'ui-id-31') # x: 1096 y: 301 width: 110 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_used_servers_tab
-    MANAGEMENT_REQUESTS = (By.ID, u'ui-id-32') # x: 1207 y: 301 width: 177 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_management_requests_tab
+    MEMBER_DETAILS = (By.ID, u'ui-id-27') # x: 536 y: 301 width: 129 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    OWNED_SERVERS = (By.ID, u'ui-id-28') # x: 666 y: 301 width: 124 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    GLOBAL_GROUP_MEMBERSHIP = (By.ID, u'ui-id-29') # x: 791 y: 301 width: 202 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    SUBSYSTEMS = (By.ID, u'ui-id-30') # x: 994 y: 301 width: 101 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    USED_SERVERS = (By.ID, u'ui-id-31') # x: 1096 y: 301 width: 110 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    MANAGEMENT_REQUESTS = (By.ID, u'ui-id-32') # x: 1207 y: 301 width: 177 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     REQUEST_ID = (By.XPATH, u'//div[6]/div[1]/div[1]/div[1]/div[1]/table[1]/thead[1]/tr[1]/th[1]') # x: 476 y: 347 width: 242 height: 37, tag: th, type: , name: None, form_id: , checkbox: , table_id: DataTables_Table_4, href:
     REQUEST_TYPE = (By.XPATH, u'//div[6]/div[1]/div[1]/div[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]') # x: 718 y: 347 width: 242 height: 37, tag: th, type: , name: None, form_id: , checkbox: , table_id: DataTables_Table_4, href:
     CREATED = (By.XPATH, u'//div[6]/div[1]/div[1]/div[1]/div[1]/table[1]/thead[1]/tr[1]/th[3]') # x: 960 y: 347 width: 242 height: 37, tag: th, type: , name: None, form_id: , checkbox: , table_id: DataTables_Table_4, href:

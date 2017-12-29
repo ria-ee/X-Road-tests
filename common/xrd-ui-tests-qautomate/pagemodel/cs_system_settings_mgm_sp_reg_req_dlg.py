@@ -12,7 +12,7 @@ class Cs_system_settings_mgm_sp_reg_req_dlg(CommonUtils):
 
     """
     # Pagemodel timestamp: 20161011132454
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/system_settings
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/system_settings
     # Pagemodel area: (680, 188, 563, 598)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

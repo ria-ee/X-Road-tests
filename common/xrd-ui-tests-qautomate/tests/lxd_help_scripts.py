@@ -128,7 +128,7 @@ class Lxd_help_scripts(SetupTest):
         **Test steps:**
                 * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'cs_url']['url']*
                 * **Step 2:** :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_global_configuration_view`
-                * **Step 3:** :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.insert_pin_from_login_button`, *u'cs_url'*
+                * **Step 3:** :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.log_in_to_software_token`, *u'cs_url'*
                 * **Step 4:** :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'ss_mgm_url']['url']*
                 * **Step 5:** :func:`~common_lib.component_ss_sidebar.Component_ss_sidebar.open_keys_and_certs_view`
                 * **Step 6:** :func:`~common_lib.component_ss_keys_and_certs.Component_ss_keys_and_certs.active_token_and_insert_pin_code_if_needed`, *u'ss_mgm_url'*
@@ -143,7 +143,7 @@ class Lxd_help_scripts(SetupTest):
         self.common_utils.open_url(TESTDATA[u'cs_url']['url'])
         self.component_cs_sidebar.open_global_configuration_view()
         try:
-            self.component_cs_conf_mgm.insert_pin_from_login_button(u'cs_url')
+            self.component_cs_conf_mgm.log_in_to_software_token(u'cs_url')
         except:
             print("Pin not needed?")
 

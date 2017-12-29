@@ -17,7 +17,7 @@ class Cs_members_owned_auth_cert_reg_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160426093155
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/
     # Pagemodel area: (707, 277, 503, 417)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

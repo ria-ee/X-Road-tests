@@ -4,6 +4,10 @@
 		<parameter name="server_address" value="xroad-lxd-cs2.lxd"/>
 	</Section>
 	<Section name="invalid_cs_url">
-		<parameter name="server_address" value="xroad-lxd-cs2.lxd_asdf"/>
+		<parameter name="server_address" value="xroad-lxd-cs2.lxd_invalid"/>
+		<parameter name="pin" value="invalid_pin"/>
+	</Section>
+	<Section name="empty_pin">
+		<parameter name="pin" value=""/>
 	</Section>
 </TestData>

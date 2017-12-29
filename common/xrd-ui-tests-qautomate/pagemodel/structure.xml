@@ -96,6 +96,7 @@
 		<node id="417d6888-a364-11e7-a7bd-080027a1c69f" pagemodel="cs_version"/>
 		<node id="622622da-a4f6-11e7-85a0-080027a1c69f" pagemodel="cs_backup_restore_dlg_upload_backup"/>
 		<node id="ca387e6e-b459-11e7-95b8-080027a1c69f" pagemodel="cs_backup_restore_dlg_up_back_conf_exist"/>
+		<node id="7c64aabc-e575-11e7-a670-b8819810531f" pagemodel="cs_conf_upload_configuration_part"/>
 	</nodes>
 	<edges>
 		<edge additional_input="False" id="2e678790-9e4f-11e5-a1e9-c94aa1a82f8a">
@@ -1682,6 +1683,23 @@
 		<edge additional_input="False" id="ca387e6f-b459-11e7-95b8-080027a1c69f">
 			<start_node id="622622da-a4f6-11e7-85a0-080027a1c69f"/>
 			<end_node id="ca387e6e-b459-11e7-95b8-080027a1c69f"/>
+			<input data="" method_name="" method_node="" parameters="False"/>
+			<output data="" method_name="" parameters="False"/>
+			<preconditions/>
+			<performance think_time="1.0" url="http://" weight="1.0">
+				<request>
+					<method value="GET"/>
+					<content_type value="text/html"/>
+					<parameters/>
+				</request>
+			</performance>
+			<set_guard key="" value=""/>
+			<check_guard key="" value=""/>
+			<epics/>
+		</edge>
+		<edge additional_input="False" id="7c64aabd-e575-11e7-a670-b8819810531f">
+			<start_node id="5f9861b0-f640-11e5-bf80-ac3908247c49"/>
+			<end_node id="7c64aabc-e575-11e7-a670-b8819810531f"/>
 			<input data="" method_name="" method_node="" parameters="False"/>
 			<output data="" method_name="" parameters="False"/>
 			<preconditions/>

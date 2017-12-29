@@ -17,7 +17,7 @@ class Ss_system_param_add_timestamp_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160414100022
-    # Pagemodel url: https://test-ss1.i.palveluvayla.com:4000/sysparams
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/sysparams
     # Pagemodel area: (660, 282, 601, 401)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

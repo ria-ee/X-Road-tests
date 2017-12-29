@@ -17,7 +17,7 @@ class Ss_enter_pin_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161010134231
-    # Pagemodel url: https://test-ss2.i.palveluvayla.com:4000/keys
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/keys
     # Pagemodel area: (759, 384, 402, 202)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

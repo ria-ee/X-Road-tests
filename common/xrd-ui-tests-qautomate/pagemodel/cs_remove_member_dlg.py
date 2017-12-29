@@ -17,7 +17,7 @@ class Cs_remove_member_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160411121632
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/
     # Pagemodel area: (589, 395, 503, 153)
     # Pagemodel screen resolution: (1680, 1050)
     # Use project settings: True

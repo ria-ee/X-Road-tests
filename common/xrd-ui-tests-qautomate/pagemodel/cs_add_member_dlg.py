@@ -17,7 +17,7 @@ class Cs_add_member_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161010120102
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/
     # Pagemodel area: (708, 308, 504, 355)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

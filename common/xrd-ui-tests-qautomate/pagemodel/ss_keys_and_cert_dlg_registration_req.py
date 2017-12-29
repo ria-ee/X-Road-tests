@@ -17,7 +17,7 @@ class Ss_keys_and_cert_dlg_registration_req(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160930142412
-    # Pagemodel url: https://fdev-ss1.i.palveluvayla.com:4000/keys
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/keys
     # Pagemodel area: (710, 387, 504, 201)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

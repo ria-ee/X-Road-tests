@@ -327,7 +327,7 @@ class Common_lib(CommonUtils):
         """
         files = glob.iglob(folder + '*' + extension)
         for _file in files:
-            print _file
+            print ("delete file: ", _file)
             try:
                 os.system("sudo rm " + _file)
             except:
@@ -395,15 +395,6 @@ class Common_lib(CommonUtils):
             msg = self.get_text((By.CLASS_NAME, u'message'))
             print("MESSAGE: " + msg)
 
-    def get_version_information(self):
-        """
-        """
-        try:
-            system_call_string = 'output=$(curl -s -k -d "j_username=ui&j_password=kapabTY" -c cookies https://test-ss1.i.palveluvayla.com:4000/j_security_check && curl -s -k -b cookies https://test-ss1.i.palveluvayla.com:4000/about | grep "Security Server version");echo $output | head -n1 | cut -d " " -f4'
-            print(os.system(system_call_string))
-        except:
-            print("error getting version")
-
     def get_log_utc_time(self):
         """
         """
@@ -438,52 +429,3 @@ class Common_lib(CommonUtils):
             pyautogui.typewrite(type_string, interval=0.05)
         sleep(0.5)
         pyautogui.press('enter')
-
-    def get_logs_report(self, start_time, stop_time, get_log_server="", get_log_type="", get_logs_folder=""):
-        """
-        """
-        print("Get server logs for report")
-        print(start_time)
-        print(stop_time)
-        folder_out = os.getcwd()
-        if get_logs_folder == "" :
-            get_logs_folder = "/home/jenkins/fetch-elasticsearch-logs/"
-        if get_log_type == "":
-            get_log_type = "jettylog"
-        if get_log_server ==  "":
-            get_log_server = "test-cs2.i.palveluvayla.com"
-        get_logs_cmd = "get-logs.sh"
-        command_input = get_logs_folder + get_logs_cmd + ' ' + get_log_type + ' ' +get_log_server + ' ' + start_time + ' ' + stop_time + ' > ' + get_logs_folder + 'server_' + get_log_type
-        print(command_input)
-        try:
-            output = subprocess.check_output(command_input, shell=True)
-            print(output)
-        except Exception as e:
-            print(e)
-        print("Parsing log simplified format")
-        import json
-        try:
-            data = json.loads(open(get_logs_folder + 'server_jettylog').read())
-            fname = get_logs_folder + 'server_log.txt'
-            if not os.path.isfile(fname):
-                f=open(fname, 'w')
-                f.close()
-            log_msg_len = len(data["hits"]["hits"])
-            f=open(fname, 'a')
-            f.write("SERVER_LOG_TYPE: " + get_log_type + " SERVER_LOG_HOST: " + get_log_server + "\n")
-
-            for i in range(0,log_msg_len-1):
-                timestamp = data["hits"]["hits"][i]["_source"]["@timestamp"]
-                severity = data["hits"]["hits"][i]["_source"]["severity"]
-                host = data["hits"]["hits"][i]["_source"]["host"]
-                msg = data["hits"]["hits"][i]["_source"]["message"]
-                msg = msg.encode('ascii', 'ignore')
-                if msg[-1].isspace():
-                    msg_edited = msg[:-1]
-                else:
-                    msg_edited = msg
-                log_msg =  timestamp + " " + severity + " " + host + " " + '"' + msg_edited + '"' + "\n"
-                f.write(log_msg)
-            f.close()
-        except Exception as e:
-            print(e)

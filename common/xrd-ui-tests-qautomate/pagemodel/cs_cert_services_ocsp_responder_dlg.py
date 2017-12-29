@@ -17,7 +17,7 @@ class Cs_cert_services_ocsp_responder_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160830144902
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/approved_cas
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/approved_cas
     # Pagemodel area: (482, 257, 960, 454)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -48,10 +48,10 @@ class Cs_cert_services_ocsp_responder_dlg(CommonUtils):
     ID_OCSP_RESPONDER_ADD = (By.ID, u'ocsp_responder_add') # x: 1187 y: 269 width: 53 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
     ID_OCSP_RESPONDER_DELETE = (By.ID, u'ocsp_responder_delete') # x: 1244 y: 269 width: 74 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
     TITLE = (By.ID, u'ui-id-5') # x: 495 y: 275 width: 217 height: 21, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
-    CA_CERTIFICATE = (By.ID, u'ui-id-6') # x: 714 y: 327 width: 112 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#top_ca_cert_tab
-    CA_SETTINGS = (By.ID, u'ui-id-7') # x: 827 y: 327 width: 97 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#ca_settings_tab
-    OCSP_RESPONDERS = (By.ID, u'ui-id-8') # x: 925 y: 327 width: 143 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#ocsp_responders_tab
-    INTERMEDIATE_CAS = (By.ID, u'ui-id-9') # x: 1068 y: 327 width: 138 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs2.i.palveluvayla.com:4000/approved_cas#intermediate_cas_tab
+    CA_CERTIFICATE = (By.ID, u'ui-id-6') # x: 714 y: 327 width: 112 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    CA_SETTINGS = (By.ID, u'ui-id-7') # x: 827 y: 327 width: 97 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    OCSP_RESPONDERS = (By.ID, u'ui-id-8') # x: 925 y: 327 width: 143 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    INTERMEDIATE_CAS = (By.ID, u'ui-id-9') # x: 1068 y: 327 width: 138 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     URL = (By.XPATH, u'//div[3]/div[1]/div[1]/div[1]/div[1]/table[1]/thead[1]/tr[1]/th[1]') # x: 501 y: 373 width: 753 height: 37, tag: th, type: , name: None, form_id: , checkbox: , table_id: ocsp_responders, href:
     BUTTON_CLOSE = (By.XPATH, u'//div[9]/div[3]/div[1]/button[1]') # x: 1363 y: 669 width: 67 height: 37, tag: button, type: button, name: close, form_id: , checkbox: , table_id: ocsp_responders, href:
 

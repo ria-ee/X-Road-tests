@@ -17,7 +17,7 @@ class Cs_mgm_requests(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160330093110
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/requests
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/requests
     # Pagemodel area: (271, 1, 1647, 867)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

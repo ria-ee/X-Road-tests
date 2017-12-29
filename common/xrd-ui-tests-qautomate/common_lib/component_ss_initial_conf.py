@@ -38,7 +38,7 @@ class Component_ss_initial_conf(CommonUtils):
                 * **Step 2:** :func:`~pagemodel.ss_initial_conf_import_anchor.Ss_initial_conf_import_anchor.upload_anchor`, *TESTDATA[section]*
                 * **Step 3:** :func:`~pagemodel.ss_initial_conf_import_conf_dlg.Ss_initial_conf_import_conf_dlg.wait_until_element_is_visible_conf_required`
                 * **Step 4:** :func:`~pagemodel.ss_initial_conf_import_conf_dlg.Ss_initial_conf_import_conf_dlg.click_button_ui_buttonset_confirm`
-                * **Step 5:** :func:`~pagemodel.ss_initial_conf_server_details.Ss_initial_conf_server_details.wait_until_element_is_visible_security_server_owner`
+                * **Step 6:** :func:`~pagemodel.ss_initial_conf_server_details.Ss_initial_conf_server_details.wait_until_element_is_visible_security_server_owner`
         """
         self.ss_initial_conf_import_anchor.wait_until_element_is_visible_initial_conf()
         self.ss_initial_conf_import_anchor.upload_anchor(TESTDATA[section])

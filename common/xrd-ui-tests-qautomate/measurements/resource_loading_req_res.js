@@ -1,4 +1,0 @@
-var resource_js_data = {
-'1467359500000': [{'secureConnectionStart': '0', 'redirectStart': '0', 'redirectEnd': '0', 'name': 'https://test-cs.i.palveluvayla.com:4000/stylesheets/style.css', 'startTime': '1748.18850248', 'domainLookupEnd': '1748.18850248', 'connectEnd': '1748.18850248', 'requestStart': '1750.64885481', 'initiatorType': 'link', 'responseEnd': '2657.35047191', 'fetchStart': '1748.18850248', 'duration': '909.161969431', 'responseStart': '2657.24044781', 'entryType': 'resource', 'connectStart': '1748.18850248', 'domainLookupStart': '1748.18850248'},
-{'name': 'All', 'duration': '909.161969431'}],
-};

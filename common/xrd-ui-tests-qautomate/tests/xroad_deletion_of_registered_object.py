@@ -92,33 +92,23 @@ class Xroad_deletion_of_registered_object(BaseTest):
         *Updated: 11.07.2017*
 
         **Test steps:**
-            * **Step 1: restore central server backup in central server**
+            * **Step 1: restore central server backup in central server if needed**
                 * :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'cs_url']['url']*
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_backup_restore_view`
                 * :func:`~common_lib.component_cs_backup.Component_cs_backup.restore_backup`
-                * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_global_configuration_view`
-                * :func:`~common_lib.component_cs_conf_mgm.Component_cs_conf_mgm.insert_pin_from_login_button`, *u'cs_url'*
-            * **Step 2: verify member found in members table in central server**
-                * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_members_view`
-                * :func:`~common_lib.component_cs_members.Component_cs_members.verify_members_does_contain_member`, *u'member1_configuration'*, *u'member_name'*
-            * **Step 3: verify client found in central server**
-                * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_security_servers_view`
-                * :func:`~common_lib.component_cs_sec_servers.Component_cs_sec_servers.verify_servers_does_contain_server`, *u'member1_configuration'*, *u'member_name'*
-            * **Step 4: log out from central server**
-                * :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'cs_url']['url']*
-                * :func:`~common_lib.common_lib.Common_lib.log_out`
-            * **Step 5: restore security server in security server**
+            * **Step 2: restore security server in security server if needed**
                 * :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'ss1_url']['url']*
                 * :func:`~common_lib.component_ss_sidebar.Component_ss_sidebar.open_backup_restore_view`
                 * :func:`~common_lib.component_ss_backup.Component_ss_backup.restore_backup`
-                * :func:`~common_lib.component_ss_sidebar.Component_ss_sidebar.open_keys_and_certs_view`
-                * :func:`~common_lib.component_ss_keys_and_certs.Component_ss_keys_and_certs.active_token_and_insert_pin_code_if_needed`, *u'ss1_url'*
-            * **Step 6: verify security serve subsystem in security server**
-                * :func:`~common_lib.component_ss_sidebar.Component_ss_sidebar.open_security_servers_client_view`
-                * :func:`~common_lib.component_cs_sec_servers.Component_cs_sec_servers.verify_table_contains_subsystem`, *u'member1_configuration'*
-            * **Step 7: log out from security**
+            * **Step 3: log out from security if logged in**
                 * :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'ss1_url']['url']*
                 * :func:`~common_lib.common_lib.Common_lib.log_out`
+            * **Step 4: log out from central server if logged in**
+                * :func:`~webframework.extension.util.common_utils.CommonUtils.open_url`, *TESTDATA[u'cs_url']['url']*
+                * :func:`~common_lib.common_lib.Common_lib.log_out`
+            * **Step 5: return server to defaults**
+                * :func:`~common_lib.common_lib_ssh.Common_lib_ssh.delete_files_from_directory`, *u'cs_url'*, *strings.backup_directory*
+                * :func:`~common_lib.common_lib_ssh.Common_lib_ssh.delete_files_from_directory`, *u'ss1_url'*, *strings.backup_directory*
         """
         stop_log_time = self.common_lib.get_log_utc_time()
         if not self.is_last_test_passed():
@@ -408,8 +398,7 @@ class Xroad_deletion_of_registered_object(BaseTest):
                 * :func:`~common_lib.component_cs.Component_cs.open_central_server_url`, *u'cs_url'*
             * **Step 8: verify management request of client deletion in central server**
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_management_request_view`
-            * **Step 9: verify client table does not contain client in central server**
-            * **Step 10: verify subsystem state in central server**
+            * **Step 9: verify subsystem state in central server**
                 * :func:`~common_lib.component_cs_sidebar.Component_cs_sidebar.open_members_view`
                 * :func:`~common_lib.component_cs_members.Component_cs_members.open_member_details_dlg`, *'member1_configuration'*, *u'member_name'*
                 * :func:`~common_lib.component_cs_members.Component_cs_members.verify_subsystem_is_removable_in_member_details_dlg`, *u'member1_configuration'*, *u'subsystem_code'*

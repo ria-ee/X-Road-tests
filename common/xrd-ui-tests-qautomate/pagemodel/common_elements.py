@@ -48,6 +48,18 @@ Pagemodel
     LANGUAGE_CHANGE = (By.ID, u'locale_select') # x: 1755 y: 122 width: 165 height: 30, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://xroad-lxd-cs.lxd:4000/#
     USER_INFO = (By.ID, u'user-info') # x: 1757 y: 71 width: 163 height: 51, tag: li, type: , name: None, form_id: , checkbox: , table_id: , href:
     ALERT_MESSAGE = (By.ID, u'alerts') # x: 0 y: 0 width: 1920 height: 71, tag: div, type: , name: None, form_id: , checkbox: , table_id: , href:
+    ERROR_MESSAGE = (By.CLASS_NAME, u'error') # x: 270 y: 823 width: 1640 height: 28, tag: div, type: , name: None, form_id: , checkbox: , table_id: , href:
+
+    def verify_error_contains(self, message=u'Internal configuration anchor generation failed'):
+        """
+        Verify bottom message text
+
+        :param message:  String value for message
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.element_should_contain`, *self.ERROR_MESSAGE*, *message*
+        """
+        self.element_should_contain(self.ERROR_MESSAGE, message)
 
     def verify_message_contains(self, message=u'Internal configuration anchor generated successfully'):
         """

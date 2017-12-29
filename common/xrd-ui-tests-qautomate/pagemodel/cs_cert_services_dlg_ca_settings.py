@@ -17,7 +17,7 @@ class Cs_cert_services_dlg_ca_settings(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20161007113724
-    # Pagemodel url: https://test-cs2.i.palveluvayla.com:4000/approved_cas
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/approved_cas
     # Pagemodel area: (558, 307, 803, 357)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

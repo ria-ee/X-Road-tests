@@ -19,7 +19,6 @@ class Common_lib_ssh(CommonUtils):
     * 11.07.2017
         | Documentation updated
     """
-
     def __init__(self):
         """
         Initilization method for moving test data to class
@@ -79,7 +78,6 @@ class Common_lib_ssh(CommonUtils):
 
         return has_error
 
-    # server="jenkins@test-cs2.i.palveluvayla.com" or xroad-lxd-cs
     def empty_server_log_files(self, server):
         """
         **Test steps:**
@@ -129,7 +127,22 @@ class Common_lib_ssh(CommonUtils):
 
         self.run_bash_command(command, True)
 
-    def generate_empty_file(self, section, path):
+    def delete_file(self, section="cs_url", path=u'/var/lib/xroad/backup/file.xml'):
+        """
+        :param section:  Test data section name
+        """
+        server = TESTDATA[section][u'server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server = server.split(".lxd")[0]
+            command = "lxc exec {} -- sudo rm {}".format(server, path)
+        elif strings.server_environment_type() == strings.ssh_type_environment:
+            command = "ssh {} sudo rm {}".format(server, path)
+        else:
+            raise Exception(errors.enviroment_type_not_valid)
+
+        self.run_bash_command(command, True)
+
+    def generate_empty_file(self, section="cs_url", path=u'/var/lib/xroad/backup'):
         """
         :param section:  Test data section name
         """
@@ -139,6 +152,44 @@ class Common_lib_ssh(CommonUtils):
             command = "lxc exec {} -- sudo touch {}".format(server, path)
         elif strings.server_environment_type() == strings.ssh_type_environment:
             command = "ssh {} sudo touch {}".format(server, path)
+        else:
+            raise Exception(errors.enviroment_type_not_valid)
+
+        self.run_bash_command(command, True)
+
+    def generate_and_write_to_file_as_xroad(self, section="cs_url", path=u'/var/lib/xroad/backup', text=""):
+        """
+        :param section:  Test data section name
+        :param text:  String value for text
+        """
+        server = TESTDATA[section][u'server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            file_name = os.path.basename(path)
+            directory = os.path.dirname(path)
+            server = server.split(".lxd")[0]
+            command = 'lxc exec {} -- su xroad sh -c "cd {} && echo -e \'{}\' > {}"'.format(server, directory,
+                                                                                            text, file_name)
+            self.run_bash_command(command, True)
+        elif strings.server_environment_type() == strings.ssh_type_environment:
+            lines = text.split("\n")
+            for line in lines:
+                command = 'echo "{}" | ssh {} sudo -u xroad tee -a {} >/dev/null'.format(line, server, path)
+                self.run_bash_command(command, True)
+        else:
+            raise Exception(errors.enviroment_type_not_valid)
+
+
+
+    def delete_signing_key_from_signer_console(self, section="cs_url", key=""):
+        """
+        :param section:  Test data section name
+        """
+        server = TESTDATA[section][u'server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server = server.split(".lxd")[0]
+            command = 'lxc exec {} -- su xroad sh -c "signer-console dk {}"'.format(server, key)
+        elif strings.server_environment_type() == strings.ssh_type_environment:
+            command = 'ssh {} sudo -u xroad signer-console dk {}'.format(server, key)
         else:
             raise Exception(errors.enviroment_type_not_valid)
 
@@ -247,7 +298,6 @@ class Common_lib_ssh(CommonUtils):
             self.fail(errors.log_event_fail(event) + "\n" + self.parse_log_file_tail(log_output))
         if not user == newest_log["user"]:
             self.fail(errors.log_user_fail(user) + "\n" + self.parse_log_file_tail(log_output))
-
 
     def get_all_logs_from_server(self, section):
         """

@@ -17,7 +17,7 @@ class Ss_clients_services_dlg_add_subjects(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160902093138
-    # Pagemodel url: https://test-ss2.i.palveluvayla.com:4000/clients
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/clients
     # Pagemodel area: (45, 133, 1830, 701)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -44,8 +44,8 @@ class Ss_clients_services_dlg_add_subjects(CommonUtils):
     # Page model constants:
     MENUBAR_MAXIMIZE = (By.XPATH, u'//div[12]/div[1]/div[1]/button[1]') # x: 1770 y: 136 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: subjects, href:
     MENUBAR_CLOSE = (By.XPATH, u'//div[12]/div[1]/div[1]/button[2]') # x: 1821 y: 136 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: subjects, href:
-    SIMPLE_SEARCH = (By.ID, u'ui-id-3') # x: 64 y: 202 width: 116 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-ss2.i.palveluvayla.com:4000/clients#acl_subjects_search_simple_search_tab
-    ADVANCED_SEARCH = (By.ID, u'ui-id-4') # x: 181 y: 202 width: 137 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-ss2.i.palveluvayla.com:4000/clients#acl_subjects_search_advanced_search_tab
+    SIMPLE_SEARCH = (By.ID, u'ui-id-3') # x: 64 y: 202 width: 116 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    ADVANCED_SEARCH = (By.ID, u'ui-id-4') # x: 181 y: 202 width: 137 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     ACL_SUBJECTS_SEARCH_SIMPLE_TAB_NAME_SUBJECT_ALL_TEXT = (By.CSS_SELECTOR, u'#acl_subjects_search_simple_search_tab>input[name="subject_search_all"]') # x: 78 y: 247 width: 179 height: 33, tag: input, type: text, name: subject_search_all, form_id: , checkbox: , table_id: , href:
     ACL_SUBJECTS_SEARCH_SIMPLE_TAB = (By.CSS_SELECTOR, u'#acl_subjects_search_simple_search_tab>.search') # x: 261 y: 247 width: 78 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: , href:
     ID = (By.XPATH, u'//div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]') # x: 960 y: 296 width: 896 height: 37, tag: th, type: , name: None, form_id: , checkbox: , table_id: subjects, href:

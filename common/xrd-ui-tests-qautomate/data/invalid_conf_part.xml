@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:conf xmlns:ns2="http://x-road.eu/xsd/identifiers" xmlns:ns3="http://x-road.eu/xsd/xroad.xsd">
+    <instanceIdentifier>XRD1</instanceIdentifier>
+    <managementService>
+        <authCertRegServiceAddress>https://xroad-lxd-cs.lxd:4001/managementservice/</authCertRegServiceAddress>
+        <authCertRegServiceCert>MIIDEjCCAfqgAwIBAgIJAN5xmRIs1l7dMA0GCSqGSIb3DQEBCwUAMBcxFTATBgNVBAMMDHhyb2FkLWx4ZC1jczAeFw0xNzEyMTgyMDA1NTdaFw0zNzEyMTMyMDA1NTdaMBcxFTATBgNVBAMMDHhyb2FkLWx4ZC1jczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZc+75FXFvBpcKTGIuLkyOuEG3YqULxtndQmqwQFit/e/QZteR5sVYlZhv2pcjTTFwYJpYONCs5CVNxm1k3KmP2J3ZpxQWUINt1unluAnfSJMmNuIvLobSW84vuekQxJb71Wv6Dffeil4Pfg9oTSR7+PK8Baa9dn45MRNNIPSfXgoOpf3IWu0PDW41O1QFKNyut0KO8ThX4EGlDYPeYA4Ut41NeBZ2kZanMPTy3h80ueIQBBwdO3a/lAbm35XLIeDB7jfIyqPIoYg2DcW3ov5tpR/VUOtoKWpopN5fCQenmeg2oUl3hgpxLUHjS/rNWnrrxAAzHyafSWQtoZTUlwBMCAwEAAaNhMF8wEgYDVR0TAQH/BAgwBgEB/wIBADALBgNVHQ8EBAMCAuQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB0GA1UdEQQWMBSHBAqcAt+CDHhyb2FkLWx4ZC1jczANBgkqhkiG9w0BAQsFAAOCAQEATVBJ69Ly00UnktfmUhBJ5o87XA4wOioFq2PHOp2Y49DQEiQZM11Rk0lB3bQEBvqtuo/co0+F5QePvJN6T0MIV65LYY0N47jYpSrR2u2AECYKTPIHmHcE8XrUC4/HM5Tv1XdpxU5zIRv7a5+5uQhMaMnLcTdtzv8gJbWhDy6jvkFFPU1ZWI+bjNp5Uvve/gHhG6Ddm5dlNBM/TEgntDD45eJD5zrpgI11BUhPxaPuy7hp/DXi46qogKR0SjOFQctZfbPZSn+uQyHk0ePTg8z5rtRnqz4SN9Kl0Y6ZTpVDnNAd2Mx7ESnB/S0oiwu1oOs1O2lTi0pTo3VPbcA73sFoYg==</authCertRegServiceCert>
+        <managementRequestServiceProviderId ns2:objectType="SUBSYSTEM">
+            <ns2:xRoadInstance>XRD1</ns2:xRoadInstance>
+            <ns2:memberClass>GOV</ns2:memberClass>
+            <ns2:memberCode>00000000</ns2:memberCode>
+            <ns2:subsystemCode>MANAGEMENT</ns2:subsystemCode>
+        </managementRequestServiceProviderId>
+    </managementService>
+    <timeStampingIntervalSeconds>60</timeStampingIntervalSeconds>
+</ns3:conf>

@@ -59,6 +59,7 @@ class Dlg_change_language(CommonUtils):
 
     def change_language(self, text=None):
         """
+        
         :param text:  String value for text
         
         **Test steps:**

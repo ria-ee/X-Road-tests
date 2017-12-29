@@ -17,7 +17,7 @@ class Ss_sidebar(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160928101910
-    # Pagemodel url: https://fdev-ss1.i.palveluvayla.com:4000/clients
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/clients
     # Pagemodel area: (1, 0, 273, 526)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -44,12 +44,12 @@ class Ss_sidebar(CommonUtils):
     # Page model constants:
     XROAD_ID_FI_UI = (By.CSS_SELECTOR, u'h1>.xroad-id') # x: 20 y: 7 width: 42 height: 23, tag: span, type: , name: None, form_id: , checkbox: , table_id: , href: None
     SERVER_INFO_SECURITY = (By.CSS_SELECTOR, u'#server-info>h2') # x: 0 y: 28 width: 270 height: 13, tag: h2, type: , name: None, form_id: , checkbox: , table_id: , href:
-    DATA_NAME_CLIENTS_SECURITY_SERVER = (By.CSS_SELECTOR, u'a[data-name="clients"]') # x: 20 y: 99 width: 138 height: 18, tag: a, type: , name: clients, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/clients
-    DATA_NAME_SYSPARAMS_SYSTEM_PARAMETERS = (By.CSS_SELECTOR, u'a[data-name="sysparams"]') # x: 20 y: 127 width: 120 height: 18, tag: a, type: , name: sysparams, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/sysparams
-    DATA_NAME_KEYS_AND_CERTIFICATES = (By.CSS_SELECTOR, u'a[data-name="keys"]') # x: 20 y: 230 width: 129 height: 18, tag: a, type: , name: keys, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/keys
-    DATA_NAME_BACKUP_BACK_UP_AND_RESTORE = (By.CSS_SELECTOR, u'a[data-name="backup"]') # x: 20 y: 258 width: 129 height: 18, tag: a, type: , name: backup, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/backup
-    DATA_NAME_DIAGNOSTICS = (By.CSS_SELECTOR, u'a[data-name="diagnostics"]') # x: 20 y: 286 width: 71 height: 18, tag: a, type: , name: diagnostics, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/diagnostics
-    DATA_NAME_ABOUT_VERSION = (By.CSS_SELECTOR, u'a[data-name="about"]') # x: 20 y: 388 width: 47 height: 18, tag: a, type: , name: about, form_id: , checkbox: , table_id: , href: https://fdev-ss1.i.palveluvayla.com:4000/about
+    DATA_NAME_CLIENTS_SECURITY_SERVER = (By.CSS_SELECTOR, u'a[data-name="clients"]') # x: 20 y: 99 width: 138 height: 18, tag: a, type: , name: clients, form_id: , checkbox: , table_id: , href: None
+    DATA_NAME_SYSPARAMS_SYSTEM_PARAMETERS = (By.CSS_SELECTOR, u'a[data-name="sysparams"]') # x: 20 y: 127 width: 120 height: 18, tag: a, type: , name: sysparams, form_id: , checkbox: , table_id: , href: None
+    DATA_NAME_KEYS_AND_CERTIFICATES = (By.CSS_SELECTOR, u'a[data-name="keys"]') # x: 20 y: 230 width: 129 height: 18, tag: a, type: , name: keys, form_id: , checkbox: , table_id: , href: None
+    DATA_NAME_BACKUP_BACK_UP_AND_RESTORE = (By.CSS_SELECTOR, u'a[data-name="backup"]') # x: 20 y: 258 width: 129 height: 18, tag: a, type: , name: backup, form_id: , checkbox: , table_id: , href: None
+    DATA_NAME_DIAGNOSTICS = (By.CSS_SELECTOR, u'a[data-name="diagnostics"]') # x: 20 y: 286 width: 71 height: 18, tag: a, type: , name: diagnostics, form_id: , checkbox: , table_id: , href: None
+    DATA_NAME_ABOUT_VERSION = (By.CSS_SELECTOR, u'a[data-name="about"]') # x: 20 y: 388 width: 47 height: 18, tag: a, type: , name: about, form_id: , checkbox: , table_id: , href: None
 
     def verify_sidebar_title(self):
         """

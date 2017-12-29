@@ -20,7 +20,7 @@ class Ss_keys_and_cert(CommonUtils):
     """
     common_lib = Common_lib()
     # Pagemodel timestamp: 20160928092450
-    # Pagemodel url: https://fdev-ss1.i.palveluvayla.com:4000/keys
+    # Pagemodel url: https://xroad-lxd-ss1.lxd:4000/keys
     # Pagemodel area: (270, 2, 1640, 669)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True

@@ -17,7 +17,7 @@ class Cs_members_details_dlg(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160330151543
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/
     # Pagemodel area: (460, 236, 1002, 501)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
@@ -44,11 +44,11 @@ class Cs_members_details_dlg(CommonUtils):
     # Page model constants:
     MENUBAR_MAXIMIZE = (By.XPATH, u'//div[21]/div[1]/div[1]/button[1]') # x: 1358 y: 235 width: 51 height: 49, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: 3, href:
     DELETE = (By.XPATH, u'//div[21]/div[1]/div[2]/button[1]') # x: 1270 y: 243 width: 74 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: 3, href:
-    MEMBER_DETAILS = (By.ID, u'ui-id-27') # x: 536 y: 301 width: 129 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_details_tab
-    OWNED_SERVERS = (By.ID, u'ui-id-28') # x: 666 y: 301 width: 124 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_owned_servers_tab
-    GLOBAL_GROUP_MEMBERSHIP = (By.ID, u'ui-id-29') # x: 791 y: 301 width: 202 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_group_membership_tab
-    SUBSYSTEMS = (By.ID, u'ui-id-30') # x: 994 y: 301 width: 101 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_subsystems_tab
-    USED_SERVERS = (By.ID, u'ui-id-31') # x: 1096 y: 301 width: 110 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: https://test-cs.i.palveluvayla.com:4000/#member_used_servers_tab
+    MEMBER_DETAILS = (By.ID, u'ui-id-27') # x: 536 y: 301 width: 129 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    OWNED_SERVERS = (By.ID, u'ui-id-28') # x: 666 y: 301 width: 124 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    GLOBAL_GROUP_MEMBERSHIP = (By.ID, u'ui-id-29') # x: 791 y: 301 width: 202 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    SUBSYSTEMS = (By.ID, u'ui-id-30') # x: 994 y: 301 width: 101 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
+    USED_SERVERS = (By.ID, u'ui-id-31') # x: 1096 y: 301 width: 110 height: 29, tag: a, type: , name: None, form_id: , checkbox: , table_id: , href: None
     MEMBER_NAME = (By.XPATH, u'//div[2]/div[1]/div[1]/div[1]/form[1]/table[1]/tbody[1]/tr[1]/td[1]') # x: 475 y: 346 width: 111 height: 43, tag: td, type: , name: None, form_id: , checkbox: , table_id: 3, href:
     TESTIFIRMA = (By.XPATH, u'//div[2]/div[1]/div[1]/div[1]/form[1]/table[1]/tbody[1]/tr[1]/td[2]/p[1]') # x: 591 y: 351 width: 788 height: 33, tag: p, type: , name: None, form_id: , checkbox: , table_id: 3, href:
     EDIT = (By.XPATH, u'//div[2]/div[1]/div[1]/div[1]/form[1]/table[1]/tbody[1]/tr[1]/td[3]/button[1]') # x: 1387 y: 351 width: 54 height: 33, tag: button, type: submit, name: None, form_id: , checkbox: , table_id: 3, href:
@@ -80,7 +80,6 @@ class Cs_members_details_dlg(CommonUtils):
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.MEMBER_DETAILS*
         """
-        # AutoGen method click_link: https://test-cs.i.palveluvayla.com:4000/#member_details_tab
         self.click_element(self.MEMBER_DETAILS)
 
     def click_subsystems_tab(self):
@@ -90,7 +89,6 @@ class Cs_members_details_dlg(CommonUtils):
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.SUBSYSTEMS*
         """
-        # AutoGen method click_link: https://test-cs.i.palveluvayla.com:4000/#member_subsystems_tab
         self.click_element(self.SUBSYSTEMS)
 
     def click_button_close(self):

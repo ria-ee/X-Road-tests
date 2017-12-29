@@ -18,7 +18,7 @@ class Cs_backup_restore(CommonUtils):
         | Docstrings updated
     """
     # Pagemodel timestamp: 20160330092952
-    # Pagemodel url: https://test-cs.i.palveluvayla.com:4000/backup
+    # Pagemodel url: https://xroad-lxd-cs.lxd:4000/backup
     # Pagemodel area: (270, 0, 1647, 775)
     # Pagemodel screen resolution: (1920, 1080)
     # Use project settings: True
