@@ -74,3 +74,15 @@ class Component_common(CommonUtils):
         """
         self.wait_until_jquery_ajax_loaded()
         self.common_elements.verify_error_contains(message)
+
+    def verify_alert_message(self, message=u'Global configuration generation failing since'):
+        """
+        Verify notice message
+
+        :param message:  String value for message
+        
+        **Test steps:**
+                * **Step 2:** :func:`~common_lib.common_elements.Common_elements.verify_alert_message`, *message*
+        """
+        self.wait_until_jquery_ajax_loaded()
+        self.common_elements.verify_alert_message(message)

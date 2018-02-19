@@ -27,7 +27,7 @@ class Common_lib(CommonUtils):
         """
 
         :param parameters:  Test data section dictionary
-        
+
         **Test steps:**
                 * **Step 1:** :func:`~pagemodel.add_dynamic_content_to_parameters(parameters, "data_folder", WORKSPACE + os.Add_dynamic_content_to_parameters(parameters, "data_folder", workspace + os.sep + GIT_WORKING_DIR + os`, *parameters*, *"data_folder"*, *WORKSPACE + os.sep + GIT_WORKING_DIR + os.sep + "data" + os.sep*, *u'paths'*
         """
@@ -130,7 +130,7 @@ class Common_lib(CommonUtils):
         """
 
         :param parameters:  Test data section dictionary
-        
+
         **Test steps:**
                 * **Step 1:** :func:`~pagemodel.add_dynamic_content_to_parameters(parameters, "data_folder", WORKSPACE + os.Add_dynamic_content_to_parameters(parameters, "data_folder", workspace + os.sep + GIT_WORKING_DIR + os`, *parameters*, *"data_folder"*, *WORKSPACE + os.sep + GIT_WORKING_DIR + os.sep + "data" + os.sep*, *u'paths'*
         """
@@ -301,7 +301,7 @@ class Common_lib(CommonUtils):
         """
 
         :param parameters:  Test data section dictionary
-        
+
         **Test steps:**
                 * **Step 1:** :func:`~pagemodel.delete_files_with_extension(parameters[u'downloads_folder'], ".Delete_files_with_extension(parameters[u'downloads_folder'], ".p10")`, *parameters[u'downloads_folder']*, *".p10"*
                 * **Step 2:** :func:`~pagemodel.delete_files_with_extension(parameters[u'downloads_folder'], ".Delete_files_with_extension(parameters[u'downloads_folder'], ".der")`, *parameters[u'downloads_folder']*, *".der"*
@@ -317,7 +317,7 @@ class Common_lib(CommonUtils):
         """
 
         :param parameters:  Test data section dictionary
-        
+
         **Test steps:**
                 * **Step 1:** :func:`~pagemodel.delete_files_with_extension(parameters[u'downloads_folder'], ".Delete_files_with_extension(parameters[u'downloads_folder'], ".der")`, *parameters[u'downloads_folder']*, *".der"*
         """
@@ -417,7 +417,6 @@ class Common_lib(CommonUtils):
         pyautogui.press('end')
         for i in range(0,30):
             pyautogui.press('backspace', interval=0.01)
-
         if "16" in output:
             splitted_path = type_string.split("/")
             for i in range(0,len(splitted_path)):

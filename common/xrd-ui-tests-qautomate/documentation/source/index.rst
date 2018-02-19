@@ -1,7 +1,11 @@
+.. _documentation: https://s3-eu-west-1.amazonaws.com/qautomate-1.8/documentation/html/index.html
+
 Introduction
 ============
 
-Documentation QAutomate tests
+Documentation for X-Road QAutomate UI tests.
+
+QAutomate framework documentation: `documentation`_
    
 Tests
 =====

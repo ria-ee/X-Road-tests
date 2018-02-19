@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Example for using WebDriver object: driver = get_driver() e.g driver.current_url
+from variables import errors
 from webframework import TESTDATA
 from selenium.webdriver.common.by import By
 from webframework.extension.util.common_utils import *
@@ -84,7 +85,7 @@ class Cs_system_settings(CommonUtils):
     def click_button_id_service_provider_edit(self):
         """
         Click button to edit service provider
-        
+
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.ID_SERVICE_PROVIDER_EDIT*
         """
@@ -94,7 +95,7 @@ class Cs_system_settings(CommonUtils):
     def click_button_add_icon(self):
         """
         Click button to add icon
-        
+
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.ADD_ICON*
         """
@@ -104,7 +105,7 @@ class Cs_system_settings(CommonUtils):
     def get_wsdl_and_services_address(self, parameters=None):
         """
         Add wsdl and services address to parameters. Parameters saved to 'wsdl_add_url' and 'service_mgm_address'
-        
+
         :param parameters:  Test data section dictionary
         
         **Test steps:**
@@ -124,3 +125,11 @@ class Cs_system_settings(CommonUtils):
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.ID_SERVICE_PROVIDER_SECURITY_SERVER_REGISTER*
         """
         self.click_element(self.ID_SERVICE_PROVIDER_SECURITY_SERVER_REGISTER)
+
+    def verify_central_address_does_not_contain_whitespace(self):
+        """
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.fail`, *errors.value_starts_with_whitespace*
+        """
+        if self.get_value(self.ID_CENTRAL_SERVER_ADDRESS).startswith(" ") or self.get_value(self.ID_CENTRAL_SERVER_ADDRESS).endswith(" "):
+            self.fail(errors.value_starts_with_whitespace)

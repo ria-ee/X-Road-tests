@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Example for using WebDriver object: driver = get_driver() e.g driver.current_url
 from webframework import TESTDATA
+from variables import strings
 from selenium.webdriver.common.by import By
 from webframework.extension.util.common_utils import *
 from webframework.extension.util.webtimings import get_measurements
@@ -59,7 +60,10 @@ class Ss_keys_and_cert_dlg_registration_req(CommonUtils):
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.input_text`, *self.ID_ADDRESS*, *parameters['server_address']*
         """
         # AutoGen methods form: keys
-        self.input_text(self.ID_ADDRESS, parameters['server_address'])
+        server_address = parameters['server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server_address = server_address.replace("user@", "")
+        self.input_text(self.ID_ADDRESS, server_address)
 
     def submit_register_request(self):
         """

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Example for using WebDriver object: driver = self.get_current_driver() e.g driver.current_url
 from webframework import TESTDATA
+from variables import strings
 from selenium.webdriver.common.by import By
 from webframework.extension.util.common_utils import *
 from webframework.extension.parsers.parameter_parser import get_parameter
@@ -58,7 +59,10 @@ class Cs_system_settings_change_cs_address_dlg(CommonUtils):
         **Test steps:**
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.input_text`, *self.ID_CENTRAL_SERVER_ADDRESS_NEW*, *parameters[u'server_address']*
         """
-        self.input_text(self.ID_CENTRAL_SERVER_ADDRESS_NEW, parameters[u'server_address'])
+        server_address = parameters['server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server_address = server_address.replace("user@", "")
+        self.input_text(self.ID_CENTRAL_SERVER_ADDRESS_NEW, server_address)
 
     def click_confim(self):
         """

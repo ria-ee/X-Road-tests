@@ -14,10 +14,12 @@
 	</Section>
 	<Section name="cs_url">
 		<parameter name="url" pagemodel="open_application" value="https://xroad-lxd-cs.lxd:4000/login"/>
+		<parameter name="internal_conf_url" value="http://xroad-lxd-cs.lxd/internalconf"/>
+		<parameter name="configuration_timeout" value="3"/>
 		<parameter name="j_username" pagemodel="cs_login" value="xrd"/>
 		<parameter name="j_password" pagemodel="cs_login" value="secret"/>
 		<parameter name="pin" value="12345678a!"/>
-		<parameter name="server_address" value="xroad-lxd-cs.lxd"/>
+		<parameter name="server_address" value="user@xroad-lxd-cs.lxd"/>
 		<parameter name="instance_identifier" value="XRD1"/>
 		<parameter name="sync_timeout" value="65"/>
 		<parameter name="tsp_url" value="http://xroad-lxd-ca.lxd:8899"/>
@@ -30,7 +32,7 @@
 		<parameter name="url" value="https://xroad-lxd-ss0.lxd:4000/login"/>
 		<parameter name="j_username" value="xrd"/>
 		<parameter name="j_password" value="secret"/>
-		<parameter name="server_address" pagemodel="" validation="" value="xroad-lxd-ss0.lxd" verify=""/>
+		<parameter name="server_address" pagemodel="" validation="" value="user@xroad-lxd-ss0.lxd" verify=""/>
 		<parameter name="pin" value="12345678a!"/>
 		<parameter name="sync_timeout" value="65"/>
 		<parameter name="tsp_url" value="http://xroad-lxd-ca.lxd:8899"/>
@@ -39,7 +41,7 @@
 		<parameter name="url" pagemodel="open_application" value="https://xroad-lxd-ss1.lxd:4000/login"/>
 		<parameter name="j_username" value="xrd"/>
 		<parameter name="j_password" value="secret"/>
-		<parameter name="server_address" pagemodel="" validation="" value="xroad-lxd-ss1.lxd" verify=""/>
+		<parameter name="server_address" pagemodel="" validation="" value="user@xroad-lxd-ss1.lxd" verify=""/>
 		<parameter name="pin" value="12345678a!"/>
 		<parameter name="sync_timeout" value="65"/>
 		<parameter name="tsp_url" value="http://xroad-lxd-ca.lxd:8899"/>
@@ -48,7 +50,7 @@
 		<parameter name="url" pagemodel="open_application" value="https://xroad-lxd-ss2.lxd:4000/login"/>
 		<parameter name="j_username" value="xrd"/>
 		<parameter name="j_password" value="secret"/>
-        <parameter name="server_address" pagemodel="" validation="" value="xroad-lxd-ss2.lxd" verify=""/>
+        <parameter name="server_address" pagemodel="" validation="" value="user@xroad-lxd-ss2.lxd" verify=""/>
 		<parameter name="pin" value="12345678a!"/>
 		<parameter name="sync_timeout" value="65"/>
 		<parameter name="tsp_url" value="http://xroad-lxd-ca.lxd:8899"/>

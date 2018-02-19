@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Example for using WebDriver object: driver = get_driver() e.g driver.current_url
 from webframework import TESTDATA
+from variables import strings
 from selenium.webdriver.common.by import By
 from webframework.extension.util.common_utils import *
 from webframework.extension.util.webtimings import get_measurements
@@ -65,7 +66,10 @@ class Cs_initial_configuration(CommonUtils):
         """
         # AutoGen methods form: init
         self.input_text(self.ID_INSTANCE_IDENTIFIER, parameters['instance_identifier'])
-        self.input_text(self.ID_CENTRAL_SERVER_ADDRESS, parameters['server_address'])
+        server_address = parameters['server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server_address = server_address.replace("user@", "")
+        self.input_text(self.ID_CENTRAL_SERVER_ADDRESS, server_address)
         self.input_text(self.ID_PIN, parameters['pin'])
         self.input_text(self.ID_PIN_REPEAT, parameters['pin'])
 

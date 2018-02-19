@@ -1,6 +1,9 @@
 import os
 from webframework.extension.parsers.parameter_parser import get_parameter, get_all_parameters, set_parameter_file
 
+# Jetty log events
+failed_to_generate_global_config = u'Processing internal configuration failed:'
+
 # audit log events
 login_user = u'Log in user'
 logout_user = u'Log out user'
@@ -63,10 +66,14 @@ backup_file_uploaded_invalid_format = u"Failed to upload new backup file: Conten
 configuration_file_upload = u"Configuration file for content identifier '{}' uploaded successfully."
 configuration_file_upload_validation_fail = u"Failed to upload configuration part: Validation of configuration file with content identifier '{}' failed."
 configuration_file_upload_missing_validation_fail = u"Failed to upload configuration part: Validation program '{}' does not exist in the file system."
+configuration_generation_fail = u"Global configuration generation failing since"
 
 
 login_software_token_missing_pin = u"Missing parameter: pin"
 login_software_token_invalid_pin = u'PIN incorrect'
+
+parameter_missing= u"Missing parameter: {}"
+parameter_exceed_255 = u"Parameter '{}' input exceeds 255 characters"
 
 failed_to_activae_signing_key = u'Failed to activate signing key: token or key not available'
 
@@ -83,7 +90,8 @@ auth_key_usage = "Auth"
 # Backup paths
 
 # Log file names and paths
-backup_directory = "/var/lib/xroad/backup"
+backup_directory = u"/var/lib/xroad/backup"
+generated_confs_directory = u'/var/lib/xroad/public'
 
 invalid_backup_file_name = "invalid.tar"
 invalid_backup_file = os.path.join(backup_directory, invalid_backup_file_name)

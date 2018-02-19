@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Example for using WebDriver object: driver = get_driver() e.g driver.current_url
 from webframework import TESTDATA
+from variables import strings
 from selenium.webdriver.common.by import By
 from webframework.extension.util.common_utils import *
 from webframework.extension.util.webtimings import get_measurements
@@ -90,4 +91,8 @@ class Ss_keys_and_cert_dlg_subject_dname(CommonUtils):
         import random, string
         rword = ''.join(random.choice(string.lowercase) for i in range(4))
         self.input_text(self.NAME_O_GOFORE_TEXT, parameters['member_name'] + rword)
-        self.input_text(self.NAME_CN_1234_TEXT, parameters['server_address'])
+        # AutoGen methods form: keys
+        server_address = parameters['server_address']
+        if strings.server_environment_type() == strings.lxd_type_environment:
+            server_address = server_address.replace("user@", "")
+        self.input_text(self.NAME_CN_1234_TEXT, server_address)

@@ -97,3 +97,14 @@ Pagemodel
             * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.click_element`, *self.LANGUAGE_CHANGE*
         """
         self.click_element(self.LANGUAGE_CHANGE)
+
+    def verify_alert_message(self, message=u'Global configuration generation failing since'):
+        """
+        Verify top message text
+
+        :param message:  String value for message
+        
+        **Test steps:**
+            * **Step 1:** :func:`~webframework.extension.util.common_utils.CommonUtils.element_should_contain`, *self.ALERT_MESSAGE*, *message*
+        """
+        self.element_should_contain(self.ALERT_MESSAGE, message)
