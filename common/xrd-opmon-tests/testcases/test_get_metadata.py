@@ -31,9 +31,9 @@ import common
 
 # Base sizes of request and responses.
 # Parameters sizes must be added to these values.
-WSDL_QUERY_REQUEST_SOAP_BASE_SIZE = 1009
-WSDL_QUERY_RESPONSE_MIME_BASE_SIZE = 15718
-WSDL_QUERY_RESPONSE_SOAP_BASE_SIZE = 1207
+WSDL_QUERY_REQUEST_SOAP_BASE_SIZE = 999
+WSDL_QUERY_RESPONSE_MIME_BASE_SIZE = 18909
+WSDL_QUERY_RESPONSE_SOAP_BASE_SIZE = 1197
 
 
 def _wsdl_query_request_parameters_size(query_parameters):
@@ -160,7 +160,7 @@ def run(request_template_dir, query_parameters):
     response = common.make_get_request(
         client_security_server_address
         + "/wsdl?xRoadInstance={}&memberClass={}&memberCode={}&subsystemCode={}"
-          "&serviceCode=xroadGetRandom&version=v1".format(
+          "&serviceCode=mock&version=v1".format(
             query_parameters["producer_instance"], query_parameters["producer_class"],
             query_parameters["producer_code"], query_parameters["producer_system"]))
 
