@@ -2,7 +2,7 @@
 
 ## About the repository
 
-This repository contains [X-Road](https://github.com/ria-ee/X-Road) test source codes, its development, installation and documentation.
+This repository contains [X-Road](https://github.com/ria-ee/X-Road) test source codes, its development, installation and documentation. The version number of X-Road the tests were designated is 6.16.0.
 
 ## X-Road source code
 
