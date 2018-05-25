@@ -700,7 +700,7 @@ Create new project for performance test - Freestyle project
 ### Source Code Managment.
 * Chek Git.
 * Write in Reposotory URL feeld your repository adress.
-* If credentials are neede press add button and and them.
+* If credentials are needed press add button and add them.
 * Branch Specifier (blank for 'any') wirte dovn the branch on our case: */master
 * Repository browser: Auto
 ### Build
