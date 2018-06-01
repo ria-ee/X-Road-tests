@@ -26,6 +26,9 @@ class XroadGlobalGroups(unittest.TestCase):
     def test_global_groups_tests(self):
         main = MainController(self)
 
+        main.test_number = 'UC SERVICE_33'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -44,7 +47,7 @@ class XroadGlobalGroups(unittest.TestCase):
 
         testservice_name = main.config.get('services.test_service')
 
-        query_url = main.config.get('ss1.service_path')
+        query_url = main.config.get('ss1.service_path') # tempss0
         query_filename = main.config.get('services.request_template_filename')
         query = main.get_xml_query(query_filename)
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))

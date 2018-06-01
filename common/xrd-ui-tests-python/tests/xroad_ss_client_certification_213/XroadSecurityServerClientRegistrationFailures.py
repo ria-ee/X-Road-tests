@@ -19,6 +19,10 @@ class XroadSecurityServerClientRegistrationFailures(unittest.TestCase):
     def test_registration_failures_213(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_30.ext'
+        main.test_name = self.__class__.__name__
+
         main.url = main.config.get('ss2.host')
         main.username = main.config.get('ss2.user')
         main.password = main.config.get('ss2.pass')
@@ -41,6 +45,7 @@ class XroadSecurityServerClientRegistrationFailures(unittest.TestCase):
         try:
             fail_test_func(main)
         except:
+            main.save_exception_data()
             raise
         finally:
             main.tearDown()

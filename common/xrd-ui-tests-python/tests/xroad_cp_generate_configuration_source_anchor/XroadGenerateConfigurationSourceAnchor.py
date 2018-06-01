@@ -21,6 +21,9 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
 
     def test_a_generate_configuration_source_anchor_no_instance(self):
         main = MainController(self)
+        main.test_number = 'CP_04.a'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -36,6 +39,9 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
 
     def test_b_generate_configuration_source_anchor_no_source_anchor(self):
         main = MainController(self)
+        main.test_number = 'CP_04.b'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -51,6 +57,9 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
 
     def test_c_generate_configuration_source_anchor_no_signing_keys(self):
         main = MainController(self)
+        main.test_number = 'CP_04.c'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -59,7 +68,7 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
         valid_cp_anchor_path = main.config.get('cp.anchor_path')
         empty_cp_anchor_path = main.config.get('cp.empty_cp_anchor_path')
         main.log('Copying anchor file from "{}" to "{}"'.format(valid_cp_anchor_path, empty_cp_anchor_path))
-        exec_as_xroad(sshclient, 'cp {} {}'.format(valid_cp_anchor_path, empty_cp_anchor_path))
+        exec_as_xroad(sshclient, 'cp -p {} {}'.format(valid_cp_anchor_path, empty_cp_anchor_path))
         main.log('CP_04 2c. Trying to generate sourche anchor '
                  'for proxy which has no signing keys({})'.format(cp_identifier))
         std_out = flatten(
@@ -70,6 +79,9 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
 
     def test_d_generate_configuration_source_anchor_no_write_permissions(self):
         main = MainController(self)
+        main.test_number = 'CP_04.d'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -86,6 +98,9 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
 
     def test_e_generate_configuration_source_anchor(self):
         main = MainController(self)
+        main.test_number = 'CP_04.e'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -103,7 +118,7 @@ class XroadGenerateConfigurationSourceAnchor(unittest.TestCase):
         main.is_true(any(expected_msg in a for a in std_out), msg='Expected success msg not found')
 
         main.log('Get written anchor file content')
-        std_out = flatten(sshclient.exec_command('cat {}'.format(dest_path)))
+        std_out = flatten(sshclient.exec_command('sudo cat {}'.format(dest_path)))
         main.log('Parse XML')
         root = ''.join(std_out)
         root = xml.etree.ElementTree.fromstring(root)

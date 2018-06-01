@@ -29,6 +29,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_a_delete_key_from_configuration_canceling(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -36,6 +40,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_a_delete_key_from_configuration_canceling')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_a'
 
         sshclient = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
 
@@ -55,7 +62,8 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
                                            cs_host=None,
                                            ca_ssh_host=ca_ssh_host, ca_ssh_user=ca_ssh_user,
                                            ca_ssh_pass=ca_ssh_pass,
-                                           cert_path=cert_path, ca_name=ca_name, dns='test', organization='test')
+                                           cert_path=cert_path, ca_name=ca_name, dns='test', organization='test',
+                                           key_name=auth_deletion)
         try:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             main.wait_until_visible(type=By.CSS_SELECTOR, element=KEYSANDCERTIFICATES_BTN_CSS).click()
@@ -77,6 +85,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_b_delete_key_unregister_error(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.b'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -84,6 +96,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_b_delete_key_unregister_error')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_b'
 
         sshclient = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
 
@@ -113,6 +128,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_c_delete_key_unregister_sending_error(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.c'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -120,6 +139,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_c_delete_key_unregister_sending_error')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_c'
 
         sshclient = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
         auth_key_name = main.config.get('certs.ss_auth_key_label')
@@ -131,7 +153,7 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
             sshclient.exec_command('service xroad-proxy stop', sudo=True)
             delete_key_from_configuration(main, auth_key_name, sshclient, request_sending_fail=True)
             sshclient.exec_command('service xroad-proxy start', sudo=True)
-            wait_until_proxy_up('https://{}:5500'.format(ss_ssh_host))
+            wait_until_proxy_up('https://{}:5500'.format(ss_ssh_host), main, timeout=1200)
         except:
             main.save_exception_data()
             raise
@@ -141,6 +163,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_d_delete_key_from_configuration_with_cert(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.d'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -148,6 +174,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_d_delete_key_from_configuration_with_cert')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_d'
 
         sshclient = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
         auth_deletion = 'test_key_deletion'
@@ -167,6 +196,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_e_delete_key_from_configuration_without_certs_canceling(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.e'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -174,6 +207,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_e_delete_key_from_configuration_without_certs_canceling')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_e'
 
         auth_deletion = 'test_key_deletion'
         log_checker = auditchecker.AuditChecker(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
@@ -198,6 +234,10 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
     def test_f_delete_key_from_configuration_no_certs(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'SS_35/42.f'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -205,6 +245,9 @@ class XroadDeleteKeyFromConfiguration(unittest.TestCase):
         ss_ssh_host = main.config.get('ss1.ssh_host')
         ss_ssh_user = main.config.get('ss1.ssh_user')
         ss_ssh_pass = main.config.get('ss1.ssh_pass')
+
+        main.log('XroadDeleteKeyFromConfiguration.test_e_delete_key_from_configuration_without_certs_canceling')
+        main.test_number = 'XroadDeleteKeyFromConfiguration.test_f'
 
         auth_deletion = 'test_key_deletion'
         log_checker = auditchecker.AuditChecker(ss_ssh_host, ss_ssh_user, ss_ssh_pass)

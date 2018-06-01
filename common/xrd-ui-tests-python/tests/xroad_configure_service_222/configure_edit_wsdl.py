@@ -184,7 +184,7 @@ def edit_service(self, service_url, service_timeout=None, verify_tls=None):
 
 def test_configure_service(case, client=None, client_name=None, client_id=None, service_name=None, service_url=None,
                            service_2_name=None, service_2_url=None, check_add_errors=True, check_edit_errors=True,
-                           check_parameter_errors=True, wsdl_url=None, wsdl_index=None):
+                           check_parameter_errors=True, wsdl_url=None, wsdl_index=None, wsdl_test_service=None):
     '''
     MainController test function. Configures a new service.
     '''
@@ -201,7 +201,7 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
     wsdl_correct_url = self.config.get('wsdl.remote_path').format(
         self.config.get('wsdl.service_wsdl'))  # Correct URL that returns a WSDL file
 
-    wsdl_test_service = self.config.get('wsdl.service_wsdl_test_service1')
+    #wsdl_test_service = self.config.get('wsdl.service_wsdl_test_service1')
     wsdl_single_service = self.config.get('wsdl.service_single_service_filename')
 
     wsdl_test_service_url = self.config.get('wsdl.remote_path').format(wsdl_test_service)
@@ -233,8 +233,6 @@ def test_configure_service(case, client=None, client_name=None, client_id=None, 
 
             # # Find the service under the specified WSDL in service list (and expand the WSDL services list if not open yet)
             clients_table_vm.client_services_popup_select_wsdl(self, wsdl_index=wsdl_index, wsdl_url=wsdl_url)
-            #
-
 
             # UC SERVICE_09 (Edit the Address of a WSDL) and SERVICE_10 (Download and Parse WSDL) checks
             self.log('SERVICE_09/SERVICE_10 checks')

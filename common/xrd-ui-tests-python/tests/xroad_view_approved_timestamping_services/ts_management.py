@@ -36,7 +36,7 @@ def verify_ts(self, ts_name):
     self.log('UC TRUST_15 2."Valid sertificate name {0}'.format(cert_name))
 
     self.is_true(cert_name == ts_name,
-                 msg='Sertificate has wrong name')
+                 msg='Certificate has wrong name, expected "{0}", got "{1}"'.format(ts_name, cert_name))
 
     # Get Valid from time
     from_date = self.by_xpath(timestamp_services.SERTIFICATE_VALID_FROM).text
@@ -163,7 +163,8 @@ def test_add_ts(case, ts_url, ts_certificate, invalid_ts_certificate=None, certi
         self.by_id(certification_services.TIMESTAMP_SERVICES_URL_ID).send_keys(ts_url)
         self.wait_jquery()
 
-        self.log('UC TRUST_16: 3. CS administrator selects and uploads the TSA certificate file from the local file system.')
+        self.log(
+            'UC TRUST_16: 3. CS administrator selects and uploads the TSA certificate file from the local file system.')
         # Add valid sertificate
         add_first_certifcate(self, ts_certificate)
         # Click "Add" for trying to add invalid sertificates
@@ -213,7 +214,7 @@ def test_edit_ts(case, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pass=None,
             log_checker = auditchecker.AuditChecker(host=cs_ssh_host, username=cs_ssh_user, password=cs_ssh_pass)
             current_log_lines = log_checker.get_line_count()
         self.log(
-        'UC TRUST_17 Open Timestaming services')
+            'UC TRUST_17 Open Timestaming services')
 
         # Open "Timestamping services"
         select_ts(self, ts_name)
@@ -223,9 +224,8 @@ def test_edit_ts(case, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pass=None,
         click_ts(self)
         self.wait_jquery()
 
-
         self.log(
-        'UC TRUST_17 Parse user input')
+            'UC TRUST_17 Parse user input')
 
         # Configure TS certificates
         configure_ts(self, check_errors=True,
@@ -260,7 +260,8 @@ def test_edit_ts(case, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pass=None,
         input_text_stripped = cert_name.strip(' ')
         # Compare inserted URL
         self.is_true(cert_name == (timestamp_services.TEST_URL),
-                     msg='Sertificate has wrong name')
+                     msg='Certificate has wrong name, expected "{0}", got "{1}"'.format(timestamp_services.TEST_URL,
+                                                                                        cert_name))
 
         # Clear URL field
         self.by_id(certification_services.TIMESTAMP_SERVICES_URL_ID).clear()
@@ -284,10 +285,10 @@ def test_edit_ts(case, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pass=None,
         self.logdata.append(log_constants.EDIT_TS)
         self.logdata.append(log_constants.EDIT_TS)
         self.log(
-        'UC TRUST_17 Compares and verifies new correct URL')
+            'UC TRUST_17 Compares and verifies new correct URL')
         # Compare URL
         self.is_true(cert_name == (ts_url),
-                     msg='Sertificate has wrong name')
+                     msg='Certificate has wrong name, expected "{0}", got "{1}"'.format(ts_url, cert_name))
 
         if cs_ssh_host is not None:
             # Check logs for entries
@@ -296,7 +297,6 @@ def test_edit_ts(case, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pass=None,
             self.is_true(logs_found,
                          msg='Some log entries were missing. Expected: "{0}", found: "{1}"'.format(self.logdata,
                                                                                                    log_checker.found_lines))
-
 
     return edit_ca
 
@@ -437,6 +437,7 @@ def configure_ts(self, certificate_classpath=None, check_errors=False, log_succe
         self.logdata += [log_fail] * errors
         self.logdata += [log_success] * successes
 
+
 def check_inputs(self, input_element, final_value, save_btn, label_name='tsp_url',
                  invalid_url=timestamp_services.INVALID_URL,
                  input_element_type=By.ID,
@@ -573,7 +574,8 @@ def test_delete_ts(case, ts_name, cs_ssh_host=None, cs_ssh_user=None, cs_ssh_pas
         self.by_xpath(popups.CONFIRM_POPUP_OK_BTN_XPATH).click()
         self.wait_jquery()
 
-        self.log('UC_TRUST_18 4. System deletes the approved timestamping service information from the system configuration.')
+        self.log(
+            'UC_TRUST_18 4. System deletes the approved timestamping service information from the system configuration.')
 
         '''Get text "No (matching) records"'''
         no_records = self.by_xpath(timestamp_services.SERTIFICATE_EMPTY).text

@@ -14,9 +14,14 @@ def test_verify_local_group_client(case):
     self = case
 
     def local_group_ss_client():
-        create_local_group(self)
-        verify_local_group_security_server_client(self)
-        delete_local_group(self)
+        try:
+            create_local_group(self)
+            verify_local_group_security_server_client(self)
+        except:
+            raise
+        finally:
+            # Always delete the group
+            delete_local_group(self)
 
     return local_group_ss_client
 
@@ -64,28 +69,30 @@ def verify_local_group_security_server_client(self):
     self.is_equal(updated_date, date,
                   msg='Wrong local group update date')
 
-
-def create_local_group(self):
-    self.log('Open clients details, by double clicking on client id')
-
+def open_client_groups(self):
     client_name = self.config.get('ss2.client2_name')
     subsystem_row = xroad.split_xroad_subsystem(self.config.get('ss2.client2_id'))
     subsystem = subsystem_row['subsystem']
+
+    self.log('Open clients details by clicking on client {0} subsystem {1}'.format(client_name, subsystem))
+    self.wait_jquery()
 
     '''Click on client row'''
     client_row = self.wait_until_visible(type=By.XPATH, element=clients_table_vm.
                                              get_client_id_by_member_code_subsystem_code(client_name,subsystem))
 
-
     '''Click on "Details" button'''
     client_row.find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS).click()
-
-
-
+    self.wait_jquery()
 
     self.log('SERVICE_23 1.SS administrator selects to view the local groups of a security server client.')
 
     self.wait_until_visible(type=By.XPATH, element=popups.LOCAL_GROUPS_TAB).click()
+    self.wait_jquery()
+
+
+def create_local_group(self):
+    open_client_groups(self)
 
     self.log('Click on "ADD GROUP" button')
     self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_GROUP_ADD_BTN_ID).click()
@@ -108,11 +115,23 @@ def delete_local_group(self):
     :param self: MainController object
     :return: None
     """
-    '''Open group details'''
+
+    # Close all popups
+    popups.close_all_open_dialogs(self)
+    self.wait_jquery()
+
+    open_client_groups(self)
+
+    self.log('Open group details')
     self.by_xpath(groups_table.LOCAL_GROUP_ROW_BY_TD_TEXT_XPATH.format(clients_table_vm.TEST_DATA[::-1])).click()
+    self.wait_jquery()
+
     self.log('Click on "Details" button')
     self.wait_until_visible(type=By.ID, element=groups_table.GROUP_DETAILS_BTN_ID).click()
+    self.wait_jquery()
     self.log('Delete local group by clicking on "DELETE GROUP" button')
     self.wait_until_visible(type=By.XPATH, element=popups.LOCAL_GROUP_DELETE_GROUP_BTN_XPATH).click()
+    self.wait_jquery()
     self.log('... and clicking on "CONFIRM" button')
     self.wait_until_visible(type=By.XPATH, element=popups.CONFIRM_POPUP_OK_BTN_XPATH).click()
+    self.wait_jquery()

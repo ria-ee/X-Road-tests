@@ -7,7 +7,7 @@ class XroadUploadBackupFile(unittest.TestCase):
     '''
     UC SS_18: Upload a Backup File
     RIA URL: https://jira.ria.ee/browse/XTKB-105
-    Depends on finishing other test(s):
+    Depends on finishing other test(s): XroadBackupConfiguration
     Requires helper scenarios:
     X-Road version: 6.16.0
     '''

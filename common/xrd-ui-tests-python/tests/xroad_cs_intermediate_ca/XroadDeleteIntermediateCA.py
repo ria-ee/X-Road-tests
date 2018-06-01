@@ -15,6 +15,8 @@ class XroadDeleteIntermediateCA(unittest.TestCase):
     """
     def test_xroad_intermediate_ca_deleting(self):
         main = MainController(self)
+        main.test_number = 'UC TRUST_13'
+        main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
@@ -33,6 +35,8 @@ class XroadDeleteIntermediateCA(unittest.TestCase):
         try:
             main.reload_webdriver(cs_host, cs_user, cs_pass)
             test_delete_intermediate_ca()
-
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()

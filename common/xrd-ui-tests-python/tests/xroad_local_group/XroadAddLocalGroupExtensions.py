@@ -17,6 +17,9 @@ class XroadAddLocalGroupExtensions(unittest.TestCase):
     def test_add_local_group(self):
         main = MainController(self)
 
+        main.test_number = 'UC SERVICE_25'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')

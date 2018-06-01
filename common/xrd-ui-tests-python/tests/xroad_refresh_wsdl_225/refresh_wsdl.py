@@ -19,7 +19,7 @@ wsdl_delete_command = 'rm {0}'  # {0} is replaced with wsdl_local_path+wsdl_file
 # Use symbolic links instead of copy:
 # wsdl_replace_command = 'ln -s {0} {1}'  # {0} is replaced with source filename and {1} with  wsdl_local_path+wsdl_filename
 # Use copy instead of using links:
-wsdl_replace_command = 'cp {0} {1}'  # {0} is replaced with source filename and {1} with  wsdl_local_path+wsdl_filename
+wsdl_replace_command = 'cp -p {0} {1}'  # {0} is replaced with source filename and {1} with  wsdl_local_path+wsdl_filename
 
 
 def webserver_set_wsdl(self, wsdl_source_filename, wsdl_target_filename):
@@ -57,7 +57,7 @@ def test_refresh_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
     client_id = xroad.get_xroad_subsystem(client)
     requester_id = xroad.get_xroad_subsystem(requester)
 
-    query_url = self.config.get('ss1.service_path')
+    query_url = self.config.get('ss1.service_path') # tempss0
     query_filename = self.config.get('services.request_template_filename')
     query_2_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)

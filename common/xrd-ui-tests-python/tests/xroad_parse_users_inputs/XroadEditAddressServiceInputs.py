@@ -9,7 +9,7 @@ from helpers import xroad
 
 class XroadEditAddressServiceInputs(unittest.TestCase):
     """
-    UC SERVICE_11 (UC SERVICE 19/3) Parse User Input (Address of a Service)
+    UC SERVICE_11 (UC SERVICE_19/3) Parse User Input (Address of a Service)
     RIA URL: https://jira.ria.ee/browse/XT-276, https://jira.ria.ee/browse/XTKB-55
     Depends on finishing other test(s): None
     Requires helper scenarios: None

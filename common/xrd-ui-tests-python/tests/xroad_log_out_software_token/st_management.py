@@ -84,10 +84,10 @@ def software_token_login(self, token_pin=None):
 
     '''Insert correct PIN'''
     self.input(key_label_input, token_pin)
-    self.wait_jquery
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
 
     return self.logdata

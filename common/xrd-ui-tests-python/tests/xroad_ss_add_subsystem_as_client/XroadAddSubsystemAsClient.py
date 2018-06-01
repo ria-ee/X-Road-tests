@@ -17,6 +17,9 @@ class XroadAddSubsystemAsClient(unittest.TestCase):
 
     def test_a_add_subsystem_as_client(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_47.a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -58,6 +61,8 @@ class XroadAddSubsystemAsClient(unittest.TestCase):
 
     def test_b_add_subsystem_as_client_by_hand(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_47.b'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
@@ -96,7 +101,7 @@ class XroadAddSubsystemAsClient(unittest.TestCase):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = 'UC MEMBER_47'
+        main.test_number = 'UC MEMBER_47.c'
         main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
@@ -135,3 +140,39 @@ class XroadAddSubsystemAsClient(unittest.TestCase):
         finally:
             # Test teardown
             main.tearDown()
+'''
+    def test_d_add_remove_client(self):
+        main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'UC MEMBER_47'
+        main.test_name = self.__class__.__name__
+
+        ss_host = main.config.get('ss1.host')
+        ss_user = main.config.get('ss1.user')
+        ss_pass = main.config.get('ss1.pass')
+
+        client_id = main.config.get('ss2.client_id')
+        client_name = main.config.get('ss2.client_name')
+
+        # Configure the service
+        test_add_client = add_subsystem.test_add_client(case=main,
+                                                        client_name=client_name,
+                                                        client_id=client_id,
+                                                        check_errors=False, delete_added=True
+                                                        )
+
+        try:
+            # Open webdriver
+            main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
+
+            # Run the test
+            test_add_client()
+        except:
+            main.log('XroadAddClient: Failed to add client')
+            main.save_exception_data()
+            raise
+        finally:
+            # Test teardown
+            main.tearDown()
+'''

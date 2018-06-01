@@ -4,7 +4,7 @@ from main.maincontroller import MainController
 from tests.xroad_ss_client_certification_213 import client_certification
 
 
-class XroadSecurityServerKeyGenerationSignerTimedOut(unittest.TestCase):
+class XroadSecurityServerSignerErrors(unittest.TestCase):
     """
     SS_28 5a Generate a key(fails)
     RIA URL: https://jira.ria.ee/browse/XT-341, https://jira.ria.ee/browse/XTKB-50
@@ -15,6 +15,10 @@ class XroadSecurityServerKeyGenerationSignerTimedOut(unittest.TestCase):
 
     def test_securityServerSignerTimedOut(self):
         main = MainController(self)
+        # Set test name and number
+        main.test_number = 'SS_28.5a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_username = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
@@ -37,6 +41,7 @@ class XroadSecurityServerKeyGenerationSignerTimedOut(unittest.TestCase):
         try:
             generate_key_timed_out()
         except:
+            main.save_exception_data()
             assert False
         finally:
             start_xroad_signer_service()
@@ -51,6 +56,10 @@ class XroadSecurityServerKeyGenerationSignerTimedOut(unittest.TestCase):
             X-Road version: 6.16.0
             """
         main = MainController(self)
+        # Set test name and number
+        main.test_number = 'SS_29.6a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_username = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')

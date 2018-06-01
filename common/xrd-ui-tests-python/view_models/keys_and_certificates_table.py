@@ -24,6 +24,7 @@ KEY_USAGE_CLASS = 'key-usage'
 KEY_USAGE_TYPE_SIGN = 'sign'
 DETAILS_BTN_ID = 'details'
 CERT_ACTIVE_CSS = '.cert-active'
+KEY_ROW_SELECTED_NAME_CSS = '#keys .row_selected .cert-friendly-name'
 GENERATEKEY_BTN_ID = 'generate_key'
 GENERATECSR_BTN_ID = 'generate_csr'
 ACTIVATE_BTN_ID = 'activate'
@@ -113,8 +114,8 @@ SUBJECT_DISTINGUISHED_NAME_POPUP_O_XPATH = '//input[@name="O"]'
 SUBJECT_DISTINGUISHED_NAME_POPUP_CN_XPATH = '//input[@name="CN"]'
 SUBJECT_DISTINGUISHED_NAME_POPUP_OK_BTN_XPATH = SUBJECT_DISTINGUISHED_NAME_POPUP_XPATH + '//button[@data-name="ok"]'
 SUBJECT_DISTINGUISHED_NAME_POPUP_CANCEL_BTN_XPATH = SUBJECT_DISTINGUISHED_NAME_POPUP_XPATH + '//button[@data-name="cancel"]'
-SIGNING_KEY_LABEL = 'signingkey'
-AUTH_KEY_LABEL = 'authkey'
+SIGNING_KEY_LABEL = 'ta_generated_key_sign'
+AUTH_KEY_LABEL = 'ta_generated_key_auth'
 
 
 def get_generated_row_row_by_td_text(text):

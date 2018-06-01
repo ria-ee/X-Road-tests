@@ -13,8 +13,10 @@ class XroadTestConfiguration(unittest.TestCase):
     X-Road version: 6.16.0
     """
 
-    def test_log_out_from_software_token(self):
+    def test_test_configuration(self):
         main = MainController(self)
+        main.test_number = 'CP_14'
+        main.test_name = self.__class__.__name__
 
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
@@ -32,8 +34,7 @@ class XroadTestConfiguration(unittest.TestCase):
 
             '''Run download script'''
             download_url = sshclient.exec_command(
-                '{0} {1} {2} '.format(download_script, anchor_file, configuration_temp_dir))
-
+                'sudo {0} {1} {2} '.format(download_script, anchor_file, configuration_temp_dir))
             url = download_url[0][0]
             shared_parameters = download_url[0][4]
             private_parameters = download_url[0][7]
@@ -56,39 +57,39 @@ class XroadTestConfiguration(unittest.TestCase):
 
             '''Verify created directory'''
             try:
-                sshclient.exec_command('find /tmp -name KS1 -type d')[0][0]
+                sshclient.exec_command('sudo find /tmp -name XRD1 -type d')[0][0]
             except IndexError:
                 raise Exception('No directory found')
 
             '''Verify instance-identifier file'''
             try:
-                sshclient.exec_command('find /tmp -name instance-identifier -type f')[0][0]
+                sshclient.exec_command('sudo find /tmp -name instance-identifier -type f')[0][0]
             except IndexError:
                 raise Exception('No instance-identifier file found')
 
             '''Verify private-params.xml file'''
             try:
-                sshclient.exec_command('find /tmp -name private-params.xml -type f')[0][0]
+                sshclient.exec_command('sudo find /tmp -name private-params.xml -type f')[0][0]
             except IndexError:
                 raise Exception('No private-params.xml file found')
 
             '''Verify private-params.xml.metadata file'''
             try:
-                sshclient.exec_command('find /tmp -name private-params.xml.metadata -type f')[0][0]
+                sshclient.exec_command('sudo find /tmp -name private-params.xml.metadata -type f')[0][0]
             except IndexError:
                 raise Exception('No private-params.xml.metadata file found')
 
             '''Verify shared-params.xml file'''
             try:
-                sshclient.exec_command('find /tmp -name shared-params.xml -type f')[0][0]
+                sshclient.exec_command('sudo find /tmp -name shared-params.xml -type f')[0][0]
             except IndexError:
                 raise Exception('No shared-params.xml file found')
 
             '''Verify shared-params.xml.metadata file'''
             try:
-                sshclient.exec_command('find /tmp -name shared-params.xml.metadata -type f')[0][0]
+                sshclient.exec_command('sudo find /tmp -name shared-params.xml.metadata -type f')[0][0]
             except IndexError:
                 raise Exception('No shared-params.xml.metadata file found')
         finally:
             '''Delete test_download directory'''
-            sshclient.exec_command('rm -rf {}'.format(configuration_temp_dir))
+            sshclient.exec_command('sudo rm -rf {}'.format(configuration_temp_dir))

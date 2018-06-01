@@ -10,7 +10,9 @@ class XroadCertifyClient(unittest.TestCase):
     SS_28 Generate a Key
     SS_29 Generate a Certificate Signing Request for a Key
     SS_30 Import a Certificate from Local File System
-    RIA URL:https://jira.ria.ee/browse/XT-342
+    RIA URL: https://jira.ria.ee/browse/XT-341, https://jira.ria.ee/browse/XTKB-85
+    RIA URL: https://jira.ria.ee/browse/XT-342, https://jira.ria.ee/browse/XTKB-86
+    RIA URL: https://jira.ria.ee/browse/XT-343
     Depends on finishing other test(s): MEMBER_47
     Requires helper scenarios: client_certification
     X-Road version: 6.16.0
@@ -18,6 +20,9 @@ class XroadCertifyClient(unittest.TestCase):
 
     def test_certify_client(self):
         main = MainController(self)
+        main.test_number = 'UC SS_28/29/30'
+        main.test_name = self.__class__.__name__
+
         ss1_host = main.config.get('ss1.host')
         ss1_user = main.config.get('ss1.user')
         ss1_pass = main.config.get('ss1.pass')

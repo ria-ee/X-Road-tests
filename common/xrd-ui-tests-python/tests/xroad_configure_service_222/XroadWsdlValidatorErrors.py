@@ -25,6 +25,9 @@ class XroadWsdlValidatorErrors(unittest.TestCase):
     def test_xroad_wsdl_validator_errors(self):
         main = MainController(self)
 
+        main.test_number = 'SERVICE_08/14'
+        main.test_name = self.__class__.__name__
+
         ssh_host = main.config.get('ss1.ssh_host')
         ssh_user = main.config.get('ss1.ssh_user')
         ssh_pass = main.config.get('ss1.ssh_pass')
@@ -142,11 +145,16 @@ class XroadWsdlValidatorErrors(unittest.TestCase):
             main.log('SERVICE_14 3e. The address of the WSDL validator refers to non-executable file and '
                      'system was not able to run the validation program.')
             test_refreshing_wsdl_validator_not_executable()
+        except:
+            main.log('Failed to test WSDL validator errors')
         finally:
             main.log('Reload page')
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             main.log('Delete added service')
-            delete_service()
+            try:
+                delete_service()
+            except:
+                main.log('Failed to delete service')
             main.log('Restore local.ini')
             wsdl_validator_errors.restore_wsdl_validator(case=main, ssh_host=ssh_host, ssh_username=ssh_user,
                                                          ssh_password=ssh_pass, not_exec_file_path=not_exec_file_path)

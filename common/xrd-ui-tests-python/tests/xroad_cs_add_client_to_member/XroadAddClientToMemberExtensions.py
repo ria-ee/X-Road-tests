@@ -16,12 +16,15 @@ class XroadAddClientToMemberExtensions(unittest.TestCase):
     """
     def test_add_client_extensions(self):
         main = MainController(self)
+        main.test_number = 'MEMBER_15_extensions'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
         server = xroad.split_xroad_id(main.config.get('ss1.server_id'), type='SERVER')
         client = xroad.split_xroad_subsystem(main.config.get('ss1.client_id'))
-        client['subsystem'] = 'kalamaja'
+        client['subsystem'] = 'TESTSUB'
         client_name = main.config.get('ss1.client_name')
         existing_client = xroad.split_xroad_subsystem(main.config.get('ss1.client_id'))
         existing_client['name'] = main.config.get('ss1.client_name')

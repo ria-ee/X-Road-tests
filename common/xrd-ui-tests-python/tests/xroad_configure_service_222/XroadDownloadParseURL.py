@@ -57,10 +57,7 @@ class XroadDownloadParseURL(unittest.TestCase):
 
 
         finally:
-
-
             main.save_exception_data()
 
             # Test teardown
-
             main.tearDown()

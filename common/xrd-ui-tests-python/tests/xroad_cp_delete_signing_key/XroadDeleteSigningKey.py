@@ -18,6 +18,9 @@ class XroadDeleteSigningKey(unittest.TestCase):
 
     def test_delete_active_signing_key(self):
         main = MainController(self)
+        main.test_number = 'CP_11.a'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -31,6 +34,9 @@ class XroadDeleteSigningKey(unittest.TestCase):
 
     def test_delete_not_existing_signing_key(self):
         main = MainController(self)
+        main.test_number = 'CP_11.b'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -43,6 +49,9 @@ class XroadDeleteSigningKey(unittest.TestCase):
 
     def test_delete_signing_key(self):
         main = MainController(self)
+        main.test_number = 'CP_11.c'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')

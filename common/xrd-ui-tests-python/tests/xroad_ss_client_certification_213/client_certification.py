@@ -30,7 +30,6 @@ from view_models.members_table import SS_DETAILS_AUTH_CERT_TAB_XPATH, MEMBER_FIR
     ADD_AUTH_CERT_CANCEL_BTN_XPATH
 from view_models.messages import ERROR_MESSAGE_CSS, AUTH_CERT_IMPORT_FILE_FORMAT_ERROR, \
     CERT_ALREADY_SUBMITTED_ERROR_BEGINNING, MISSING_PARAMETER, INPUT_EXCEEDS_255_CHARS
-from view_models.popups import close_all_open_dialogs
 from view_models.sidebar import CERTIFICATION_SERVICES_CSS
 
 
@@ -108,7 +107,9 @@ def test_generate_csr_and_import_cert(client_code, client_class, usage_auth=Fals
 
         # UC SS_29/SS_30 Upload certificate request to CA and get the signing certificate from CA
         self.log('SS_29/SS_30 Upload certificate request to CA and get the siging certificate')
-        get_cert(client, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(client, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
 
         file_cert_path = glob.glob(local_cert_path)[0]
@@ -226,7 +227,7 @@ def delete_csr(self, sshclient, log_checker=None, client_code=None, client_class
 
 
 def register_cert(self, ssh_host, ssh_user, ssh_pass, cs_host, client, ca_ssh_host, ca_ssh_user, ca_ssh_pass, ca_name,
-                  cert_path, dns=None, organization=None, check_inputs=False):
+                  cert_path, dns=None, organization=None, check_inputs=False, key_name=None):
     """
     SS_34 Register an Authentication Certificate
     :param cert_path:
@@ -240,17 +241,33 @@ def register_cert(self, ssh_host, ssh_user, ssh_pass, cs_host, client, ca_ssh_ho
     :param ssh_user: ssh user of the security server
     :param ssh_pass: ssh password of the security server
     :param check_inputs: bool|False: checking input parsing
+    :param key_name: str|None: key name or None to select the first unsaved key
     :return:
     """
 
     def register():
+        self.log('*** SS_34 Register an Authentication Certificate')
+
         log_checker = auditchecker.AuditChecker(ssh_host, ssh_user, ssh_pass)
         current_log_lines = log_checker.get_line_count()
         time.sleep(3)
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.KEYSANDCERTIFICATES_BTN_CSS).click()
         self.wait_jquery()
-        self.log('Click on the key, which certificate was just deleted')
-        self.wait_until_visible(type=By.CSS_SELECTOR, element=keys_and_certificates_table.UNSAVED_KEY_CSS).click()
+        if key_name is None:
+            # Get the first unsaved key
+            self.log('Find the first unsaved key and select it')
+            self.wait_until_visible(type=By.CSS_SELECTOR, element=keys_and_certificates_table.UNSAVED_KEY_CSS).click()
+        else:
+            # Get an unsaved key by name
+            self.log('Find unsaved key with label "{}" and select it'.format(key_name))
+            keys_list = self.wait_until_visible(type=By.CSS_SELECTOR,
+                                                element=keys_and_certificates_table.UNSAVED_KEY_CSS,
+                                                multiple=True)
+            for key_entry in keys_list:
+                key_text = key_entry.text
+                if ': {} ('.format(key_name) in key_text:
+                    self.click(key_entry)
+                    break
         self.log('Generate new auth certificate for the key')
         generate_auth_csr(self, dns=dns, organization=organization, ca_name=ca_name, change_usage=True)
         '''Current time'''
@@ -271,14 +288,21 @@ def register_cert(self, ssh_host, ssh_user, ssh_pass, cs_host, client, ca_ssh_ho
         '''Local cert path'''
         local_cert_path = self.get_download_path(cert_path)
         self.log('Getting certificate from ca')
-        get_cert(sshclient, 'sign-auth', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-auth', file_path, local_cert_path, cert_path, remote_csr_path)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
         import_cert(self, local_cert_path)
         self.log('Click on the imported certificate row')
         self.log('SS_30 14a.1. Imported auth cert is disabled and its state is "saved" ')
-        self.wait_until_visible(type=By.XPATH, element=keys_and_certificates_table.SAVED_CERTIFICATE_ROW_XPATH).click()
+
+        self.click(element=self.wait_until_visible(type=By.XPATH,
+                                                   element=keys_and_certificates_table.SAVED_CERTIFICATE_ROW_XPATH))
+
         self.log('SS_34 1. Clicking "register" button')
-        self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.REGISTER_BTN_ID).click()
+
+        self.click(element=self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.REGISTER_BTN_ID))
+
         self.log('SS_34 2. System prompts for DNS name/IP address of the security server')
         address_input = self.wait_until_visible(type=By.ID,
                                                 element=keys_and_certificates_table.REGISTER_DIALOG_ADDRESS_INPUT_ID)
@@ -429,11 +453,13 @@ def test_add_cert_to_ss(self, cs_host, cs_username, cs_password, client, cert_pa
         self.is_equal(expected_msg, error_msg)
         messages.close_error_messages(self)
     xroad.fill_upload_input(self, upload, file_abs_path)
+    self.wait_jquery()
+    time.sleep(1)
     if add_existing_error:
         self.log('MEMBER 23 5a. The auth certificate is already registered or '
                  'submitted for registration with authenticaion registration request')
-        self.wait_jquery()
-        self.wait_until_visible(type=By.ID, element=ADD_AUTH_CERT_SUBMIT_BTN_ID).click()
+        self.click(element=ADD_AUTH_CERT_SUBMIT_BTN_ID, type=By.ID, wait_ajax=True)
+        # self.wait_until_visible(type=By.ID, element=ADD_AUTH_CERT_SUBMIT_BTN_ID).click()
         self.wait_jquery()
         expected_msg = CERT_ALREADY_SUBMITTED_ERROR_BEGINNING
         self.log('MEMBER 23 5a.1 System displays the error message {0}'.format(expected_msg))
@@ -444,13 +470,13 @@ def test_add_cert_to_ss(self, cs_host, cs_username, cs_password, client, cert_pa
         logs_found = log_checker.check_log(expected_log_msg, from_line=current_log_lines + 1)
         self.is_true(logs_found)
         return
-    self.wait_jquery()
     expected_msg = messages.CERTIFICATE_IMPORT_SUCCESSFUL
     self.log('MEMBER_23 4. System displays the message {0}'.format(expected_msg))
     import_msg = self.wait_until_visible(type=By.CSS_SELECTOR, element=messages.NOTICE_MESSAGE_CSS).text
     self.is_equal(expected_msg, import_msg)
     self.log('Submit authentication cert button is pressed')
-    self.wait_until_visible(type=By.ID, element=ADD_AUTH_CERT_SUBMIT_BTN_ID).click()
+    self.click(element=ADD_AUTH_CERT_SUBMIT_BTN_ID, type=By.ID, wait_ajax=True)
+    # self.wait_until_visible(type=By.ID, element=ADD_AUTH_CERT_SUBMIT_BTN_ID).click()
     self.wait_jquery()
     expected_msg = messages.get_cert_adding_existing_server_req_added_notice(client)
     self.log('MEMBER_23 7. System displays the message {0}'.format(expected_msg))
@@ -462,7 +488,7 @@ def test_add_cert_to_ss(self, cs_host, cs_username, cs_password, client, cert_pa
     self.is_true(logs_found)
 
 
-def activate_cert(self, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=False):
+def activate_disabled_cert(self, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=False):
     """
     SS_32 Activate a Certificate
     :param self: mainController instance
@@ -486,12 +512,12 @@ def activate_cert(self, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=Fal
         time.sleep(120)
         '''Find not active certs in keyconf file'''
         keyconf_before = get_disabled_certs(sshclient)
-        registration_in_progress_row = self.wait_until_visible(type=By.XPATH,
-                                                               element=keys_and_certificates_table.OCSP_DISABLED_CERT_ROW)
+        disabled_row = self.wait_until_visible(type=By.XPATH,
+                                               element=keys_and_certificates_table.OCSP_DISABLED_CERT_ROW)
         '''Get the cert key label'''
-        key_label = registration_in_progress_row.find_element_by_xpath('../preceding::tr[2]//td').text.split(' ')[1]
+        key_label = disabled_row.find_element_by_xpath('../preceding::tr[2]//td').text.split(' ')[1]
         '''Click on the certificate'''
-        self.click(registration_in_progress_row)
+        self.click(disabled_row)
         self.log('SS_32 1. "Activate a certificate" button is clicked')
         self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.ACTIVATE_BTN_ID).click()
         self.log('Waiting until keyconf is updated')
@@ -525,7 +551,7 @@ def activate_cert(self, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=Fal
     return activate
 
 
-def disable_cert(self, ss_host, ss_user, ss_pass, ss_ssh_host, ss_ssh_user, ss_ssh_pass):
+def disable_cert(self, ss_host, ss_user, ss_pass, ss_ssh_host, ss_ssh_user, ss_ssh_pass, cert_label):
     """
     SS_33: Disable a certificate
     :param self: mainController instance
@@ -535,6 +561,7 @@ def disable_cert(self, ss_host, ss_user, ss_pass, ss_ssh_host, ss_ssh_user, ss_s
     :param ss_ssh_host: security server ssh host
     :param ss_ssh_user: security server ssh user
     :param ss_ssh_pass: security server ssh pass
+    :param cert_label: certificate label
     :return:
     """
 
@@ -552,13 +579,13 @@ def disable_cert(self, ss_host, ss_user, ss_pass, ss_ssh_host, ss_ssh_user, ss_s
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.KEYSANDCERTIFICATES_BTN_CSS).click()
         '''Find first auth type keys certificate'''
         self.wait_until_visible(type=By.XPATH,
-                                element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format('auth')).click()
+                                element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format(cert_label)).click()
         self.log('SS_33 1. Certificate disable button is clicked')
         self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.DISABLE_BTN_ID).click()
         self.wait_jquery()
         self.log('SS_33 2. System sets the OCSP status to disabled')
         cert = self.wait_until_visible(type=By.XPATH,
-                                       element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format('auth'))
+                                       element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format(cert_label))
         status = cert.find_element_by_class_name(keys_and_certificates_table.OCSP_RESPONSE_CLASS_NAME).text
         self.is_equal(keys_and_certificates_table.OCSP_DISABLED_RESPONSE, status)
         self.log('SS_33 3. System logs {0}'.format(log_constants.DISABLE_CERT))
@@ -651,7 +678,11 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         finally:
             '''Always remove the temporary client'''
-            remove_client(self, client)
+            try:
+                remove_client(self, client)
+            except:
+                self.save_exception_data()
+                raise
             if error:
                 raise RuntimeError('Failure testing FAILED')
 
@@ -664,7 +695,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         '''
 
         # Start adding client
-        self.driver.get(self.url)
+        self.go(self.url)
         self.wait_until_visible(type=By.ID, element=clients_table_vm.ADD_CLIENT_BTN_ID).click()
 
         # Set client class, code, subsystem information
@@ -706,12 +737,13 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         :return:
         '''
         self.log('Removing client from server')
-        self.driver.get(self.url)
+        self.go(self.url)
         self.wait_jquery()
 
         # Find client and click on the table row
         client_row = added_client_row(self, client)
         client_row.find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS).click()
+        self.wait_jquery()
         try:
             # Click the "Unregister" button
             self.log('Finding and clicking unregister button')
@@ -724,9 +756,12 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
             self.wait_jquery()
             time.sleep(3)
 
-            # Confirm deletion
-            self.log('Confirm deleting')
-            popups.confirm_dialog_click(self)
+            try:
+                # If asked again, confirm deletion
+                self.log('Confirm deleting')
+                popups.confirm_dialog_click(self)
+            except:
+                pass
         except:
             # Exception may occur if the client has not been fully registered. As we still need to remove
             # temporary data, delete the client anyway.
@@ -745,6 +780,8 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         '''
         self.log('REMOVE CERTIFICATE')
 
+        certs_to_revoke = ssh_server_actions.get_valid_certificates(self, client)
+
         # Click on generated key row
         self.log('Click on generated key row')
         self.wait_until_visible(type=By.XPATH,
@@ -754,10 +791,14 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # Click on Delete button and confirm deletion.
         self.wait_until_visible(type=By.ID, element=keyscertificates_constants.DELETE_BTN_ID).click()
         popups.confirm_dialog_click(self)
+        self.wait_jquery()
+
+        return certs_to_revoke
 
     def test_expired_cert_error(self, client):
         flag_to_replace = '-days 7300'
         replacement = '-startdate 120815080000Z -enddate 120815090000Z'
+        cert_file = None
         try:
             remote_csr_path = 'temp.der'
             cert_path = 'temp.pem'
@@ -786,7 +827,9 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
                 command='sed -i -e "s/{0}/{1}/g" /home/ca/CA/sign.sh'.format(flag_to_replace, replacement), sudo=True)
 
             '''Get the signing certificate from our CSR'''
-            get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+            cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+            self.log('Got certificate: {0}'.format(cert_file))
+
             time.sleep(6)
             file_cert_path = glob.glob(local_cert_path)[0]
 
@@ -798,6 +841,8 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
             expected_error_msg = messages.CERTIFICATE_NOT_VALID
             self.log('SS_30 11a.1 System displays the error message {0}'.format(expected_error_msg))
             self.is_equal(expected_error_msg, messages.get_error_message(self))
+        except AssertionError:
+            raise
         except:
             assert False
         finally:
@@ -807,7 +852,15 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
             sshclient.exec_command(
                 command='sed -i -e "s/{0}/{1}/g" /home/ca/CA/sign.sh'.format(replacement, flag_to_replace), sudo=True)
             popups.close_all_open_dialogs(self)
-            remove_certificate(self, client)
+            certs_to_revoke = remove_certificate(self, client)
+            if cert_file is not None:
+                certs_to_revoke.append(cert_file)
+
+            self.log('Revoke certificates {0}'.format(certs_to_revoke))
+            try:
+                revoke_certs(sshclient, certs_to_revoke)
+            except:
+                self.log('Could not revoke certificate')
 
     def not_valid_ca_error(self, client):
         '''
@@ -821,6 +874,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # UC SS_30 10a. Certificate is issued by a certification authority that is not in the allow list
         self.log('SS_30 10a. Certificate is issued by a certification authority that is not in the allow list')
         error = False
+        cert_file = None
         try:
             remote_csr_path = 'temp.der'
             cert_path = 'temp.pem'
@@ -849,7 +903,9 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
             # Get the signing certificate from our CSR
             self.log('Get the signing certificate from the certificate request')
-            get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+            cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+            self.log('Got certificate: {0}'.format(cert_file))
+
             time.sleep(6)
             file_cert_path = glob.glob(local_cert_path)[0]
 
@@ -868,9 +924,11 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
             # Find our CA and remove it
             for row in rows:
-                if self.config.get('ca.name') in row.text:
+                if self.config.get('ca.name').upper() in row.text.upper():
                     self.click(row)
+                    self.wait_jquery()
                     self.wait_until_visible(type=By.ID, element=certification_services.DELETE_BTN_ID).click()
+                    self.wait_jquery()
                     popups.confirm_dialog_click(self)
 
             self.log('Wait 120 seconds for changes')
@@ -902,7 +960,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
             self.log('Restore: Restoring previous state')
 
             # Login to Central Server
-            self.driver.get(self.config.get('cs.host'))
+            self.go(self.config.get('cs.host'))
 
             if not login.check_login(self, self.config.get('cs.user')):
                 self.login(self.config.get('cs.user'), self.config.get('cs.pass'))
@@ -919,20 +977,21 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
             self.log('Restore: Getting CA certificates')
             get_ca_certificate(sshclient, 'ca.cert.pem', target_ca_cert_path)
             get_ca_certificate(sshclient, 'ocsp.cert.pem', target_ocsp_cert_path)
-            sshclient.close()
 
             # Go to Central Server UI main page
-            self.driver.get(self.config.get('cs.host'))
+            self.go(self.config.get('cs.host'))
 
             self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.CERTIFICATION_SERVICES_CSS).click()
             self.wait_jquery()
-            time.sleep(3)
 
+            # Get the CA list table and wait until it is populated
             table = self.wait_until_visible(type=By.ID, element=certification_services.CERTIFICATION_SERVICES_TABLE_ID)
+            self.wait_jquery()
+
             rows = table.find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')
 
             # If CA server is not listed, re-add it
-            if self.config.get('ca.ssh_host') not in map(lambda x: x.text, rows):
+            if self.config.get('ca.ssh_host').upper() not in map(lambda x: x.text.upper(), rows):
                 self.log('Restore: CA not found, re-adding')
                 self.wait_until_visible(type=By.ID, element=certification_services.ADD_BTN_ID).click()
                 import_cert_btn = self.wait_until_visible(type=By.ID,
@@ -976,13 +1035,23 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
                                         element=certification_services.SUBMIT_OCSP_CERT_AND_URL_BTN_ID).click()
 
             # Reload CS main page
-            self.driver.get(self.url)
+            self.go(self.url)
 
             # Open keys and certificates
             self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.KEYSANDCERTIFICATES_BTN_CSS).click()
 
             # Remove the testing certificate
-            remove_certificate(self, client)
+            certs_to_revoke = remove_certificate(self, client)
+            if cert_file is not None:
+                certs_to_revoke.append(cert_file)
+
+            self.log('Revoke certificates {0}'.format(certs_to_revoke))
+            try:
+                revoke_certs(sshclient, certs_to_revoke)
+            except:
+                self.log('Could not revoke certificate')
+
+            sshclient.close()
 
             self.log('Restore: Wait 120 seconds for changes')
             time.sleep(120)
@@ -1026,7 +1095,10 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Get an authentication certificate instead of signing certificate.
         self.log('SS_30 9a. Get the authentication certificate')
-        get_cert(sshclient, 'sign-auth', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-auth', file_path, local_cert_path, cert_path, remote_csr_path,
+                             close_client=False)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
         file_cert_path = glob.glob(local_cert_path)[0]
 
@@ -1041,7 +1113,17 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         self.log('SS_30 9a. Remove test data')
         popups.close_all_open_dialogs(self)
-        remove_certificate(self, client)
+        certs_to_revoke = remove_certificate(self, client)
+        if cert_file is not None:
+            certs_to_revoke.append(cert_file)
+
+        self.log('Revoke certificates {0}'.format(certs_to_revoke))
+        try:
+            revoke_certs(sshclient, certs_to_revoke)
+        except:
+            self.log('Could not revoke certificate')
+
+        sshclient.close()
 
     def no_key_error(self, client):
         '''
@@ -1077,23 +1159,38 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Get the signing certificate from CA
         self.log('SS_30 7a. Getting signing certificate from the CA')
-        get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path,
+                             close_client=False)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
         file_cert_path = glob.glob(local_cert_path)[0]
 
         # Remove the certificate and key from the server
         self.log('SS_30 7a. Remove the key from the server')
-        remove_certificate(self, client)
+        certs_to_revoke = remove_certificate(self, client)
+        if cert_file is not None:
+            certs_to_revoke.append(cert_file)
 
-        # Try to import the certificate that does not have a key any more
-        self.log('SS_30 7a. Try to import the certificate. Should fail.')
-        import_cert(self, file_cert_path)
-        self.wait_jquery()
-        time.sleep(3)
+        try:
+            # Try to import the certificate that does not have a key any more
+            self.log('SS_30 7a. Try to import the certificate. Should fail.')
+            import_cert(self, file_cert_path)
+            self.wait_jquery()
+            time.sleep(3)
 
-        self.log('SS_30 7a.1. System displays the error message {0}'.format(messages.NO_KEY_FOR_CERTIFICATE))
-        self.is_equal(messages.NO_KEY_FOR_CERTIFICATE, messages.get_error_message(self))
-        self.log('SS_30 7a.1. Got an error message, test succeeded')
+            self.log('SS_30 7a.1. System displays the error message {0}'.format(messages.NO_KEY_FOR_CERTIFICATE))
+            self.is_equal(messages.NO_KEY_FOR_CERTIFICATE, messages.get_error_message(self))
+            self.log('SS_30 7a.1. Got an error message, test succeeded')
+        except:
+            raise
+        finally:
+            self.log('Revoke certificates {0}'.format(certs_to_revoke))
+            try:
+                revoke_certs(sshclient, certs_to_revoke)
+            except:
+                self.log('Could not revoke certificate')
+            sshclient.close()
 
     def no_client_for_certificate_error(self, client):
         '''
@@ -1106,7 +1203,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # UC SS_30 6a. Client set in the certificate is not in the system
         self.log('SS_30 6a. Import a certificate that is issued to a non-existing client.')
 
-        self.driver.get(self.url)
+        self.go(self.url)
         self.wait_jquery()
 
         remote_csr_path = 'temp.der'
@@ -1135,7 +1232,10 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Get the signing certificate from CA
         self.log('SS_30 6a. Get the signing certificate from CA')
-        get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path,
+                             close_client=False)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
         file_cert_path = glob.glob(local_cert_path)[0]
 
@@ -1157,9 +1257,19 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Remove the certificate from the server
         self.log('SS_30 6a. Removing the certificate.')
-        remove_certificate(self, client)
+        certs_to_revoke = remove_certificate(self, client)
+        if cert_file is not None:
+            certs_to_revoke.append(cert_file)
 
-        self.driver.get(self.url)
+        self.log('Revoke certificates {0}'.format(certs_to_revoke))
+        try:
+            revoke_certs(sshclient, certs_to_revoke)
+        except:
+            self.log('Could not revoke certificate')
+
+        sshclient.close()
+
+        self.go(self.url)
         self.wait_jquery()
 
         # Restore the client
@@ -1179,7 +1289,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # UC SS_30 4a. Try to import a non-DER and non-PEM certificate. Should fail.
         self.log('SS_30 4a. Trying to import a non-DER and non-PEM certificate')
 
-        self.driver.get(self.url)
+        self.go(self.url)
         self.wait_jquery()
 
         # Get a text file
@@ -1207,7 +1317,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # UC SS_30 8a. Try to import a certificate that has already been added.
         self.log('SS_30 8a. Try to import a certificate that has already been added.')
 
-        self.driver.get(self.url)
+        self.go(self.url)
         self.wait_jquery()
 
         remote_csr_path = 'temp.der'
@@ -1235,7 +1345,10 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Get the signing certificate from CA
         self.log('SS_30 8a. Get signing certificate from CA')
-        get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path,
+                             close_client=False)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
         file_cert_path = glob.glob(local_cert_path)[0]
 
@@ -1259,7 +1372,16 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
 
         # Remove the certificate
         self.log('SS_30 8a. Removing the test certificate')
-        remove_certificate(self, client)
+        certs_to_revoke = remove_certificate(self, client)
+        if cert_file is not None:
+            certs_to_revoke.append(cert_file)
+
+        self.log('Revoke certificates {0}'.format(certs_to_revoke))
+        try:
+            revoke_certs(sshclient, certs_to_revoke)
+        except:
+            self.log('Could not revoke certificate')
+        sshclient.close()
 
     def sign_cert_instead_auth_cert(self, file_client_name, file_client_class, file_client_code, file_client_instance,
                                     ca_name):
@@ -1297,7 +1419,7 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         self.wait_jquery()
 
         # Generate a authentication certificate
-        generate_auth_csr(self, ca_name=ca_name, organization='test', dns='test',)
+        generate_auth_csr(self, ca_name=ca_name, organization='test', dns='test', )
 
         file_path = \
             glob.glob(self.get_download_path('_'.join(['*']) + file_name))[0]
@@ -1309,7 +1431,10 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
         # Get an signing certificate instead of authentication certificate.
         self.log('SS_30 9b. Get the signing certificate')
 
-        get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path)
+        cert_file = get_cert(sshclient, 'sign-sign', file_path, local_cert_path, cert_path, remote_csr_path,
+                             close_client=False)
+        self.log('Got certificate: {0}'.format(cert_file))
+
         time.sleep(6)
 
         # Try to import certificate
@@ -1333,6 +1458,16 @@ def failing_tests(file_client_name, file_client_class, file_client_code, file_cl
                                                                                            KEY_LABEL_TEXT)).click()
         # Delete the added key label
         user_input_check.delete_added_key_label(self)
+
+        # Revoke the temporary certificate
+        if cert_file is not None:
+            self.log('Revoke certificate {0}'.format(cert_file))
+            try:
+                revoke_certs(sshclient, [cert_file])
+            except:
+                self.log('Could not revoke certificate')
+
+        sshclient.close()
 
     return fail_test_case
 
@@ -1368,7 +1503,7 @@ def get_cert(client, service, file_path, local_path, remote_cert_path, remote_cs
     :param local_path: str - local certificate path (output)
     :param remote_cert_path: str - remote certificate path (output)
     :param remote_csr_path: str - remote CSR path (input)
-    :return: None
+    :return: str - cert serial number as an uppercase hex string
     '''
     # Remove temporary files
     client.exec_command('rm temp*')
@@ -1378,8 +1513,26 @@ def get_cert(client, service, file_path, local_path, remote_cert_path, remote_cs
     sftp.put(file_path, remote_csr_path)
 
     # Execute signing service and save the output to file
-    client.exec_command('cat ' + remote_csr_path + ' | ' + service + ' > ' + remote_cert_path)
+    output, error_output = client.exec_command('cat ' + remote_csr_path + ' | ' + service + ' > ' + remote_cert_path)
     time.sleep(3)
+
+    # Get the certificate identifier, this is written to stderr for some reason
+    cert_file = None
+    for line in error_output:
+        line = line.strip().upper()
+        if line.startswith('SERIAL NUMBER:'):
+            # Get the cert number and hex in a single string
+            cert_number_text = "".join(line.split(':')[1:2]).strip()
+            # Extract the hex portion
+            cert_id = "".join(cert_number_text.split(' ')[:1])
+            # Extract the cert number as a hex string; on failure, assume no cert and keep looking
+            try:
+                cert_file = ssh_server_actions.get_certificate_filename('{0:02x}'.format(int(cert_id)).upper())
+            except:
+                cert_file = None
+        elif line.startswith('TXT_DB ERROR'):
+            # Although the identifier was supplied, saving resulted in an error and the certificate was not added
+            cert_file = None
 
     if convert_der:
         new_cert_path = remote_cert_path.replace('.pem', '.der')
@@ -1394,8 +1547,10 @@ def get_cert(client, service, file_path, local_path, remote_cert_path, remote_cs
     if close_client:
         client.close()
 
+    return cert_file
 
-def revoke_certs(client, certs, ca_path='/home/ca/CA', revoke_script='./revoke.sh'):
+
+def revoke_certs(client, certs, ca_path='/home/ca/CA', revoke_script='sudo ./revoke.sh'):
     '''
     Revokes specified certificates in CA.
     :param client: SSHClient object
@@ -1504,7 +1659,7 @@ def generate_csr(self, client_code, client_class, server_name, client_ss_name=No
     self.log('SS_28 5. Check if the generated key exists.')
 
     # Click on the key
-    self.log('Click on generated key row')
+    self.log('Click on generated key row: {}'.format(key_label))
     self.wait_until_visible(type=By.XPATH,
                             element=keyscertificates_constants.KEY_TABLE_ROW_BY_LABEL_XPATH.format(key_label)).click()
     # Number of csr before generation and cancelling
@@ -1531,7 +1686,7 @@ def generate_csr(self, client_code, client_class, server_name, client_ss_name=No
 
         # UC SS_29 2. Check if CA can be chosen
         self.log('SS_29 2. Check 1: CA can be chosen')
-        filter(lambda x: self.config.get('ca.name').upper() in x.text, select.options).pop().click()
+        filter(lambda x: self.config.get('ca.name').upper() in x.text.upper(), select.options).pop().click()
 
         self.log('Click on "OK" button')
         self.wait_until_visible(type=By.XPATH,
@@ -1561,8 +1716,8 @@ def generate_csr(self, client_code, client_class, server_name, client_ss_name=No
 
     # UC SS_29 2. Check if DER and PEM exist in format selection
     self.log('SS_29 2. Check if DER and PEM exist in format selection')
-    assert 'DER' in map(lambda x: x.text, select.options)
-    assert 'PEM' in map(lambda x: x.text, select.options)
+    assert 'DER' in map(lambda x: x.text.upper(), select.options)
+    assert 'PEM' in map(lambda x: x.text.upper(), select.options)
     select.select_by_visible_text('DER')
 
     # UC SS_29 2. Check that the certification authority can be chosen
@@ -1571,10 +1726,10 @@ def generate_csr(self, client_code, client_class, server_name, client_ss_name=No
                                             element=keyscertificates_constants.GENERATE_CSR_SIGNING_REQUEST_APPROVED_CA_DROPDOWN_ID))
     self.wait_jquery()
 
-    options = filter(lambda y: str(y) is not '', map(lambda x: x.text, select.options))
+    options = filter(lambda y: str(y) is not '', map(lambda x: x.text.upper(), select.options))
     # Assertion for CA check 1
-    assert len(filter(lambda x: self.config.get('ca.name').upper() in x, options)) == 1
-    filter(lambda x: self.config.get('ca.name').upper() in x.text, select.options).pop().click()
+    assert len(filter(lambda x: self.config.get('ca.name').upper() in x.upper(), options)) == 1
+    filter(lambda x: self.config.get('ca.name').upper() in x.text.upper(), select.options).pop().click()
 
     # UC SS_29 2. Choose client
     self.log('SS_29 2. Choose client')
@@ -1644,6 +1799,7 @@ def generate_csr(self, client_code, client_class, server_name, client_ss_name=No
 
     # UC SS_29 6-8. System verified the info and generates the file.
     self.log('SS_29 6-8, 11. System verified the info and generates the file. File is downloaded to system.')
+    time.sleep(20)
 
     if log_checker is not None:
         expected_log_msg = GENERATE_CSR
@@ -1767,7 +1923,7 @@ def import_cert(self, cert_path):
     self.log('SS_30 1. Select to import certificate file')
 
     self.log('Open keys and certificates tab')
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
 
     # Go to keys and certificates and click "Import"
@@ -2024,7 +2180,7 @@ def test_generate_csr_timed_out(self, ss_host, ss_username, ss_pass, ss2_ssh_hos
         self.log('Select certification authority')
         select = Select(self.wait_until_visible(type=By.ID,
                                                 element=keyscertificates_constants.GENERATE_CSR_SIGNING_REQUEST_APPROVED_CA_DROPDOWN_ID))
-        filter(lambda x: self.config.get('ca.name').upper() in x.text, select.options).pop().click()
+        filter(lambda x: self.config.get('ca.name').upper() in x.text.upper(), select.options).pop().click()
 
         self.log('Click "OK"')
         self.by_xpath(keys_and_certificates_table.GENERATE_CSR_SIGNING_REQUEST_POPUP_OK_BTN_XPATH).click()
@@ -2074,7 +2230,7 @@ def delete_added_key_after_service_up(self, ss_host):
 
 
 def unregister_cert(self, ss2_host, ss2_username, ss2_password, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass,
-                    no_valid_cert=False, request_fail=False):
+                    key_label, no_valid_cert=False, request_fail=False):
     """
     SS_38 Unregister an Authentication Certificate
     :param self:
@@ -2084,6 +2240,7 @@ def unregister_cert(self, ss2_host, ss2_username, ss2_password, ss2_ssh_host, ss
     :param ss2_ssh_host: security server ssh host
     :param ss2_ssh_user: security server ssh user
     :param ss2_ssh_pass: security server ssh pass
+    :param key_label: authentication key label
     :param no_valid_cert: check "no valid auth cert" error
     :param request_fail: check request sending error
     :return:
@@ -2095,7 +2252,7 @@ def unregister_cert(self, ss2_host, ss2_username, ss2_password, ss2_ssh_host, ss
         self.reload_webdriver(ss2_host, ss2_username, ss2_password)
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.KEYSANDCERTIFICATES_BTN_CSS).click()
         self.wait_until_visible(type=By.XPATH,
-                                element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format('auth')).click()
+                                element=keys_and_certificates_table.CERT_BY_KEY_LABEL.format(key_label)).click()
 
         self.log('SS_38 1. Unregister button is clicked')
         self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.UNREGISTER_BTN_ID).click()
@@ -2125,9 +2282,9 @@ def unregister_cert(self, ss2_host, ss2_username, ss2_password, ss2_ssh_host, ss
             self.is_equal(expected_warning_msg, warning_msg)
             self.log('SS_38 6a.1 System displays the error message: {0}'.format(expected_error_msg))
             error_msg = self.wait_until_visible(type=By.CSS_SELECTOR, element=messages.ERROR_MESSAGE_CSS).text
-            asd = 'Failed to unregister certificate: Client \'.+\' is not registered at security server .+'
-            self.is_true(re.match(asd, error_msg))
-            # self.is_true(error_msg.startswith(expected_error_msg))
+            expected_error_regex = 'Failed to unregister certificate: Client \'.+\' is not registered at security server .+'
+            self.is_true(re.match(expected_error_regex, error_msg))
+
             expected_log_msg = log_constants.UNREGISTER_AUTH_CERT_FAILED
             self.log('SS_38 6a.2 System logs the event {0}'.format(expected_log_msg))
             logs_found = log_checker.check_log(expected_log_msg, from_line=current_log_lines + 1)
@@ -2169,12 +2326,12 @@ def log_out_token(self):
     return log_out
 
 
-def log_in_token(self):
+def log_in_token(self, pin):
     def log_in():
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar_constants.KEYSANDCERTIFICATES_BTN_CSS).click()
         self.wait_until_visible(type=By.CLASS_NAME, element='activate_token').click()
         PIN_input = self.wait_until_visible(type=By.ID, element='activate_token_pin')
-        token_pin = str(self.config.get('cp.token_pin'))
+        token_pin = pin
 
         self.input(PIN_input, token_pin)
         self.by_xpath('//div[@aria-describedby="activate_token_dialog"]//span[contains(text(), "OK")]').click()
@@ -2231,15 +2388,18 @@ def delete_cert(self):
     return del_cert
 
 
-def delete_cert_from_key(self, ssh_host, ssh_user, ssh_pass, one_cert=False, auth=False, client_code=None,
-                         client_class=None,
-                         cancel_deleting=False, only_cert=False):
+def delete_cert_from_key(self, ssh_host, ssh_user, ssh_pass, ca_ssh_host=None, ca_ssh_user=None, ca_ssh_pass=None,
+                         one_cert=False, auth=False, client_code=None, client_class=None, cancel_deleting=False,
+                         only_cert=False):
     """
     SS_39 Delete Certificate from System Configuration
     :param self: mainController instance
     :param ssh_host: ssh host
     :param ssh_user: ssh user
     :param ssh_pass: ssh pass
+    :param ca_ssh_host: CA ssh host
+    :param ca_ssh_host: CA ssh user
+    :param ca_ssh_host: CA ssh pass
     :return:
     """
 
@@ -2261,6 +2421,13 @@ def delete_cert_from_key(self, ssh_host, ssh_user, ssh_pass, one_cert=False, aut
             self.wait_until_visible(type=By.XPATH,
                                     element=keys_and_certificates_table.get_generated_key_row_cert_xpath(client_code,
                                                                                                          client_class)).click()
+        # Get the selected row and extract the certificate identifier from it
+        key_text = self.by_css(keys_and_certificates_table.KEY_ROW_SELECTED_NAME_CSS).text
+        cert_hex = ssh_server_actions.get_certificate_id_from_text(key_text)
+
+        # Generate the key filename to revoke it after deletion
+        cert_file = ssh_server_actions.get_certificate_filename(cert_hex)
+
         self.log('SS_39 1. Certificate deletion button is pressed')
         self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.DELETE_BTN_ID).click()
         self.log('SS_39 2. System prompts for confirmation')
@@ -2291,10 +2458,20 @@ def delete_cert_from_key(self, ssh_host, ssh_user, ssh_pass, one_cert=False, aut
             self.log('SS_39 4. Only the cert is deleted from system configuration')
             self.is_equal(keys_before, keys_after)
 
+        if ca_ssh_host is not None:
+            try:
+                self.log('Trying to revoke certificate {} in CA'.format(cert_file))
+                ca_ssh_client = ssh_client.SSHClient(ca_ssh_host, ca_ssh_user, ca_ssh_pass)
+                revoke_certs(ca_ssh_client, [cert_file])
+                self.log('Certificate revoked')
+            except:
+                self.log('Could not revoke key')
+
     return del_cert
 
 
-def delete_cert_from_ss(self, client, cs_ssh_host, cs_ssh_user, cs_ssh_pass):
+def delete_cert_from_ss(self, client, cs_ssh_host, cs_ssh_user, cs_ssh_pass, ca_ssh_host=None, ca_ssh_user=None,
+                        ca_ssh_pass=None):
     """
     MEMBER_24 Create and Authentication Certificate Deletion Request
     :param self: mainController instance
@@ -2314,8 +2491,18 @@ def delete_cert_from_ss(self, client, cs_ssh_host, cs_ssh_user, cs_ssh_pass):
         self.wait_jquery()
         self.wait_until_visible(type=By.XPATH, element=cs_security_servers.SECURITYSERVER_AUTH_CERT_TAB_XPATH).click()
         self.wait_jquery()
+
+        # Select certificate
         self.wait_until_visible(type=By.CSS_SELECTOR,
                                 element=cs_security_servers.SECURITYSERVER_AUTH_CERT_ROW_CSS).click()
+
+        # Get the selected row and extract the certificate identifier from it
+        key_text = self.by_css(cs_security_servers.SECURITYSERVER_SELECTED_AUTH_CERT_CSS).text
+        cert_hex = ssh_server_actions.get_certificate_id_from_text(key_text)
+
+        # Generate the key filename to revoke it after deletion
+        cert_file = ssh_server_actions.get_certificate_filename(cert_hex)
+
         self.log('MEMBER_24 1. Auth certificate deletion button is clicked')
         self.wait_until_visible(type=By.ID, element=cs_security_servers.SECURITYSERVER_AUTH_CERT_DELETE_BTN_ID).click()
         self.log('MEMBER_24 2. System displays the prefilled auth certificate registration request')
@@ -2345,6 +2532,15 @@ def delete_cert_from_ss(self, client, cs_ssh_host, cs_ssh_user, cs_ssh_pass):
         self.log('MEMBER_24 6. System logs the event "{}"'.format(expected_log_msg))
         logs_found = log_checker.check_log(expected_log_msg, from_line=current_log_lines + 1)
         self.is_true(logs_found)
+
+        if ca_ssh_host is not None:
+            try:
+                self.log('Trying to revoke certificate {} in CA'.format(cert_file))
+                ca_ssh_client = ssh_client.SSHClient(ca_ssh_host, ca_ssh_user, ca_ssh_pass)
+                revoke_certs(ca_ssh_client, [cert_file])
+                self.log('Certificate revoked')
+            except:
+                self.log('Could not revoke key')
 
     return del_cert_from_ss
 

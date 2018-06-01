@@ -18,6 +18,9 @@ class XroadAddCsMember(unittest.TestCase):
 
     def test_a_xroad_add_cs_member(self):
         main = MainController(self)
+        main.test_number = 'MEMBER_10.a'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -46,6 +49,9 @@ class XroadAddCsMember(unittest.TestCase):
 
     def test_b_xroad_add_cs_existing_member(self):
         main = MainController(self)
+        main.test_number = 'MEMBER_10.b'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')

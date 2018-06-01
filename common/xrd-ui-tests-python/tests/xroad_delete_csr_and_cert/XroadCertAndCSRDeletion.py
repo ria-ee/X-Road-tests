@@ -27,9 +27,15 @@ class XroadCertAndCSRDeletion(unittest.TestCase):
 
     def test_cert_and_csr_deletion(self):
         main = MainController(self)
+
+        main.test_number = 'UC SS_39'
+        main.test_name = self.__class__.__name__
+
         ca_ssh_host = main.config.get('ca.ssh_host')
         ca_ssh_user = main.config.get('ca.ssh_user')
         ca_ssh_pass = main.config.get('ca.ssh_pass')
+        ca_name = main.config.get('ca.name')
+
         cs_ssh_host = main.config.get('cs.ssh_host')
         cs_ssh_user = main.config.get('cs.ssh_user')
         cs_ssh_pass = main.config.get('cs.ssh_pass')
@@ -53,21 +59,24 @@ class XroadCertAndCSRDeletion(unittest.TestCase):
         client_class = client['class']
         client['name'] = client_name
         auth_key_label = main.config.get('certs.ss_auth_key_label')
+        signing_key_label = main.config.get('certs.ss_sign_key_label')
 
         log_checker = auditchecker.AuditChecker(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
         delete_csr_key_has_more = test_delete_csr_key_has_more_items(main, sshclient, log_checker, client_code,
-                                                                     client_class)
+                                                                     client_class, key_label=signing_key_label)
         delete_cert_key_has_more = test_delete_cert_key_has_more_items(main, client_code, client_class, ss_ssh_host,
-                                                                       ss_ssh_user, ss_ssh_pass)
+                                                                       ss_ssh_user, ss_ssh_pass,
+                                                                       key_label=signing_key_label)
         delete_only_cert_from_only_key = test_delete_only_cert_from_only_key(main, ss_ssh_host, ss_ssh_user,
                                                                              ss_ssh_pass)
         delete_only_csr_from_only_key = test_delete_only_csr_from_only_key(main, client_code, client_class,
                                                                            ss_ssh_host,
-                                                                           ss_ssh_user, ss_ssh_pass)
+                                                                           ss_ssh_user, ss_ssh_pass,
+                                                                           key_label=signing_key_label)
         test_register_cert = register_cert(main, ss_ssh_host, ss_ssh_user, ss_ssh_pass,
                                            cs_host=cs_ssh_host, client=client,
                                            ca_ssh_host=ca_ssh_host, ca_ssh_user=ca_ssh_user,
-                                           ca_ssh_pass=ca_ssh_pass,
+                                           ca_ssh_pass=ca_ssh_pass, ca_name=ca_name,
                                            cert_path=cert_path)
 
         test_activate_cert = activate_cert(main, ss_ssh_host, ss_ssh_user, ss_ssh_pass,
@@ -78,6 +87,9 @@ class XroadCertAndCSRDeletion(unittest.TestCase):
             delete_cert_key_has_more()
             delete_only_cert_from_only_key()
             delete_only_csr_from_only_key()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             test_generate_csr_and_import_cert(client_code, client_class, key_label=SIGNING_KEY_LABEL,

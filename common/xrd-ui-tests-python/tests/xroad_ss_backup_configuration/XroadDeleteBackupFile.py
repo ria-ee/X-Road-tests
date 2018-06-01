@@ -8,7 +8,7 @@ class XroadDeleteBackupFile(unittest.TestCase):
        UC SS_17: Delete a Backup File
        RIA URL: https://jira.ria.ee/browse/XTKB-104
        Depends on finishing other test(s):
-       Requires helper scenarios:
+       Requires helper scenarios: XroadBackupConfiguration
        X-Road version: 6.16.0
        """
 

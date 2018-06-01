@@ -24,7 +24,7 @@ class XroadUploadTrustedAnchor(unittest.TestCase):
         main = MainController(self)
 
         '''Set test name and number'''
-        main.test_number = 'Upload Trusted Anchor'
+        main.test_number = 'CP_13'
         main.test_name = self.__class__.__name__
 
         main.log('TEST: UC CP_13: Upload Trusted Anchor')
@@ -36,11 +36,13 @@ class XroadUploadTrustedAnchor(unittest.TestCase):
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
+        cp_proxy_dir = main.config.get('cp.proxy_dir')
 
         months = {'01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'June', '07': 'July',
                   '08': 'Aug', '09': 'Sept', '10': 'Oct', '11': 'Nov', '12': 'Dec'}
 
         identifier = main.config.get('cs.identifier')
+        sshclient = ssh_client.SSHClient(cp_ssh_host, cp_ssh_user, cp_ssh_pass)
 
         try:
             '''Open webdriver'''
@@ -85,6 +87,9 @@ class XroadUploadTrustedAnchor(unittest.TestCase):
 
             main.log('CP_13/1 CP administrator copies the anchor file to configuration '
                      'proxy instance settings directory.')
+
+            sshclient.exec_command('sudo chmod -R 777 {0}'.format(cp_proxy_dir), sudo=True)
+
             sshclient = ssh_client.SSHClient(cp_ssh_host, cp_ssh_user, cp_ssh_pass)
             sftp = sshclient.get_client().open_sftp()
             sftp.put(downloaded_file_path, upload_file_path)

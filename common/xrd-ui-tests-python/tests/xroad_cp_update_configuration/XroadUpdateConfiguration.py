@@ -15,8 +15,10 @@ class XroadUpdateConfiguration(unittest.TestCase):
     X-Road version: 6.16.0
     """
 
-    def test_log_out_from_software_token(self):
+    def test_update_configuration(self):
         main = MainController(self)
+        main.test_number = 'CP_15'
+        main.test_name = self.__class__.__name__
 
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
@@ -28,9 +30,11 @@ class XroadUpdateConfiguration(unittest.TestCase):
         configuration_client_log = '/var/log/xroad/configuration_client.log'
 
         try:
+            sshclient.exec_command('sudo chmod -R 777 /var/log/xroad', sudo=True)
+
             '''Change download url in anchor.xml file'''
             sshclient.exec_command(
-                'sed -i -e "s/{0}/{1}/g" {2}'.format(cs_host, hosts_replacement, anchor_file),
+                'sudo sed -i -e "s/{0}/{1}/g" {2}'.format(cs_host, hosts_replacement, anchor_file),
                 sudo=True)
 
             file_age = int(flatten(

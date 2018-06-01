@@ -22,19 +22,20 @@ class XroadDeleteHardwareTokenCertificate(unittest.TestCase):
 
 
 
-        ss1_url = main.config.get('ss1.host')
-        ss1_username = main.config.get('ss1.user')
-        ss1_password = main.config.get('ss1.pass')
+        ss1_url = main.config.get('hwtoken.host')
+        ss1_username = main.config.get('hwtoken.user')
+        ss1_password = main.config.get('hwtoken.pass')
 
-        ss1_ssh_host = main.config.get('ss1.ssh_host')
-        ss1_ssh_user = main.config.get('ss1.ssh_user')
-        ss1_ssh_pass = main.config.get('ss1.ssh_pass')
+        ss1_ssh_host = main.config.get('hwtoken.ssh_host')
+        ss1_ssh_user = main.config.get('hwtoken.ssh_user')
+        ss1_ssh_pass = main.config.get('hwtoken.ssh_pass')
 
-        client_id = main.config.get('ss1.server_id')
-        client_name = main.config.get('ss1.client2_name')
+        client_id = main.config.get('hwtoken.server_id')
+        client_name = main.config.get('hwtoken.client2_name')
         client = xroad.split_xroad_subsystem(client_id)
         client['name'] = client_name
 
+        ca_name = main.config.get('ca.name')
         ca_ssh_host = main.config.get('ca.ssh_host')
         ca_ssh_user = main.config.get('ca.ssh_user')
         ca_ssh_pass = main.config.get('ca.ssh_pass')
@@ -44,18 +45,12 @@ class XroadDeleteHardwareTokenCertificate(unittest.TestCase):
 
         try:
 
-            # '''Cut connetcion with target host'''
-            # sshclient.exec_command(
-            #     'sed -i -e "s/{0}/{1}/g" {2}'.format(ss_host, hosts_replacement, '/etc/hosts'),
-            #     sudo=True)
-
-
             main.reload_webdriver(url=ss1_url, username=ss1_username, password=ss1_password)
             '''Cert creation'''
             del_management.register_cert(main, ss1_ssh_host, ss1_ssh_user, ss1_ssh_pass,
                                          client=client, cert_path=cert_path,
                                          check_inputs=False, ca_ssh_host=ca_ssh_host,
-                                         ca_ssh_user=ca_ssh_user, ca_ssh_pass=ca_ssh_pass)()
+                                         ca_ssh_user=ca_ssh_user, ca_ssh_pass=ca_ssh_pass, ca_name=ca_name)()
 
 
             del_management.delete_cert(main, ss1_ssh_host, ss1_ssh_user, ss1_ssh_pass)
@@ -65,10 +60,6 @@ class XroadDeleteHardwareTokenCertificate(unittest.TestCase):
             main.save_exception_data()
             assert False
         finally:
-            # '''Create connection with target host'''
-            # sshclient.exec_command(
-            #     'sed -i -e "s/{0}/{1}/g" {2}'.format(hosts_replacement, ss_host, '/etc/hosts'),
-            #     sudo=True)
 
             '''Test teardown'''
             main.tearDown()

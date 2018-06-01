@@ -19,6 +19,9 @@ class XroadGenerateCSRInputParsing(unittest.TestCase):
     def test_generate_csr_input_parsing(self):
         main = MainController(self)
 
+        main.test_number = 'UC SS_29.5a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -32,7 +35,7 @@ class XroadGenerateCSRInputParsing(unittest.TestCase):
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
 
-        ca_name = main.config.get('ca.host')
+        ca_name = main.config.get('ca.name')
         profile_class = main.config.get('ca.profile_class')
 
         test_generate_csr_input_parsing = generate_csr_input_parsing(main)

@@ -8,7 +8,7 @@ from tests.xroad_parse_users_inputs import xroad_parse_user_inputs
 
 class XroadEditTimeoutValueInputs(unittest.TestCase):
     """
-    UC SERVICE_11 (UC SERVICE 21/3) Parse User Input (Edit the Timeout Value of a Service)
+    UC SERVICE_11 (UC SERVICE_21/3) Parse User Input (Edit the Timeout Value of a Service)
     RIA URL: https://jira.ria.ee/browse/XT-278, https://jira.ria.ee/browse/XTKB-28
     Depends on finishing other test(s): None
     Requires helper scenarios: None

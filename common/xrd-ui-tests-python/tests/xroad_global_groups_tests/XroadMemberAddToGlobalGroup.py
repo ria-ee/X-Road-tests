@@ -17,6 +17,9 @@ class XroadMemberAddToGlobalGroup(unittest.TestCase):
     def test_member_add_to_global_group(self):
         main = MainController(self)
 
+        main.test_number = 'UC SERVICE_37'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')

@@ -46,11 +46,13 @@ def remove_client(self, client, delete_cert=False, cancel_deletion=False, deny_c
     self.wait_jquery()
     # Certificate deletion
     if delete_cert:
+        self.wait_jquery()
         self.log('MEMBER_53 4. System verifies that the signature certificates associated with the client '
                  'have no other users and asks for confirmation to delete the client\'s signature certificates')
-        self.wait_until_visible(type=By.XPATH, element=popups.YESNO_POPUP_XPATH)
+        self.wait_until_visible(type=By.XPATH, element=popups.YESNO_POPUP_XPATH, timeout=60)
         self.log('MEMBER_53 5. Certificate deletion is confirmed')
         self.by_xpath(popups.YESNO_POPUP_YES_BTN_XPATH).click()
+        self.wait_jquery()
         self.log('Open "Keys and Certificates tab"')
         self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.KEYSANDCERTIFICATES_BTN_CSS).click()
         self.wait_jquery()
@@ -63,7 +65,7 @@ def remove_client(self, client, delete_cert=False, cancel_deletion=False, deny_c
         self.is_true('cert-active' not in expected_next_tr.get_attribute('class').split(' '))
     elif deny_cert_deletion:
         self.log('MEMBER_53 5a. Deny certificate deletion')
-        self.wait_until_visible(type=By.XPATH, element=popups.YESNO_POPUP_XPATH)
+        self.wait_until_visible(type=By.XPATH, element=popups.YESNO_POPUP_XPATH, timeout=60)
         self.by_xpath(popups.YESNO_POPUP_NO_BTN_XPATH).click()
         self.wait_jquery()
         self.log('Open Keys and Certificates tab')

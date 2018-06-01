@@ -156,7 +156,7 @@ def test_view_intermediate_ca_details(self, ca_name, distinguished_name=None):
         self.wait_until_visible(type=By.XPATH, element=INTERMEDIATE_CA_TAB_XPATH).click()
         self.wait_jquery()
         self.log('System displays the list of intermediate CAs')
-        self.log('Get intermediate CA {} row'.format(ca_name))
+        self.log('Get intermediate CA {0} row'.format(ca_name))
         self.wait_until_visible(type=By.XPATH, element=INTERMEDIATE_CA_BY_NAME_XPATH.format(ca_name)).click()
         self.log('SERVICE_07 1. Open intermediate CA details')
         self.wait_until_visible(type=By.ID, element=INTERMEDIATE_CA_EDIT_BTN_ID).click()

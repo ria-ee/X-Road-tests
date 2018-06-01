@@ -15,6 +15,10 @@ class XroadSSUserLogging(unittest.TestCase):
     def test_ss_user_logging(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'UC SS_01/SS_02'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')

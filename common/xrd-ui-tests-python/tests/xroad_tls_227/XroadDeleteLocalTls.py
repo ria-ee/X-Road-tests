@@ -21,7 +21,7 @@ class XroadDeleteLocalTls(unittest.TestCase):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = 'MEMBER_51'
+        main.test_number = 'UC MEMBER_51'
         main.test_name = self.__class__.__name__
 
         client = xroad.split_xroad_id(main.config.get('ss1.client_id'))
@@ -34,6 +34,7 @@ class XroadDeleteLocalTls(unittest.TestCase):
             # Delete internal certificates from the servers
             delete_local_tls()
         except:
+            main.save_exception_data()
             main.log('XroadDeleteLocalTls: failed to remove TLS from local service')
             assert False
         finally:

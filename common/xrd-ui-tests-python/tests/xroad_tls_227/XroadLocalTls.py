@@ -13,7 +13,7 @@ class XroadLocalTls(unittest.TestCase):
     SS_10 View the Internal TLS Certificate of the Security Server
     SS_11 Generate a New TLS key and Certificate for the security server
     SS_12 Export the Internal TLS Certificate of the Security Server
-    SERVICE_20 1-2 Set the Option to Verify TLS Certificate of a Service
+    SERVICE_20 Set the Option to Verify TLS Certificate of a Service
     RIA URL: https://jira.ria.ee/browse/XT-401, https://jira.ria.ee/browse/XTKB-42
     RIA URL: https://jira.ria.ee/browse/XT-402, https://jira.ria.ee/browse/XTKB-93
     RIA URL: https://jira.ria.ee/browse/XT-323, https://jira.ria.ee/browse/XTKB-96

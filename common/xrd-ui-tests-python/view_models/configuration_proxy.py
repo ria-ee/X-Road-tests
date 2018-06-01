@@ -28,8 +28,8 @@ CP_NO_ACTIVE_SIGNING_KEY_ERROR_MSGS = ['active-signing-key-id:',
 NO_SIGNING_KEYS_CONFIGURED_ERROR_MSG = 'No signing keys configured!'
 CP_ANCHOR_TIME_REGEX = '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z'
 GENERATED_ANCHOR_XML_TO_MSG = 'Generated anchor xml to \'{}\''
-CP_SHARED_PARAMETERS = 'Saving content to file /tmp/test_download/KS1/shared-params.xml'
-CP_PRIVATE_PARAMETERS = 'Saving content to file /tmp/test_download/KS1/private-params.xml'
+CP_SHARED_PARAMETERS = 'Saving content to file /tmp/test_download/XRD1/shared-params.xml'
+CP_PRIVATE_PARAMETERS = 'Saving content to file /tmp/test_download/XRD1/private-params.xml'
 
 
 def get_cp_no_conf_file_errors(cp_identifier):

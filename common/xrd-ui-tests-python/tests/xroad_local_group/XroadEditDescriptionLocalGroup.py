@@ -26,16 +26,16 @@ class XroadEditDescriptionLocalGroup(unittest.TestCase):
         main.username = main.config.get('ss2.user')
         main.password = main.config.get('ss2.pass')
     #
-    # try:
-        '''Open webdriver'''
-        main.reload_webdriver(main.url, main.username, main.password)
-        '''Run the test'''
-        test_func = xroad_local_group.test_edit_local_group_description()
-        test_func(main)
-    # except:
-    #     main.log('XroadEditDescriptionLocalGroup: Failed to edit the description of a local group')
-    #     main.save_exception_data()
-    #     assert False
-    # finally:
-    #     '''Test teardown'''
-    #     main.tearDown()
+        try:
+            '''Open webdriver'''
+            main.reload_webdriver(main.url, main.username, main.password)
+            '''Run the test'''
+            test_func = xroad_local_group.test_edit_local_group_description()
+            test_func(main)
+        except:
+            main.log('XroadEditDescriptionLocalGroup: Failed to edit the description of a local group')
+            main.save_exception_data()
+            raise
+        finally:
+            '''Test teardown'''
+            main.tearDown()

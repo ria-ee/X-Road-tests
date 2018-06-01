@@ -16,6 +16,9 @@ class XroadEditSettingsFile(unittest.TestCase):
 
     def test_edit_settings_file(self):
         main = MainController(self)
+        main.test_number = 'CP_03'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')

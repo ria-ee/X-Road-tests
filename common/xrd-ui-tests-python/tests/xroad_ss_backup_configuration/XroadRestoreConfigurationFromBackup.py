@@ -9,7 +9,7 @@ class XroadRestoreConfigurationFromBackup(unittest.TestCase):
     '''
     UC SS_15: Restore Configuration from a Backup File
     RIA URL: https://jira.ria.ee/browse/XTKB-101
-    Depends on finishing other test(s):
+    Depends on finishing other test(s): XroadBackupConfiguration
     Requires helper scenarios:
     X-Road version: 6.16.0
     '''
@@ -31,6 +31,7 @@ class XroadRestoreConfigurationFromBackup(unittest.TestCase):
         main.url = main.config.get('ss2.host')
         main.username = main.config.get('ss2.user')
         main.password = main.config.get('ss2.pass')
+        pin = main.config.get('ss2.token_pin')
 
         '''Configure the service'''
         test_ss_backup_conf = ss_management.test_ss_restore_backup_conf(case=main, ssh_host=ssh_host, ssh_username=ssh_username, ssh_password=ssh_password)
@@ -46,6 +47,15 @@ class XroadRestoreConfigurationFromBackup(unittest.TestCase):
             assert False
         finally:
             main.reload_webdriver(url=main.url, username=main.username, password=main.password)
-            client_certification.log_in_token(main)()
+
+            if not main.config.get_bool('config.harmonized_environment', False):
+                # Try to login to the software token (only if harmonized environment with autologin not enabled)
+                try:
+                    # Try to log in to the token (not necessary if autologin works)
+                    client_certification.log_in_token(main, pin)()
+                except:
+                    # Could not log in to token, autologin probably enabled
+                    main.log('Could not log in to the token. If autologin is enabled, this is not an error.')
+                    pass
             '''Test teardown'''
             main.tearDown()

@@ -10,7 +10,7 @@ from main.maincontroller import MainController
 from tests.xroad_configure_service_222.wsdl_validator_errors import wait_until_server_up
 from tests.xroad_cs_delete_member.deleting_in_cs import test_add_security_server_to_member
 from tests.xroad_cs_delete_member_ss.delete_member_ss import delete_member_ss
-from tests.xroad_ss_client_certification_213.client_certification import register_cert, activate_cert
+from tests.xroad_ss_client_certification_213.client_certification import register_cert, activate_disabled_cert
 from view_models.keys_and_certificates_table import DELETE_BTN_ID, GLOBAL_ERROR_CERTIFICATE_ROW_XPATH
 from view_models.popups import confirm_dialog_click
 from view_models.sidebar import KEYSANDCERTIFICATES_BTN_CSS
@@ -27,6 +27,9 @@ class XroadDeleteMemberSS(unittest.TestCase):
         :return:
         """
         main = MainController(self, empty_downloads=False)
+        main.test_number = 'UC MEMBER_25'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -64,14 +67,15 @@ class XroadDeleteMemberSS(unittest.TestCase):
                                            cs_host=cs_ssh_host, client=client,
                                            ca_ssh_host=ca_ssh_host, ca_ssh_user=ca_ssh_user,
                                            ca_ssh_pass=ca_ssh_pass,
-                                           cert_path=cert_path, ca_name=ca_name, dns=ss_ssh_host, organization='MemberMGMltwd')
+                                           cert_path=cert_path, ca_name=ca_name, dns=ss_ssh_host,
+                                           organization=client['name'])
         test_add_ss_to_cs_member = test_add_security_server_to_member(main, cs_host, cs_user,
                                                                       cs_pass,
                                                                       cs_ssh_host, cs_ssh_user,
                                                                       cs_ssh_pass,
                                                                       client, cert_path=cert_path
                                                                       )
-        test_activate_cert = activate_cert(main, ss_ssh_host, ss_ssh_user, ss_ssh_pass,
+        test_activate_cert = activate_disabled_cert(main, ss_ssh_host, ss_ssh_user, ss_ssh_pass,
                                                                       registered=True)
         ss_ssh_client = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
         try:
@@ -92,10 +96,10 @@ class XroadDeleteMemberSS(unittest.TestCase):
                 main.wait_until_visible(type=By.CSS_SELECTOR, element=KEYSANDCERTIFICATES_BTN_CSS).click()
                 main.log('Clicking on certificate with global error status')
                 try:
-                    main.wait_until_visible(type=By.XPATH, element=GLOBAL_ERROR_CERTIFICATE_ROW_XPATH).click()
+                    main.click(element=main.wait_until_visible(type=By.XPATH, element=GLOBAL_ERROR_CERTIFICATE_ROW_XPATH))
                 except:
                     main.driver.refresh()
-                    main.wait_until_visible(type=By.XPATH, element=GLOBAL_ERROR_CERTIFICATE_ROW_XPATH).click()
+                    main.click(element=main.wait_until_visible(type=By.XPATH, element=GLOBAL_ERROR_CERTIFICATE_ROW_XPATH))
                 main.log('Deleting certificate with global error')
                 main.by_id(DELETE_BTN_ID).click()
                 main.log('Confirming certificate deletion')

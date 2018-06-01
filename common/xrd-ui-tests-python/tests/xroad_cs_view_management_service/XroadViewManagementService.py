@@ -15,6 +15,10 @@ class XroadViewManagementService(unittest.TestCase):
     """
     def test_view_management_service(self):
         main = MainController(self)
+
+        main.test_number = 'UC MEMBER_32'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -33,5 +37,8 @@ class XroadViewManagementService(unittest.TestCase):
         try:
             main.reload_webdriver(cs_host, cs_user, cs_pass)
             test_view_management_service()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()

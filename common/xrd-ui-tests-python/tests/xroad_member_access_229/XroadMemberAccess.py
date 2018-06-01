@@ -23,7 +23,7 @@ class XroadMemberAccess(unittest.TestCase):
         main = MainController(self)
 
         # Set test name and number
-        main.test_number = 'XroadMemberAccess'
+        main.test_number = 'SERVICE_17/18'
         main.test_name = self.__class__.__name__
 
         ss2_host = main.config.get('ss2.host')

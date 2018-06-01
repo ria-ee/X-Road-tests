@@ -15,6 +15,9 @@ class XroadEditManagementService(unittest.TestCase):
     """
     def test_edit_management_service(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_33'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -33,6 +36,9 @@ class XroadEditManagementService(unittest.TestCase):
         try:
             main.reload_webdriver(cs_host, cs_user, cs_pass)
             edit_management_service(main, new_provider, log_checker=log_checker)()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.log('Restore old management service')
             main.reload_webdriver(cs_host, cs_user, cs_pass)

@@ -32,6 +32,7 @@ def select_ocsp_responder(self, ocsp_url):
     :return: None
     '''
     # Find the OCSP responder
+    # ocsp_url = ocsp_url.strip('/')
     ocsp_cell = self.by_xpath(certification_services.get_ocsp_by_td_text(ocsp_url))
     self.is_not_none(ocsp_cell, msg='OCSP responder "{0}" not found in the table'.format(ocsp_url))
 
@@ -534,6 +535,6 @@ def test_view_ocsp_responder(self, ca_name, ocsp_url):
         self.wait_until_visible(type=By.XPATH, element=OCSP_RESPONSE_TAB).click()
         self.wait_jquery()
         self.log('TRUST_05 2. System displays the URL({}) of the OCSP server'.format(ocsp_url))
-        self.is_not_none(get_ocsp_by_td_text(ocsp_url))
+        self.is_not_none(self.wait_until_visible(type=By.XPATH, element=get_ocsp_by_td_text(ocsp_url)))
 
     return view_ocsp_responder

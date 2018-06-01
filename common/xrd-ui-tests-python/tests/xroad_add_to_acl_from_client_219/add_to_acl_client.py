@@ -167,7 +167,7 @@ def test_existing_client(ss_ssh_host=None, ss_ssh_user=None, ss_ssh_pass=None, r
 
             self.log('Logging out to clear out')
             # Logout, login. no need for logout functionality testing at this point so we can logout from url
-            self.driver.get(self.url + 'login/logout')
+            self.go(self.url + 'login/logout')
             self.login(self.username, self.password)
 
             # Test existing client
@@ -275,7 +275,7 @@ def remove_added_data(self, log_checker=None, client_name=None, selected_id=None
     """
     self.log('*** SERVICE_05 Remove Access Rights from a Service Client')
     # Logout, login. no need for logout functionality testing at this point so we can logout from url
-    self.driver.get(self.url + 'login/logout')
+    self.go(self.url + 'login/logout')
     self.login(self.username, self.password)
 
     # UC SERVICE_05 1. Select to remove service access rights from a service client
@@ -312,4 +312,4 @@ def remove_added_data(self, log_checker=None, client_name=None, selected_id=None
                                            from_line=current_log_lines + 1)
         self.is_true(logs_found)
 
-    self.driver.get(self.url + 'login/logout')
+    self.go(self.url + 'login/logout')

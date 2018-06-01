@@ -27,8 +27,13 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
     Requires helper scenarios: MEMBER_47, TRUST_08, TRUST_10, TRUST_14
     X-Road version: 6.16.0
     """
+
     def test_aimport_cert_from_token(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'SS_31.sign.a'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -62,11 +67,18 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
             time.sleep(60)
             main.reset_page()
             import_cert_from_token(working_cert_id, auth_cert_id, expired_cert_id, existing_cert_id)
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()
 
     def test_bimport_cert_from_token_global_conf_error(self):
         main = MainController(self)
+        # Set test name and number
+        main.test_number = 'SS_31.sign.b'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
@@ -83,6 +95,9 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             expire_globalconf()
             import_cert_from_token_global_conf_error()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             start_conf_client()
             main.log('Waiting until global configuration is up to date')
@@ -91,6 +106,10 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
 
     def test_cimport_cert_from_token_no_ca(self):
         main = MainController(self)
+        # Set test name and number
+        main.test_number = 'SS_31.sign.c'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -139,6 +158,9 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
             time.sleep(120)
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             import_cert_from_token_no_ca_error()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.reload_webdriver(cs_host, cs_user, cs_pass)
             restore_ca()
@@ -149,6 +171,10 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
 
     def test_dimport_cert_from_token_no_client(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'SS_31.sign.d'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -170,11 +196,18 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
             main.wait_until_visible(type=By.XPATH, element=YESNO_POPUP_NO_BTN_XPATH).click()
             main.wait_jquery()
             import_cert_from_token_no_key_error()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()
 
     def test_eimport_cert_from_token_no_key(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'SS_31.sign.e'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -186,9 +219,13 @@ class XroadImportCertFromTokenSigning(unittest.TestCase):
         token_name = main.config.get('utimaco.token_name')
         import_cert_from_token_no_key_error = test_import_cert_from_token(main, ss_ssh_host, ss_ssh_user,
                                                                           ss_ssh_pass, ss_host=ss_host, ss_user=ss_user,
-                                                                          ss_pass=ss_pass, no_key_error=True, token_name=token_name)
+                                                                          ss_pass=ss_pass, no_key_error=True,
+                                                                          token_name=token_name)
         try:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             import_cert_from_token_no_key_error()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()

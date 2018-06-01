@@ -53,7 +53,13 @@ def unregister_client_fail(self, client, client_path=None, log_checker=None, req
         if log_checker is not None:
             current_log_lines = log_checker.get_line_count()
         self.log('Open client details')
-        added_client_row(self, client).find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS).click()
+        self.wait_jquery()
+
+        row_element = added_client_row(self, client).find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS)
+        self.wait_until_visible(element=row_element)
+        self.click(row_element)
+        self.wait_jquery()
+
         self.log('MEMBER_52 1. Click unregister button')
         self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_UNREGISTER_BUTTON_ID).click()
         self.wait_jquery()

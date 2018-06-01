@@ -9,17 +9,15 @@ from tests.xroad_configure_service_222.wsdl_validator_errors import wait_until_s
 from tests.xroad_ss_client_certification_213.client_certification import generate_auth_csr
 from view_models import sidebar, keys_and_certificates_table, popups, messages, log_constants
 from view_models.messages import ERROR_MESSAGE_CSS
+import os
 
-
-def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_password=None):
+def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_password=None, pin=None):
     self = case
 
     def deletion_conf():
         self.logdata = []
 
-        if ssh_host is not None:
-            log_checker = auditchecker.AuditChecker(host=ssh_host, username=ssh_username, password=ssh_password)
-            current_log_lines = log_checker.get_line_count()
+
 
         '''Click "Keys and Certificates" button" '''
         self.log('Click "Keys and Certificates" button"')
@@ -29,7 +27,7 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
         # '''If token is loged out then log in'''
         try:
             self.by_xpath(keys_and_certificates_table.HARDTOKEN_ERROR_LOGIN2)
-            hardware_token_login(self)
+            hardware_token_login(self, pin)
         except:
             pass
 
@@ -42,7 +40,8 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
 
         '''Add key to token'''
         add_key_hardware_token(self)
-        generate_auth_csr(self, 'ca.asa', change_usage=False)
+        ca_name = self.config.get('ca.name')
+        generate_auth_csr(self, ca_name, organization='o', change_usage=False)
 
         sshclient = ssh_client.SSHClient(ssh_host, ssh_username, ssh_password)
         timeout = get_keyconf_update_timeout(sshclient)
@@ -77,9 +76,15 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
         sshclient = ssh_client.SSHClient(ssh_host, ssh_username, ssh_password)
 
         '''Stop docker container'''
-        sshclient.exec_command('docker stop cssim410_test', sudo=True)
+        os.system('sudo docker stop cssim410_test')
         '''Kill docker process'''
-        sshclient.exec_command('pkill docker-', sudo=True)
+        os.system('sudo pkill docker-')
+
+        time.sleep(10)
+
+        if ssh_host is not None:
+            log_checker = auditchecker.AuditChecker(host=ssh_host, username=ssh_username, password=ssh_password)
+            current_log_lines = log_checker.get_line_count()
 
         '''Delete key'''
         delete_added_key_label(self)
@@ -97,7 +102,7 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
         self.wait_until_visible(type=By.XPATH, element=keys_and_certificates_table.HARDTOKEN_TABLE_XPATH2).click()
 
         '''Start preconfigured docker container'''
-        sshclient.exec_command('docker run -p3001:3001 -dt --rm --name cssim410_test cssim410_test', sudo=True)
+        os.system('sudo docker run -p3001:3001 -dt --rm --name cssim410_test cssim410_test')
         '''Restart xroad-signer service'''
         sshclient.exec_command('service xroad-signer restart', sudo=True)
         wait_until_server_up(self.url)
@@ -130,6 +135,7 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
         self.log('SS_35 6. Token is deleted from system configuration when no other keys present')
         token_count_after_delete = get_key_conf_token_count(sshclient)
         self.is_true(token_count_after_delete < token_count)
+        self.logdata.append('Log into the token')
 
         '''Check audit log'''
         if ssh_host is not None:
@@ -145,7 +151,7 @@ def test_hardware_key_delete(case, ssh_host=None, ssh_username=None, ssh_passwor
     return deletion_conf
 
 
-def hardware_token_login(self):
+def hardware_token_login(self, pin):
     self.log('Log in again')
     '''Click "LOGIN"'''
     self.driver.find_element_by_xpath(keys_and_certificates_table.HARDTOKEN_ERROR_LOGIN2).click()
@@ -155,7 +161,7 @@ def hardware_token_login(self):
     key_label_input = self.wait_until_visible(type=By.NAME, element=popups.TOKEN_PIN_LABEL_AREA)
 
     '''Insert correct PIN'''
-    self.input(key_label_input, keys_and_certificates_table.TOKEN_PIN)
+    self.input(key_label_input, pin)
     self.wait_jquery()
     self.logdata.append(log_constants.SOFTTOKEN_LOGIN_SUCCESS)
 

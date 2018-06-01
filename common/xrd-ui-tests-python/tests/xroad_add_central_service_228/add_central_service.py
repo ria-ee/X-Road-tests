@@ -85,7 +85,7 @@ def test_add_central_service(case, provider=None, central_service_name=None,
         'memberClass': requester['class'],
         'memberCode': requester['code'],
         'subsystemCode': requester['subsystem'],
-        'requestBody': self.config.get('services.testservice_2_request_body')
+        'requestBody': self.config.get('services.testservice_request_body')
     }
 
     testclient_central_params = {

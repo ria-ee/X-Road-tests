@@ -19,6 +19,9 @@ class XroadAddClientToMember(unittest.TestCase):
     def test_add_client_to_member(self):
         main = MainController(self)
 
+        main.test_number = 'MEMBER_15'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')

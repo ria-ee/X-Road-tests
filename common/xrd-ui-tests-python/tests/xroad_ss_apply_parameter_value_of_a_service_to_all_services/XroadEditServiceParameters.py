@@ -15,6 +15,8 @@ class XroadEditServiceParameters(unittest.TestCase):
     """
     def test_xroad_apply_TLS_value_to_all_services_in_wsdl(self):
         main = MainController(self)
+        main.test_number = 'UC SERVICE_22.TLS'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -36,11 +38,16 @@ class XroadEditServiceParameters(unittest.TestCase):
         try:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             test_edit_service_parameters()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()
 
     def test_xroad_apply_url_value_to_all_services_in_wsdl(self):
         main = MainController(self)
+        main.test_number = 'UC SERVICE_22.URL'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -57,11 +64,16 @@ class XroadEditServiceParameters(unittest.TestCase):
         try:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             test_edit_service_parameters()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()
 
     def test_xroad_apply_timeout_value_to_all_services_in_wsdl(self):
         main = MainController(self)
+        main.test_number = 'UC SERVICE_22.timeout'
+        main.test_name = self.__class__.__name__
 
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
@@ -78,5 +90,8 @@ class XroadEditServiceParameters(unittest.TestCase):
         try:
             main.reload_webdriver(ss_host, ss_user, ss_pass)
             test_edit_timeout_to_all()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()

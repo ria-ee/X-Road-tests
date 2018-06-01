@@ -16,6 +16,9 @@ class XroadActivateCert(unittest.TestCase):
     """
     def test_activate_cert(self):
         main = MainController(self)
+        main.test_number = 'UC SS_32'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')

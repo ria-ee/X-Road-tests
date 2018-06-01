@@ -18,7 +18,7 @@ class XroadAddSubToMember(unittest.TestCase):
         main = MainController(self)
 
         '''Set test name and number'''
-        main.test_number = 'MEMBER_56'
+        main.test_number = 'UC MEMBER_56'
         main.test_name = self.__class__.__name__
 
         main.log('TEST: MEMBER_56 Add a Subsystem to an X-Road Member')

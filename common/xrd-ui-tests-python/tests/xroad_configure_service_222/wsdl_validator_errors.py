@@ -189,7 +189,7 @@ def test_wsdl_validator_crash(self, wsdl_url, ssh_host, ssh_username, ssh_passwo
     def wsdl_validator_crash():
         self.ssh_client = ssh_client.SSHClient(host=ssh_host, username=ssh_username, password=ssh_password)
         self.log('Backing up wsdlvalidator wrapper')
-        self.ssh_client.exec_command('cp {0} {0}.backup'.format(wsdl_validator_wrapper_path), sudo=True)
+        self.ssh_client.exec_command('cp -p {0} {0}.backup'.format(wsdl_validator_wrapper_path), sudo=True)
         self.log('Adding invalid argument(-asd) to wsdlvalidator_wrapper validator execution command')
         self.ssh_client.exec_command('sed -i -e "s/-r/-asd/g" {0}'.format(wsdl_validator_wrapper_path), sudo=True)
         self.ssh_client.close()
@@ -274,7 +274,7 @@ def test_refreshing_wsdl_validator_not_set(self, wsdl_url, ss_host, ss_user, ss_
 
 def remove_wsdl_validator_from_conf(self, ssh_host, ssh_username, ssh_password, ss_host):
     '''Command to backup local.ini to local.ini.backup file'''
-    backup_local_ini_command = 'cp {0} {1}'.format(ss_system_parameters.WSDL_VALIDATOR_CONF_LOCATION,
+    backup_local_ini_command = 'cp -p {0} {1}'.format(ss_system_parameters.WSDL_VALIDATOR_CONF_LOCATION,
                                                    '/etc/xroad/conf.d/local.ini.backup')
     '''Command to create empty local.ini file'''
     create_empty_local_ini_command = 'sh -c "echo \'\' > {0}"'.format(
@@ -476,7 +476,7 @@ def set_wsdl_validator_not_executable(self, ssh_host, ssh_username, ssh_password
 def restore_wsdl_validator(case, ssh_host, ssh_username, ssh_password, not_exec_file_path):
     self = case
     '''Restore wsdl validator location conf from backup'''
-    restore_backup_command = 'cp /etc/xroad/conf.d/local.ini.backup {0}'.format(
+    restore_backup_command = 'cp -p /etc/xroad/conf.d/local.ini.backup {0}'.format(
         ss_system_parameters.WSDL_VALIDATOR_CONF_LOCATION)
     '''Command to remove not executable file'''
     remove_not_exec_file = 'rm {0}'.format(not_exec_file_path)
@@ -497,7 +497,7 @@ def restore_wsdl_validator_wrapper(case, ssh_host, ssh_username, ssh_password, w
     '''Security server ssh client instance'''
     self.ssh_client = ssh_client.SSHClient(host=ssh_host, username=ssh_username, password=ssh_password)
     self.log('Restore wsdl validator wrapper')
-    self.ssh_client.exec_command('cp {0}.backup {0}'.format(wsdl_validator_wrapper_path), sudo=True)
+    self.ssh_client.exec_command('cp -p {0}.backup {0}'.format(wsdl_validator_wrapper_path), sudo=True)
     self.log('Remove wsdl validator wrapper backup')
     self.ssh_client.exec_command('rm {0}.backup'.format(wsdl_validator_wrapper_path), sudo=True)
     self.ssh_client.close()
@@ -514,4 +514,4 @@ def wait_until_server_up(ss_host):
     while response.status_code != 200:
         time.sleep(10)
         response = requests.get(ss_host, verify=False)
-    time.sleep(5)
+    time.sleep(10)

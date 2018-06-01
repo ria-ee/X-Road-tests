@@ -155,7 +155,7 @@ class SSHClient:
                 out_error.append(ln)
 
             if self.debug:
-                print('{0}\n{1}'.format(out_clean, out_error))
+                print('stdout:\n{0}\nstderr:\n{1}'.format(out_clean, out_error))
         else:
             # Set channel timeout
             stdout.channel.settimeout(timeout)

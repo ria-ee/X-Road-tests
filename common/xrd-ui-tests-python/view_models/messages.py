@@ -105,6 +105,7 @@ EDIT_CENTRAL_SERVICE_PROVIDER_NOT_FOUND_ERROR = 'Failed to update central servic
 
 UNREGISTER_CLIENT_SEND_REQUEST_FAIL = 'Failed to send deletion request: Service {0} is disabled: Out of order'
 GENERATE_CERTIFICATE_NOT_FOUND_ERROR = 'Failed to generate new key: /bin/sh: 1: {0}: not found'
+GENERATE_CERTIFICATE_NOT_FOUND_ERROR_REGEX = 'Failed to generate new key: .*: {0}: not found'
 REGISTRATION_REQUEST_SENDING_FAILED = 'Failed to send registration request: Service .* is disabled: Out of order'
 CERTIFICATE_DELETION_REQUEST_SENDING_FAILED = 'Failed to send certificate deletion request. Continue with certificate deletion anyway?'
 UNREGISTER_CERT_REQUEST_SENDING_FAILED = 'Failed to unregister certificate: Could not connect to any target host'
@@ -149,7 +150,7 @@ HARDTOKEN_KEY_DELETE_FAILED = "Failed to delete key: Failed to delete private ke
 KEY_DELETE_FAILED_CONNECTION_REFUSED = 'Failed to delete key: ConnectException: Connection refused (Connection refused)'
 
 KEY_DELETE_FAILED_SERVICE_DISABLED_ERROR_MSG_REGEX = 'Failed to delete key: Service .+authCertDeletion is disabled: Out of order'
-KEY_DELETE_SENDING_FAILED = 'Failed to delete key: Could not connect to any target host ([https://ss.asa:5500/])'
+KEY_DELETE_SENDING_FAILED = 'Failed to delete key: Could not connect to any target host .*'
 MANAGEMENT_SERVICE_REGISTERED = 'Management service provider \'.*\' registered as security server \'.*\' client'
 MANAGEMENT_SERVICE_ADDED_COMMENT = 'Management service provider registration'
 DECLINED_REQUEST_NOTICE = 'Successfully declined request with id \'{0}\''
