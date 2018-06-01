@@ -35,6 +35,7 @@ def edit_management_service(self, new_provider, log_checker=None):
 
         self.log('MEMBER_33 3. Select button is pressed')
         self.wait_until_visible(type=By.XPATH, element=SELECT_MEMBER_BTN_XPATH).click()
+        self.wait_jquery()
         if current_log_lines is not None:
             expected_log_msg = EDIT_MANAGEMENT_SERVICE_PROVIDER
             self.log('MEMBER_33 4. System logs the event {0}'.format(expected_log_msg))

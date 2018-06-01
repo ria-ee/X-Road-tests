@@ -18,14 +18,14 @@ def generate_signing_key(self, sshclient, cp_identifier, conf_path, token_id, no
         self.is_not_none(key_id, msg='Key id not found from stdout')
         key_file_name = '{}.p12'.format(key_id)
         self.log('Checking if key file "{}" exists'.format(key_file_name))
-        std_out = sshclient.exec_command('ls /etc/xroad/signer | grep {}'.format(key_file_name))
+        std_out = sshclient.exec_command('sudo ls /etc/xroad/signer | grep {}'.format(key_file_name))
         self.is_equal(std_out[0][0], key_file_name)
 
         self.log('CP_09 2. System generates a corresponding self-signed certificate')
         cert_file_name = get_regex_first_group_match_from_list(CERT_FILE_REGEX, output)
         self.is_not_none(cert_file_name, msg='Cert filename not found from stdout')
         self.log('Checking if cert file "{} exists"'.format(cert_file_name))
-        std_out = sshclient.exec_command('ls {0} | grep {1}'.format(conf_path.replace('conf.ini', ''), cert_file_name))
+        std_out = sshclient.exec_command('sudo ls {0} | grep {1}'.format(conf_path.replace('conf.ini', ''), cert_file_name))
         self.is_equal(std_out[0][0], cert_file_name)
 
         self.log('CP_09 3. System saves the generated key information and '
@@ -38,7 +38,7 @@ def generate_signing_key(self, sshclient, cp_identifier, conf_path, token_id, no
             expected_line = ACTIVE_KEY_CONFIG_LINE.format(key_id)
             self.log('Checking if new key is set as active key in conf.ini')
             std_out = sshclient.exec_command(
-                'grep \'{0}\' {1}'.format(expected_line, conf_path))
+                'sudo grep \'{0}\' {1}'.format(expected_line, conf_path))
             self.is_equal(expected_line, std_out[0][0])
 
         expected_msg = ADDED_KEY_TO_CONF_INI
@@ -47,7 +47,7 @@ def generate_signing_key(self, sshclient, cp_identifier, conf_path, token_id, no
 
         expected_line = SIGNING_KEY_CONFIG_LINE.format(key_id)
         self.log('Checking if "{}" is present in "conf.ini"'.format(expected_line))
-        std_out = sshclient.exec_command('grep \'{0}\' {1}'.format(expected_line, conf_path))
+        std_out = sshclient.exec_command('sudo grep \'{0}\' {1}'.format(expected_line, conf_path))
         self.is_true(re.match(expected_line, std_out[0][0]), msg='"{}" not found in conf.ini'.format(expected_line))
 
     return generate_key

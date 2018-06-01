@@ -290,7 +290,7 @@ def setup_member_with_subsystem_as_ss_client(case, cs_host, cs_username, cs_pass
         add_client_to_ss(self, ss_1_client, retry_interval=sync_retry, retry_timeout=sync_timeout,
                          wait_input=wait_input)
         self.log('Navigate to security server homepage')
-        self.driver.get(ss1_host)
+        self.go(ss1_host)
         self.log('Certificate added client')
         client_certification.test_generate_csr_and_import_cert(client_code=ss_1_client['code'],
                                                                client_class=ss_1_client['class'])(self)

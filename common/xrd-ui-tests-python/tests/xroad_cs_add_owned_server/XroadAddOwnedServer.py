@@ -18,6 +18,9 @@ class XroadAddOwnedServer(unittest.TestCase):
     def test_a_add_owned_server_inputs(self):
         main = MainController(self, empty_downloads=False)
 
+        main.test_number = 'MEMBER_12.a'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -82,6 +85,9 @@ class XroadAddOwnedServer(unittest.TestCase):
     def test_c_add_owned_server(self):
         main = MainController(self, empty_downloads=False)
 
+        main.test_number = 'MEMBER_12.b'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -115,6 +121,9 @@ class XroadAddOwnedServer(unittest.TestCase):
 
     def test_d_add_existing_cert(self):
         main = MainController(self, empty_downloads=False)
+
+        main.test_number = 'MEMBER_12.d'
+        main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
@@ -151,6 +160,9 @@ class XroadAddOwnedServer(unittest.TestCase):
 
     def test_e_add_existing_owned_server(self):
         main = MainController(self, empty_downloads=False)
+
+        main.test_number = 'MEMBER_12.e'
+        main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')

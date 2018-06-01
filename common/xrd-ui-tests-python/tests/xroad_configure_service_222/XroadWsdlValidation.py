@@ -20,7 +20,8 @@ class XroadWsdlValidation(unittest.TestCase):
     def test_xroad_wsdl_validator_crash(self):
         main = MainController(self)
 
-
+        main.test_number = 'SERVICE_44'
+        main.test_name = self.__class__.__name__
 
         ssh_host = main.config.get('ss2.ssh_host')
         ssh_user = main.config.get('ss2.ssh_user')
@@ -30,17 +31,12 @@ class XroadWsdlValidation(unittest.TestCase):
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
 
-
-
         client = xroad.split_xroad_id(main.config.get('ss2.client_id'))
 
         service_name = main.config.get('services.test_service')  # xroadGetRandom
         service_url = main.config.get('services.test_service_url')
         service_2_name = main.config.get('services.test_service_2')  # bodyMassIndex
         service_2_url = main.config.get('services.test_service_2_url')
-
-
-
 
         client_id = xroad.split_xroad_id(main.config.get('ss1.client_id'))
         client_name = main.config.get('ss1.client_name')

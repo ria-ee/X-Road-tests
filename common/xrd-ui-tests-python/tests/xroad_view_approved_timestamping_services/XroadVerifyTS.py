@@ -21,7 +21,6 @@ class XroadVerifyTS(unittest.TestCase):
 
         '''Set test name and number'''
         main.test_number = 'UC TRUST_15'
-        main.test_number = 'UC TRUST_15: View Approved Timestamping Services'
         main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')

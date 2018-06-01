@@ -36,12 +36,11 @@ def activate_cert(self, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, registered=Fal
         time.sleep(wait_seconds)
         '''Find not active certs in keyconf file'''
         keyconf_before = get_disabled_certs(sshclient)
-        registration_in_progress_row = self.wait_until_visible(type=By.XPATH,
-                                                               element=OCSP_DISABLED_CERT_ROW)
+        disabled_row = self.wait_until_visible(type=By.XPATH, element=OCSP_DISABLED_CERT_ROW)
         '''Get the cert key label'''
-        key_label = registration_in_progress_row.find_element_by_xpath('../preceding::tr[2]//td').text.split(' ')[1]
+        key_label = disabled_row.find_element_by_xpath('../preceding::tr[2]//td').text.split(' ')[1]
         '''Click on the certificate'''
-        self.click(registration_in_progress_row)
+        self.click(disabled_row)
         self.log('SS_32 1. "Activate a certificate" button is clicked')
         self.wait_until_visible(type=By.ID, element=ACTIVATE_BTN_ID).click()
         self.log('Waiting until keyconf is updated')

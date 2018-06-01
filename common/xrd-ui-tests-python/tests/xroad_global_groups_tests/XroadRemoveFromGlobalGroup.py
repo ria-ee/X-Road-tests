@@ -18,6 +18,9 @@ class XroadRemoveFromGlobalGroup(unittest.TestCase):
     def test_a_remove_selected_from_global_group(self):
         main = MainController(self)
 
+        main.test_number = 'UC SERVICE_34.a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
@@ -56,7 +59,7 @@ class XroadRemoveFromGlobalGroup(unittest.TestCase):
         faults_unsuccessful = ['Server.ClientProxy.SslAuthenticationFailed', 'Server.ServerProxy.AccessDenied']
         '''Expected faults'''
         faults_successful = ['Server.ServerProxy.ServiceFailed']
-        query_url = main.config.get('ss1.service_path')
+        query_url = main.config.get('ss1.service_path') # tempss0
         query_filename = main.config.get('services.request_template_filename')
         query = main.get_xml_query(query_filename)
         testclient = soaptestclient.SoapTestClient(url=query_url, body=query,
@@ -108,6 +111,9 @@ class XroadRemoveFromGlobalGroup(unittest.TestCase):
     def test_b_remove_all_from_global_group(self):
         main = MainController(self)
 
+        main.test_number = 'UC SERVICE_34.b'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
@@ -148,7 +154,7 @@ class XroadRemoveFromGlobalGroup(unittest.TestCase):
         faults_unsuccessful = ['Server.ClientProxy.SslAuthenticationFailed', 'Server.ServerProxy.AccessDenied']
         '''Expected faults'''
         faults_successful = ['Server.ServerProxy.ServiceFailed']
-        query_url = main.config.get('ss1.service_path')
+        query_url = main.config.get('ss1.service_path') # tempss0
         query_filename = main.config.get('services.request_template_filename')
         query = main.get_xml_query(query_filename)
         testclient = soaptestclient.SoapTestClient(url=query_url, body=query,

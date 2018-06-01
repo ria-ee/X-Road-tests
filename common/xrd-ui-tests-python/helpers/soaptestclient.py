@@ -3,6 +3,10 @@ import time
 import re
 import uuid
 from xml.etree import ElementTree
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+from requests.packages import urllib3
+from urlparse import urlparse
 
 # If the access rights are ok but the service endpoint has a problem, it may return:
 # - Server.ServerProxy.ServiceFailed.InvalidContentType
@@ -24,6 +28,9 @@ from xml.etree import ElementTree
 # Invalid protocolVersion in request XML
 # - Client.InvalidProtocolVersion
 
+# As our test client creates insecure HTTPS requests intentionally, disable the warnings for them
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 class SoapTestClient:
     '''
     Test client to send SOAP queries to the test services. Uses XML ElementTree for parsing XML and UUID to generate
@@ -40,12 +47,14 @@ class SoapTestClient:
     fault_message = None
     xml = None
     verify_service_data = None
+    verify_hostname = True
     params = None
     query_timeout = 90.0  # Query timeout in seconds
     retry_interval = 0  # Seconds to retry in a loop after getting errors (if check_* function is called). 0 for no retries.
     fail_timeout = 120  # Stop loop and throw error when at least this amount of time has passed.
 
     set_default_params = True  # Set UUID for request body
+    debug = False # Enable debug mode
 
     xroad_namespace = 'http://x-road.eu/xsd/xroad.xsd'
     xroad_identifiers_namespace = 'http://x-road.eu/xsd/identifiers'
@@ -69,10 +78,41 @@ class SoapTestClient:
     faults_successful = None
     faults_unsuccessful = None
 
+    class CustomHTTPAdapter(HTTPAdapter):
+        '''
+        Custom HTTP Adapter class for requests that allows ignoring the certificate hostname check (useful for
+        local setups where the hostname in URL might not match the one in the certificate).
+        '''
+        assert_hostname = None
+
+        def __init__(self, assert_hostname=False, *args, **kwargs):
+            '''
+            Initialize the class and set the specified assertion option.
+            :param assert_hostname: str|bool False - string with the hostname to verify, False to skip
+                                                     certificate hostname verification
+            '''
+            self.assert_hostname = assert_hostname
+            super(SoapTestClient.CustomHTTPAdapter, self).__init__(*args, **kwargs)
+
+        def init_poolmanager(self, connections, maxsize, block=False):
+            '''
+            Initializes the PoolManager object with custom hostname assertion settings (specified during initialization).
+            :param connections: int - PoolManager initialization parameter (num_pools). Number of connection pools to
+                                      cache before discarding the least recently used pool.
+            :param maxsize: int - PoolManager initialization parameter. Number of connections that can be reused.
+            :param block: bool - PoolManager initialization parameter. If True, and maxsize number of connections has
+                                 been reached, the call will block.
+            :return: None
+            '''
+            self.poolmanager = PoolManager(num_pools=connections,
+                                           maxsize=maxsize,
+                                           block=block,
+                                           assert_hostname=self.assert_hostname)
+
     def __init__(self, url=None, body=None, client_certificate=None, server_certificate=None, query_timeout=None,
                  retry_interval=None, fail_timeout=None, headers=None, xroad_namespace=None,
                  xroad_identifiers_namespace=None, faults_successful=None, faults_unsuccessful=None,
-                 verify_service=None, params=None, log=None):
+                 verify_service=None, verify_hostname=True, params=None, log=None):
         '''
         Initializes the class and sets default values for all necessary parameters (if specified).
 
@@ -90,6 +130,9 @@ class SoapTestClient:
         :param faults_successful: [str] - fault codes for a successful query (other codes are considered a success)
         :param faults_unsuccessful: [str] - fault codes for an unsuccessful query (other codes are considered a success)
         :param verify_service: dict{} - verify specified service parameters; if one doesn't match, query fails
+        :param verify_hostname: bool|str - if server_certificate is not None, True to verify that the hostname matches
+                                           the one in the URL, False to ignore checking, or string with the hostname to
+                                           verify
         :param params: dict{}|None - default parameters for query
         :param log: logging function
         '''
@@ -122,6 +165,8 @@ class SoapTestClient:
             self.faults_unsuccessful = faults_unsuccessful
         if verify_service is not None:
             self.verify_service_data = verify_service
+        if verify_hostname is not None:
+            self.verify_hostname = verify_hostname
         if params is not None:
             self.params = params
         if log is not None:
@@ -180,11 +225,31 @@ class SoapTestClient:
             body = body.format(**params)
 
         # Send the query as POST request
-        self.log('Sending query')
-        r = requests.post(url=url, data=body, headers=self.headers, timeout=timeout,
+        self.log('Sending query to {0}'.format(url))
+
+        if self.debug:
+            self.log(body)
+
+        # Create new session that allows us to specify a custom HTTPAdapter
+        session = requests.Session()
+
+        # Use our CustomHTTPAdapter for HTTPS queries, use verify_hostname parameter that was set during initialization
+        verify_hostname = self.verify_hostname
+        if verify_hostname == True:
+            # If set to True, extract the hostname from the URL
+            verify_hostname = urlparse(url).hostname
+
+        session.mount('https://', self.CustomHTTPAdapter(verify_hostname))
+
+        # Run POST query
+        r = session.post(url=url, data=body, headers=self.headers, timeout=timeout,
                           cert=self.client_certificate, verify=self.server_certificate)
+
         # Set last XML to be query result
         self.xml = r.text
+
+        if self.debug:
+            self.log(r.text)
 
         # Get the object model from XML
         root = ElementTree.fromstring(self.xml)

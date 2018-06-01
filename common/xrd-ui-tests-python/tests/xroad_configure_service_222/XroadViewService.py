@@ -16,6 +16,9 @@ class XroadViewService(unittest.TestCase):
     def test_xroad_view_wsdl(self):
         main = MainController(self)
 
+        main.test_number = 'SERVICE_07'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_user = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')

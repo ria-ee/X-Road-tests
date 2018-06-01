@@ -8,7 +8,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 
-def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=None):
+def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=None, pin=None, docker_ip = None):
     self = case
 
     def backup_conf():
@@ -21,10 +21,16 @@ def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=No
 
         sshclient = ssh_client.SSHClient(ssh_host, ssh_username, ssh_password)
 
-        '''Cut connetcion with target host'''
-        sshclient.exec_command(
-            'csadm Dev=3001@127.0.0.1 LogonSign=ADMIN,"/home/kasutaja/Administration/key/ADMIN.key" SetMaxAuthFails=3',
-            sudo=True)
+
+        '''Set maximum authentication fail count'''
+
+        sshclient.exec_command('cd /tmp; ./csadm Dev=3001@{0} LogonSign=ADMIN,"/tmp/ADMIN.key" SetMaxAuthFails=3'.format(docker_ip))
+        sshclient.exec_command('sudo service xroad-signer restart')
+
+        time.sleep(40)
+        '''Reload page and wait until additional data is loaded using jQuery'''
+        self.driver.refresh()
+        self.wait_jquery()
 
         '''Click "Keys and Certificates" button" '''
         self.log('Click "Keys and Certificates" button"')
@@ -47,14 +53,14 @@ def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=No
         self.driver.find_element_by_xpath(keys_and_certificates_table.HARDTOKEN_LOGIN).click()
         self.wait_jquery()
 
-        find_errors_login(self)
+        find_errors_login(self, pin)
 
         self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_CLOSE_BTN_XPATH).click()
-        self.wait_jquery
+        self.wait_jquery()
 
         blocked_token = self.driver.find_element_by_xpath(keys_and_certificates_table.HARDTOKEN_LOCKED).is_displayed()
         if blocked_token is True:
-            unlock_pin(ssh_host=ssh_host, ssh_username=ssh_username, ssh_password=ssh_password)
+            unlock_pin(ssh_host=ssh_host, ssh_username=ssh_username, ssh_password=ssh_password, docker_ip=docker_ip)
         else:
             raise RuntimeError('Token not blocked')
 
@@ -70,13 +76,13 @@ def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=No
                 raise RuntimeError('Token is blocked')
         except NoSuchElementException:
             pass
-
-        whitespace_login(self)
-        successful_login(self)
-        token_inaccessible(self)
+        self.logdata.append('Log into the token')
+        whitespace_login(self, pin)
+        successful_login(self, pin)
+        token_inaccessible(self, pin)
 
         '''Check audit log'''
-
+        time.sleep(50)
         if ssh_host is not None:
             # Check logs for entries
             self.log('Check the audit log')
@@ -90,7 +96,7 @@ def test_hardtoken_login(case, ssh_host=None, ssh_username=None, ssh_password=No
     return backup_conf
 
 
-def successful_login(self):
+def successful_login(self, pin):
     self.log('Log out and log in for testing correct PIN')
     self.wait_jquery()
     '''Click "LOGOUT"'''
@@ -106,12 +112,12 @@ def successful_login(self):
     self.log('SS_25 2.SS administrator enters the PIN code of the token.')
 
     '''Insert correct PIN'''
-    self.input(key_label_input, keys_and_certificates_table.TOKEN_PIN)
-    self.wait_jquery
+    self.input(key_label_input, pin)
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
     self.log('SS_25 6.System verifies that the PIN code is correct and logs in to the token.')
 
     '''Set "Log in to token" to logdata'''
@@ -122,7 +128,7 @@ def successful_login(self):
     return self.logdata
 
 
-def find_errors_login(self):
+def find_errors_login(self, pin):
     error_count = 0
     success_count = 0
     KEY_LABEL_TEXT_AND_RESULTS = [
@@ -131,10 +137,10 @@ def find_errors_login(self):
         ['', messages.MISSING_PARAMETER.format(keys_and_certificates_table.SOFTTOKEN_PIN_ERROR_PARAMETER), None, False],
         [keys_and_certificates_table.SOFTTOKEN_PIN_ERROR_PARAMETER, messages.HARDTOKEN_PIN_INCORRECT_FORMAT, None,
          False],
-        [keys_and_certificates_table.TOKEN_PIN[::-1], messages.HARDTOKEN_PIN_INCORRECT, None, False],
-        [keys_and_certificates_table.TOKEN_PIN[::-1], messages.HARDTOKEN_PIN_INCORRECT_2TRY, None, False],
-        [keys_and_certificates_table.TOKEN_PIN[::-1], messages.HARDTOKEN_PIN_INCORRECT_3TRY, None, False],
-        [keys_and_certificates_table.TOKEN_PIN[::-1], messages.HARDTOKEN_PIN_INCORRECT_PIN_LOCKED, None, False], ]
+        [pin[::-1], messages.HARDTOKEN_PIN_INCORRECT, None, False],
+        [pin[::-1], messages.HARDTOKEN_PIN_INCORRECT_2TRY, None, False],
+        [pin[::-1], messages.HARDTOKEN_PIN_INCORRECT_3TRY, None, False],
+        [pin[::-1], messages.HARDTOKEN_PIN_INCORRECT_PIN_LOCKED, None, False], ]
 
     # Loop through different key label names and expected results
     counter = 1
@@ -154,7 +160,7 @@ def find_errors_login(self):
 
         '''Click "OK" button'''
         self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-        self.wait_jquery
+        self.wait_jquery()
         time.sleep(2)
         '''Set "Log in to token failed" to logdata'''
         self.logdata.append(log_constants.SOFTTOKEN_LOGIN_FAILED)
@@ -181,7 +187,7 @@ def find_errors_login(self):
     return success_count, error_count, self.logdata
 
 
-def whitespace_login(self):
+def whitespace_login(self, pin):
     self.log('Log in with correct PIN that consist whitespaces')
     '''Click "LOGIN"'''
     self.driver.find_element_by_xpath(keys_and_certificates_table.HARDTOKEN_LOGIN).click()
@@ -191,31 +197,29 @@ def whitespace_login(self):
     key_label_input = self.wait_until_visible(type=By.NAME, element=popups.TOKEN_PIN_LABEL_AREA)
 
     '''Inserting name correct PIN with whitespaces'''
-    self.input(key_label_input, keys_and_certificates_table.SOFTTOKEN_PIN_WHITESPACES)
-    self.wait_jquery
+    self.input(key_label_input, '  {0}  '.format(pin))
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
 
     '''Set "Log in to token" to logdata'''
     self.logdata.append(log_constants.SOFTTOKEN_LOGIN_SUCCESS)
     return self.logdata
 
 
-def unlock_pin(ssh_host=None, ssh_username=None, ssh_password=None):
+def unlock_pin(ssh_host=None, ssh_username=None, ssh_password=None, docker_ip=None):
     sshclient = ssh_client.SSHClient(ssh_host, ssh_username, ssh_password)
 
     '''Cut connetcion with target host'''
     sshclient.exec_command(
-        'csadm Dev=3001@127.0.0.1 LogonSign=ADMIN,"/home/kasutaja/Administration/key/ADMIN.key" ChangeUser=USR_0000,1234',
-        sudo=True)
-    sshclient.exec_command('service xroad-signer restart', sudo=True)
-    time.sleep(5)
-    return unlock_pin
+        'cd /tmp; ./csadm Dev=3001@{0} LogonSign=ADMIN,"/tmp/ADMIN.key" ChangeUser=USR_0000,1234'.format(docker_ip))
+    sshclient.exec_command('sudo service xroad-signer restart', sudo=True)
+    time.sleep(40)
 
 
-def token_inaccessible(self):
+def token_inaccessible(self, pin):
     '''Click "LOGIN"'''
     self.driver.find_element_by_xpath(keys_and_certificates_table.HARDTOKEN_ERROR_LOGIN).click()
     self.wait_jquery()
@@ -224,12 +228,12 @@ def token_inaccessible(self):
     key_label_input = self.wait_until_visible(type=By.NAME, element=popups.TOKEN_PIN_LABEL_AREA)
 
     '''Insert correct PIN'''
-    self.input(key_label_input, keys_and_certificates_table.TOKEN_PIN)
-    self.wait_jquery
+    self.input(key_label_input, pin)
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
     time.sleep(3)
     self.log('SS_25 4-6a. The login attempt failed (e.g., token is inaccessible).')
     ui_error = messages.get_error_message(self)

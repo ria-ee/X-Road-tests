@@ -205,7 +205,7 @@ def add_client_to_ss(self, sec_host, sec_username, sec_password,
 
     # SS_01 1-4. Log in to security server
     self.log('SS_01 1-3. Log in to security server')
-    self.driver.get(sec_host)
+    self.go(sec_host)
     self.login(username=sec_username, password=sec_password)
 
     # SS_01 4. Check logs for login
@@ -444,7 +444,7 @@ def certify_client_in_ss(self, sec_host, sec_username, sec_password,
     # SS_01 1-3 Log in to SS UI
     self.log('SS_01 1-3 Log in to SS UI')
 
-    self.driver.get(sec_host)
+    self.go(sec_host)
     self.login(username=sec_username, password=sec_password)
     if ssh_host is not None:
         bool_value, log_data, date_time = check_logs_for(self, ssh_host, ssh_username, ssh_password, LOGIN,
@@ -454,7 +454,7 @@ def certify_client_in_ss(self, sec_host, sec_username, sec_password,
 
     # SS_SS_28 / SS_29 / SS_30 Certification
     self.log('Create sign certificate')
-    self.driver.get(sec_host)
+    self.go(sec_host)
     self.wait_jquery()
     self.url = sec_host
     client_certification.test_generate_csr_and_import_cert(client_code=client['code'],
@@ -621,7 +621,7 @@ def add_services_to_client(self, ssh_host, ssh_username, ssh_password, sec_host,
     # SERVICE_17 Add service subjects
     self.log('SERVICE_17 Add service subjects')
 
-    self.driver.get(sec_host)
+    self.go(sec_host)
     client_to_add = {'instance': ssh_server_actions.get_server_name(self), 'class': client['class'],
                      'code': client['code'], 'subsystem': client['subsystem']}
     subject = xroad.split_xroad_subsystem(self.config.get('ss1.client_id'))

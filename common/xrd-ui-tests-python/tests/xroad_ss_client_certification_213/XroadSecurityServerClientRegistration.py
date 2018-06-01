@@ -70,6 +70,7 @@ class XroadSecurityServerClientRegistration(unittest.TestCase):
                                                                                 member_name, member_class)
             test_configuration_update(main)
         except AssertionError:
+            main.save_exception_data()
             main.log('Error, deleting any data that was added.')
             try:
                 # Delete the key
@@ -78,6 +79,7 @@ class XroadSecurityServerClientRegistration(unittest.TestCase):
                 pass
             raise
         except:
+            main.save_exception_data()
             main.log('Failed to certify security server client.')
             try:
                 # Delete the key

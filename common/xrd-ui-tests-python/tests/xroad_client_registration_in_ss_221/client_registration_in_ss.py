@@ -214,7 +214,7 @@ def test_test(case, cs_host, cs_username, cs_password,
             # Add client to Security Server 1
             add_client_to_ss(self, ss_1_client_2, retry_interval=sync_retry, retry_timeout=sync_timeout,
                              wait_input=wait_input, step='MEMBER_47(1): ')
-            self.driver.get(sec_1_host)
+            self.go(sec_1_host)
 
             # Certify added client using helper
             client_certification.test_generate_csr_and_import_cert(client_code=ss_1_client_2['code'],
@@ -233,7 +233,7 @@ def test_test(case, cs_host, cs_username, cs_password,
 
             # Certify the new member in Security Server 1
             self.log('Certify the new member in Security Server 1')
-            self.driver.get(sec_1_host)
+            self.go(sec_1_host)
             # Create signing certificate using helper
             client_certification.test_generate_csr_and_import_cert(client_code=ss_1_client['code'],
                                                                    client_class=ss_1_client['class'])(self)
@@ -761,7 +761,7 @@ def add_sub_as_client_to_member(self, system_code, client, wait_input=2, step=''
     self.wait_jquery()
 
     # Reload main page
-    self.driver.get(self.url)
+    self.go(self.url)
 
     # Open management requests again
     self.log(step + 'Open management requests table')
@@ -855,7 +855,7 @@ def approve_requests(self, use_case='', step='', cancel_confirmation=False, log_
         current_log_lines = log_checker.get_line_count()
     # Open main page
     self.log(step + 'Open central server')
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
 
     # Go to management requests
@@ -1011,7 +1011,7 @@ def check_expected_result_cs(self, ss_1_client, ss_2_client, ss_2_client_2, chec
     self.log('MEMBER_37 5. Check security servers > clients table for TS2: TEST SUCCESSFUL')
 
     self.log('MEMBER_37 5. Check management requests table')
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.MANAGEMENT_REQUESTS_CSS).click()
     self.wait_jquery()
     requests_table = self.wait_until_visible(type=By.ID, element=members_table.MANAGEMENT_REQUEST_TABLE_ID)
@@ -1078,7 +1078,7 @@ def check_expected_result_ss(self, client, retry_interval=0, retry_timeout=0, re
                 self.log('Waiting {0} before checking'.format(retry_interval))
                 time.sleep(retry_interval)
 
-            self.driver.get(self.url)
+            self.go(self.url)
             self.wait_jquery()
 
             # Check the client status
@@ -1097,7 +1097,6 @@ def check_expected_result_ss(self, client, retry_interval=0, retry_timeout=0, re
                 if retry_timeout > 0:
                     self.log('Timeout while waiting')
                 assert False
-                raise
 
     self.wait_until_visible(type=By.CSS_SELECTOR, element=sidebar.KEYSANDCERTIFICATES_BTN_CSS).click()
     self.wait_jquery()
@@ -1335,7 +1334,7 @@ def remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_usern
     self.log('MEMBER_52/MEMBER_53/SS_39 Removing certificate from security server 1')
     login(self, sec_1_host, sec_1_username, sec_1_password)
     # Try to remove client with canceling deletion and confirming certificate removal popup from ss1
-    self.driver.get(self.url)
+    self.go(self.url)
     safe_success = safe(self, remove_client_keep_cert, ss_1_client_2,
                         'MEMBER_52/MEMBER_53 Removing client from security server 1 failed')
     test_success = test_success and safe_success
@@ -1402,7 +1401,7 @@ def remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_usern
     if ca_ssh_client is not None:
         ca_ssh_client.close()
 
-    self.driver.get(self.url)
+    self.go(self.url)
     # Try to remove client from security server 2
     safe_success = safe(self, remove_client, ss_2_client,
                         'MEMBER_52/MEMBER_53 Removing client {0} failed'.format(ss_2_client))
@@ -1423,7 +1422,7 @@ def remove_data(self, cs_host, cs_username, cs_password, sec_1_host, sec_1_usern
             log_errors.append(log_error)
         current_log_lines = log_checker.get_line_count()
 
-    self.driver.get(self.url)
+    self.go(self.url)
     # Try to remove second client from security server 2
     safe_success = safe(self, remove_client, ss_2_client_2,
                         'MEMBER_52/MEMBER_53 Removing client {0} failed'.format(ss_2_client_2))
@@ -1875,6 +1874,8 @@ def revoke_requests(self, try_cancel=False, auth=False, log_checker=None):
 
 def disable_management_wsdl(self, client_id, management_wsdl_url):
     def disable_mngmnt_wsdl():
+        self.log('Disabling management services WSDL')
+
         clients_table_vm.open_client_popup_services(self, client_id=client_id)
         wsdl_index = clients_table_vm.find_wsdl_by_name(self, management_wsdl_url)
         clients_table_vm.client_services_popup_get_wsdl(self, wsdl_index=wsdl_index).click()

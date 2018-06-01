@@ -23,13 +23,15 @@ def test_edit_conf(case, ssh_host=None, ssh_username=None, ssh_password=None, to
         self.wait_jquery()
 
         '''Click "LOGOUT"'''
-        self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGOUT).click()
+        self.click(keys_and_certificates_table.SOFTTOKEN_LOGOUT, type=By.XPATH)
+        # self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGOUT).click()
         self.wait_jquery()
 
         '''Click "LOGIN"'''
         self.log('SS_24 1.SS administrator selects to log in to a software token.')
 
-        self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGIN).click()
+        # self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGIN).click()
+        self.click(keys_and_certificates_table.SOFTTOKEN_LOGIN, type=By.XPATH)
         self.wait_jquery()
 
         find_errors_login(self, token_pin=token_pin)
@@ -55,11 +57,13 @@ def successful_login(self, token_pin=None):
     self.log('Log out and log in for testing correct PIN')
     self.wait_jquery()
     '''Click "LOGOUT"'''
-    self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGOUT).click()
+    self.click(keys_and_certificates_table.SOFTTOKEN_LOGOUT, type=By.XPATH)
+    # self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGOUT).click()
     self.wait_jquery()
 
     '''Click "LOGIN"'''
-    self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGIN).click()
+    self.click(keys_and_certificates_table.SOFTTOKEN_LOGIN, type=By.XPATH)
+    # self.driver.find_element_by_xpath(keys_and_certificates_table.SOFTTOKEN_LOGIN).click()
     self.wait_jquery()
 
     '''Input area'''
@@ -68,11 +72,11 @@ def successful_login(self, token_pin=None):
 
     '''Insert correct PIN'''
     self.input(key_label_input, token_pin)
-    self.wait_jquery
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
     self.log('SS_24 4.System verifies that the PIN code is correct and logs in to the token.')
 
     '''Set "Log in to token" to logdata'''
@@ -109,7 +113,7 @@ def find_errors_login(self, token_pin=None):
 
         '''Click "OK" button'''
         self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-        self.wait_jquery
+        self.wait_jquery()
         time.sleep(2)
         '''Set "Log in to token failed" to logdata'''
         self.logdata.append(log_constants.SOFTTOKEN_LOGIN_FAILED)
@@ -148,11 +152,11 @@ def whitespace_login(self, token_pin=None):
     self.input(key_label_input, token_pin_whitespaces)
 
 
-    self.wait_jquery
+    self.wait_jquery()
 
     '''Click "OK" button'''
     self.wait_until_visible(type=By.XPATH, element=popups.TOKEN_LOGIN_OK_BTN_XPATH).click()
-    self.wait_jquery
+    self.wait_jquery()
 
     '''Set "Log in to token" to logdata'''
     self.logdata.append(log_constants.SOFTTOKEN_LOGIN_SUCCESS)

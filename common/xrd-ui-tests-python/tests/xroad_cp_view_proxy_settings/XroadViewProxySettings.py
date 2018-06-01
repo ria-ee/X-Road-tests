@@ -22,6 +22,9 @@ class XroadViewProxySettings(unittest.TestCase):
 
     def test_a_view_cp_settings_not_existing_proxy(self):
         main = MainController(self)
+        main.test_number = 'CP_01.a'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -36,6 +39,9 @@ class XroadViewProxySettings(unittest.TestCase):
 
     def test_b_view_cp_settings_not_existing_proxy_conf(self):
         main = MainController(self)
+        main.test_number = 'CP_01.b'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -53,6 +59,9 @@ class XroadViewProxySettings(unittest.TestCase):
 
     def test_c_view_cp_settings(self):
         main = MainController(self)
+        main.test_number = 'CP_01.c'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -71,6 +80,9 @@ class XroadViewProxySettings(unittest.TestCase):
 
     def test_d_view_cp_instance_conf(self):
         main = MainController(self)
+        main.test_number = 'CP_01.d'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -89,6 +101,9 @@ class XroadViewProxySettings(unittest.TestCase):
 
     def test_e_view_all_cp_settings(self):
         main = MainController(self)
+        main.test_number = 'CP_01.e'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')

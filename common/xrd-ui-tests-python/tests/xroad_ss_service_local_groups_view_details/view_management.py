@@ -130,20 +130,18 @@ def create_local_group(self):
     :param ss_client_id: string client id information
     :return:
     '''
-    self.log('Open clients details, by double clicking on client id')
-
-
     client_name = self.config.get('ss2.client2_name')
     subsystem_row = xroad.split_xroad_subsystem(self.config.get('ss2.client2_id'))
     subsystem = subsystem_row['subsystem']
 
+    self.log('Open clients details by double clicking on client {0} subsystem {1}'.format(client_name, subsystem))
+
+    self.wait_jquery()
     client_row = self.wait_until_visible(type=By.XPATH, element=clients_table_vm.
                                              get_client_id_by_member_code_subsystem_code(client_name,subsystem))
 
 
     client_row.find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS).click()
-
-
 
     self.log('SERVICE_23 1.SS administrator selects to view the local groups of a security server client.')
 

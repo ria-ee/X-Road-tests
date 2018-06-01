@@ -15,25 +15,33 @@ class XroadHandleConfDownloadRequest(unittest.TestCase):
 
     def test_conf_download_request(self):
         main = MainController(self)
+        main.test_number = 'CP_17'
+        main.test_name = self.__class__.__name__
 
         cp_ssh_host = main.config.get('cp.ssh_host')
+        cp_host = main.config.get('cp.host')
+        cp_wrong_host = main.config.get('cp.ssh_host')+'2'
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
         sshclient = ssh_client.SSHClient(cp_ssh_host, cp_ssh_user, cp_ssh_pass)
-        hosts_replacement = 'asd'
 
         configuration_temp_dir = '/tmp/test_download'
         anchor_file = '/tmp/anchor.xml'
         download_script = '/usr/share/xroad/scripts/download_instance_configuration.sh'
 
         try:
-            main.log('''Cut connetcion with target host''')
-            sshclient.exec_command(
-                'sed -i -e "s/{0}/{1}/g" {2}'.format(cp_ssh_host, hosts_replacement, '/etc/hosts'), sudo=True)
+            main.log('''Add wrong target host to /tmp/anchor''')
 
-            main.log('''UC CP_17/1 Configuration client requests to download the signed configuration directory or a 
+            '''Correct the anchor.xml file'''
+            sshclient.exec_command(
+                'sed -i -e "s/{0}/{1}/g" {2}'.format(cp_host, cp_wrong_host, anchor_file),
+                sudo=True)
+
+
+
+            main.log('''UC CP_17/1 Configuration client requests to download the signed configuration directory or a
             configuration part file.''')
-            download_url = sshclient.exec_command('{0} {1} {2} '.format(download_script, anchor_file,
+            download_url = sshclient.exec_command('sudo {0} {1} {2} '.format(download_script, anchor_file,
                                                                         configuration_temp_dir))
             main.log('''UC CP_17/2 System responds with the requested files -  is covered with CP_14/3 and CP_14/4 in
             ...\\x-road-tests\\tests\\xroad_cp_test_configuration\\XroadTestConfiguration.py''')
@@ -49,7 +57,7 @@ class XroadHandleConfDownloadRequest(unittest.TestCase):
             main.log('''System responds with an error message - "{0}"'''.format(system_error_message_1))
             assert messages.CP_CONF_DOWNLOAD_REQUEST_ERROR_2 == system_error_message_2
             main.log('''System responds with an error message - "{0}"'''.format(system_error_message_2))
-            assert messages.CP_CONF_DOWNLOAD_REQUEST_ERROR_3.format(main.config.get('cp.ssh_host')) in \
+            assert messages.CP_CONF_DOWNLOAD_REQUEST_ERROR_3.format(cp_wrong_host) in \
                    system_error_message_3
             main.log('''System responds with an error message - "{0}"'''.format(system_error_message_3))
         except:
@@ -59,4 +67,4 @@ class XroadHandleConfDownloadRequest(unittest.TestCase):
         finally:
             main.log('''Restore connetcion with target host''')
             sshclient.exec_command(
-                'sed -i -e "s/{0}/{1}/g" {2}'.format(hosts_replacement, cp_ssh_host, '/etc/hosts'), sudo=True)
+                'sed -i -e "s/{0}/{1}/g" {2}'.format(cp_wrong_host, cp_host, '/etc/hosts'), sudo=True)

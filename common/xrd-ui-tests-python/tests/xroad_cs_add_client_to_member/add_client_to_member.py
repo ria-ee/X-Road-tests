@@ -1,6 +1,5 @@
 import time
 
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
 from helpers import xroad, auditchecker
@@ -140,7 +139,7 @@ def add_sub_as_client_to_member(self, system_code, client, step='', check_reques
     self.wait_jquery()
 
     # Reload main page
-    self.driver.get(self.url)
+    self.go(self.url)
 
     # Open management requests again
     self.log(step + 'Open management requests table')

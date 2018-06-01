@@ -19,7 +19,6 @@ class XroadEditTokenFriendlyName(unittest.TestCase):
 
         '''Set test name and number'''
         main.test_number = 'UC SS_22'
-        main.test_number = 'UC SS_22: Edit the Friendly Name of a Token'
         main.test_name = self.__class__.__name__
 
         ssh_host = main.config.get('ss2.ssh_host')

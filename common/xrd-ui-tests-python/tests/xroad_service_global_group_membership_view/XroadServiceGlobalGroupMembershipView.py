@@ -19,7 +19,7 @@ class XroadServiceGlobalGroupMembershipView(unittest.TestCase):
 
         '''Set test name and number'''
         main.test_number = 'UC SERVICE_36'
-        main.log('TEST:  UC SERVICE_36: View the Global Group Membership of an X-Road Member')
+        main.log('*** UC SERVICE_36: View the Global Group Membership of an X-Road Member')
 
         main.test_name = self.__class__.__name__
         ss_client_name = main.config.get('ss2.client_name')
@@ -27,7 +27,7 @@ class XroadServiceGlobalGroupMembershipView(unittest.TestCase):
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
-        test_group_name = 'GLOB1'
+        test_group_name = main.config.get('cs.global_group')
         provider = xroad.split_xroad_id(main.config.get('services.central_service_provider_id'))
         subsystem = provider['subsystem']
 
@@ -40,7 +40,7 @@ class XroadServiceGlobalGroupMembershipView(unittest.TestCase):
             '''Run the test'''
             test_logout()
         except:
-            main.log('Xroad_ss_service_local_groups_view_details: Failed to View the Local Groups of a Security Server Client')
+            main.log('XroadServiceGlobalGroupMembershipView: Failed to View the Local Groups of a Security Server Client')
             main.save_exception_data()
             assert False
         finally:

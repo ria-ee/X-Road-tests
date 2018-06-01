@@ -21,15 +21,20 @@ class XroadImportCertFromTokenAuth(unittest.TestCase):
     X-Road version: 6.16.0
     """
 
-    def test_aimport_sign_cert_for_auth_key(self):
+    def test_a_import_sign_cert_for_auth_key(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'SS_31.a'
+        main.test_name = self.__class__.__name__
+
         ss2_host = main.config.get('ss2.host')
         ss2_user = main.config.get('ss2.user')
         ss2_pass = main.config.get('ss2.pass')
         ss2_ssh_host = main.config.get('ss2.ssh_host')
         ss2_ssh_user = main.config.get('ss2.ssh_user')
         ss2_ssh_pass = main.config.get('ss2.ssh_pass')
-        ca_name = main.config.get('ca.ssh_host')
+        ca_name = main.config.get('ca.name')
         ss_id = xroad.split_xroad_subsystem(main.config.get('ss2.server_id'))
         ca_ssh_client = ssh_client.SSHClient(main.config.get('ca.ssh_host'), main.config.get('ca.ssh_user'),
                                       main.config.get('ca.ssh_pass'))
@@ -42,12 +47,19 @@ class XroadImportCertFromTokenAuth(unittest.TestCase):
             main.wait_until_visible(type=By.XPATH, element=KEY_TABLE_ROW_BY_LABEL_XPATH.format(auth_key_label)).click()
             generate_auth_csr(main, ca_name=ca_name)
             import_auth_cert_from_token(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, ss_id, ca_ssh_client, cert_type='sign')
+        except:
+            main.save_exception_data()
+            raise
         finally:
             reset_hard_token(main, token_name)
             main.tearDown()
 
-    def test_bimport_auth_cert(self):
+    def test_b_import_auth_cert(self):
         main = MainController(self)
+        # Set test name and number
+        main.test_number = 'SS_31.b'
+        main.test_name = self.__class__.__name__
+
         ss2_host = main.config.get('ss2.host')
         ss2_user = main.config.get('ss2.user')
         ss2_pass = main.config.get('ss2.pass')
@@ -67,6 +79,9 @@ class XroadImportCertFromTokenAuth(unittest.TestCase):
             main.wait_until_visible(type=By.XPATH, element=KEY_TABLE_ROW_BY_LABEL_XPATH.format(auth_key_label)).click()
             generate_auth_csr(main, ca_name=ca_name)
             import_auth_cert_from_token(main, ss2_ssh_host, ss2_ssh_user, ss2_ssh_pass, ca_ssh_client=ca_ssh_client, ss_id=ss_id)
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.wait_until_visible(type=By.ID, element=DELETE_BTN_ID).click()
             confirm_dialog_click(main)

@@ -26,6 +26,8 @@ class XroadMemberSsClientDeletionRequest(unittest.TestCase):
 
         main.test_name = self.__class__.__name__
 
+
+
         cs_host = main.config.get('cs.host')
         cs_username = main.config.get('cs.user')
         cs_password = main.config.get('cs.pass')
@@ -42,8 +44,6 @@ class XroadMemberSsClientDeletionRequest(unittest.TestCase):
         mangagement_code = client_management['code']
         management_name = main.config.get('ss1.management_name')
 
-
-
         client_code = client_server_id['code']
         client_class = client_server_id['class']
 
@@ -53,7 +53,6 @@ class XroadMemberSsClientDeletionRequest(unittest.TestCase):
 
         rand_str = lambda n: ''.join([random.choice(string.lowercase) for i in xrange(n)])
         random_code = rand_str(6)
-
 
         member_add_subsystem = del_management.test_add_subsystem_to_member(case=main, ss1_code=ss1_code,
                                                                            subsystem_text=random_code)
@@ -103,14 +102,22 @@ class XroadMemberSsClientDeletionRequest(unittest.TestCase):
             assert False
 
         finally:
-            '''Open webdriver'''
-            main.reload_webdriver(url=cs_host, username=cs_username, password=cs_password)
-            del_management.delete_member(main, ss1_code=ss1_code, random_code=random_code)
+            try:
+                '''Open webdriver'''
+                main.reload_webdriver(url=cs_host, username=cs_username, password=cs_password)
+                del_management.delete_member(main, ss1_code=ss1_code, random_code=random_code)
+            except:
+                main.log('XroadMemberSsClientDeletionRequest: Failed to delete test member')
+                raise
 
-            main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
-            del_management.ss_delete_client(main,
+            try:
+                main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
+                del_management.ss_delete_client(main,
                                             client_code=client_code,
                                             random_code=random_code)
-
+            except:
+                main.log('XroadMemberSsClientDeletionRequest: Failed to delete test client')
+                main.save_exception_data()
+                raise
             '''Test teardown'''
             main.tearDown()

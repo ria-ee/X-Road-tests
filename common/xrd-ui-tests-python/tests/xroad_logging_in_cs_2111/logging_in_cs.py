@@ -95,7 +95,7 @@ def test_test(ssh_host, ssh_username, ssh_password, users, client_id, client_nam
 
             # UC MEMBER_15 Add new registration request for the new subsystem
             self.log('MEMBER_15 Add new registration request for the new subsystem')
-            self.driver.get(self.url)
+            self.go(self.url)
             register_subsystem_to_security_server(self, ssh_client, user, member=client, server_id=server_id)
 
             self.log('Wait 120 seconds for sync')
@@ -273,7 +273,7 @@ def add_subsystem_to_member(self, member, user=None, ssh_client=None):
     '''
 
     # Open member details
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
     open_member_details(self, member=member)
 
@@ -319,7 +319,7 @@ def change_member_name(self, ssh_client, user, member):
     :param member: dict - member data
     :return: None
     """
-    self.driver.get(self.url)
+    self.go(self.url)
     open_member_details(self, member=member)
     self.log('MEMBER_11 1. Clicking edit member name button')
     self.wait_until_visible(type=By.XPATH, element=members_table.MEMBER_NAME_EDIT_BTN_XPATH).click()
@@ -410,7 +410,7 @@ def add_client_to_group(self, user, member, group, ssh_client=None):
     :param group: str - group name
     :return: None
     '''
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
 
     # Open member details
@@ -456,7 +456,7 @@ def register_subsystem_to_security_server(self, ssh_client, user, member, server
     :return: None
     '''
     # Go to UI main page
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
 
     # Open security server details
@@ -517,7 +517,7 @@ def remove_subsystem_registration_request(self, ssh_client, user, server_id):
     """
 
     # Go to UI main page
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
 
     # Open security server details popup
@@ -615,7 +615,7 @@ def delete_member(self, ssh_client, user, member, cancel_deletion=False):
     :param member: dict - member data
     :return: None
     '''
-    self.driver.get(self.url)
+    self.go(self.url)
     self.wait_jquery()
     # Open member details
     open_member_details(self, member=member)

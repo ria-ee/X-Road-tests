@@ -20,6 +20,10 @@ class XroadUnregisterClient(unittest.TestCase):
     def test_a_xroad_unregister_client_request_fail(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'UC MEMBER_52.a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -62,6 +66,10 @@ class XroadUnregisterClient(unittest.TestCase):
 
     def test_b_xroad_unregister_client(self):
         main = MainController(self)
+
+        # Set test name and number
+        main.test_number = 'UC MEMBER_52.b'
+        main.test_name = self.__class__.__name__
 
         ss1_host = main.config.get('ss1.host')
         ss1_user = main.config.get('ss1.user')

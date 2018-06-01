@@ -16,6 +16,8 @@ class XroadCsDeleteMemberWithSS(unittest.TestCase):
     """
     def test_xroad_cs_delete_member_with_security_server(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_26 4a'
+        main.test_name = self.__class__.__name__
 
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')

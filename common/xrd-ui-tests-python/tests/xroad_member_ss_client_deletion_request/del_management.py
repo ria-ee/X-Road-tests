@@ -362,26 +362,33 @@ def delete_member(self, ss1_code=None, random_code=None):
 def ss_delete_client(self, client_code=None, random_code=None):
 
     '''Find client row'''
+    self.wait_jquery()
     client_row = self.wait_until_visible(type=By.XPATH, element=clients_table_vm.
                                              get_client_id_by_member_code_subsystem_code(client_code,random_code))
 
 
     '''Click on "Details" button'''
     client_row.find_element_by_css_selector(clients_table_vm.DETAILS_TAB_CSS).click()
-
-
-
-    self.log('MEMBER_52 1. Unregister Client')
-    self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_UNREGISTER_BUTTON_ID).click()
     self.wait_jquery()
-    self.log('MEMBER_52 2. System prompts for confirmation')
-    self.log('MEMBER_52 3a. Confirmation dialog is canceled')
-    self.wait_until_visible(type=By.XPATH, element=popups.CONFIRM_POPUP_CANCEL_BTN_XPATH).click()
-    self.log('MEMBER_52 1. Unregister Client button is pressed again')
-    self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_UNREGISTER_BUTTON_ID).click()
-    self.wait_jquery()
-    self.log('MEMBER_52 3. Confirmation dialog is confirmed')
 
-    popups.confirm_dialog_click(self)
+    try:
+        self.log('MEMBER_52 1. Try to unregister Client')
+        self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_UNREGISTER_BUTTON_ID).click()
+        self.wait_jquery()
+        self.log('MEMBER_52 2. System prompts for confirmation')
+        self.log('MEMBER_52 3a. Confirmation dialog is canceled')
+        self.wait_until_visible(type=By.XPATH, element=popups.CONFIRM_POPUP_CANCEL_BTN_XPATH).click()
+        self.wait_jquery()
+
+        self.log('MEMBER_52 1. Click Unregister client button')
+        self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_UNREGISTER_BUTTON_ID).click()
+        self.wait_jquery()
+        self.log('MEMBER_52 3. Confirmation dialog is confirmed')
+
+        popups.confirm_dialog_click(self)
+    except:
+        self.log('Delete client before unregistering')
+        self.wait_until_visible(type=By.ID, element=popups.CLIENT_DETAILS_POPUP_DELETE_BUTTON_ID).click()
+        self.wait_jquery()
 
     popups.confirm_dialog_click(self)

@@ -15,6 +15,9 @@ class XroadViewOcspResponder(unittest.TestCase):
     def test_xroad_delete_ocsp_responder(self):
         main = MainController(self)
 
+        main.test_number = 'UC TRUST_05'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -28,5 +31,8 @@ class XroadViewOcspResponder(unittest.TestCase):
         try:
             main.reload_webdriver(url=cs_host, username=cs_user, password=cs_pass)
             test_view_ocsp_responder()
+        except:
+            main.save_exception_data()
+            raise
         finally:
             main.tearDown()

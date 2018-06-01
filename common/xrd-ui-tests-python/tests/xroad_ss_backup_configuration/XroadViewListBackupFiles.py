@@ -7,7 +7,7 @@ class XroadViewListBackupFiles(unittest.TestCase):
     """
     UC  SS 13  View the List of Configuration Backup Files
     RIA URL: https://jira.ria.ee/browse/XT-326, https://jira.ria.ee/browse/XTKB-123
-    Depends on finishing other test(s): None
+    Depends on finishing other test(s): XroadBackupConfiguration
     Requires helper scenarios: None
     X-Road version: 6.16.0
     """

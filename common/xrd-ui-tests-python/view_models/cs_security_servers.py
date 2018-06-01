@@ -28,6 +28,7 @@ ADD_OWNED_SERVER_SUBMIT_BUTTON_ID = "add_owned_server_submit"
 SECURITYSERVER_AUTH_CERT_ROW_CSS = '#securityserver_auth_certs tbody tr'
 SECURITYSERVER_AUTH_CERT_TAB_XPATH = '//*[@href="#server_auth_certs_tab"]'
 SECURITYSERVER_AUTH_CERT_DELETE_BTN_ID = 'securityserver_authcert_delete'
+SECURITYSERVER_SELECTED_AUTH_CERT_CSS = '#securityserver_auth_certs .row_selected .open_details'
 SECURITY_SERVER_TABLE_CSS = '#securityservers_wrapper tbody'
 SECURITY_SERVER_CLIENTS_TABLE_ID = 'securityserver_clients'
 

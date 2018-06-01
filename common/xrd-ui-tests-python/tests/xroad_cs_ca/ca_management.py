@@ -96,6 +96,7 @@ def set_ca_certificate(self, ca_certificate, close_errors=False):
     # Clicking the button starts an ajax query. Wait until request is complete.
     time.sleep(0.5)
     self.wait_jquery()
+    time.sleep(0.1)
 
     # Get error messages if any
     console_output = messages.get_console_output(self)  # Console message (displayed if WSDL validator gives a warning)

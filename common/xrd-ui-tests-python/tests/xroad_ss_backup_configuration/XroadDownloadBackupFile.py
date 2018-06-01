@@ -10,7 +10,7 @@ class XroadDownloadBackupFile(unittest.TestCase):
     """
     UC SS_16: Download a Backup File
     RIA URL: https://jira.ria.ee/browse/XTKB-103
-    Depends on finishing other test(s):
+    Depends on finishing other test(s): XroadBackupConfiguration
     Requires helper scenarios:
     X-Road version: 6.16.0
     """

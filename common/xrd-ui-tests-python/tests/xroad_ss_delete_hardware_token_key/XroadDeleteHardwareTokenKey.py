@@ -5,7 +5,7 @@ import ht_management
 from helpers import ssh_client
 from main.maincontroller import MainController
 from tests.xroad_configure_service_222.wsdl_validator_errors import wait_until_server_up
-
+import os
 
 class XroadDeleteHardwareTokenKey(unittest.TestCase):
     """
@@ -26,18 +26,19 @@ class XroadDeleteHardwareTokenKey(unittest.TestCase):
 
         main.test_name = self.__class__.__name__
 
-        ss_host = main.config.get('ss1.host')
-        ss_user = main.config.get('ss1.user')
-        ss_pass = main.config.get('ss1.pass')
+        ss_host = main.config.get('hwtoken.host')
+        ss_user = main.config.get('hwtoken.user')
+        ss_pass = main.config.get('hwtoken.pass')
+        ss_token_pin = main.config.get('hwtoken.token_pin')
 
-        ss_ssh_host = main.config.get('ss1.ssh_host')
-        ss_ssh_user = main.config.get('ss1.ssh_user')
-        ss_ssh_pass = main.config.get('ss1.ssh_pass')
+        ss_ssh_host = main.config.get('hwtoken.ssh_host')
+        ss_ssh_user = main.config.get('hwtoken.ssh_user')
+        ss_ssh_pass = main.config.get('hwtoken.ssh_pass')
 
         '''Configure the service'''
         test_delete_key = ht_management.test_hardware_key_delete(case=main, ssh_host=ss_ssh_host,
                                                                  ssh_username=ss_ssh_user,
-                                                                 ssh_password=ss_ssh_pass)
+                                                                 ssh_password=ss_ssh_pass, pin=ss_token_pin)
 
         try:
             '''Open webdriver'''
@@ -52,7 +53,7 @@ class XroadDeleteHardwareTokenKey(unittest.TestCase):
             '''Test teardown'''
             sshclient = ssh_client.SSHClient(ss_ssh_host, ss_ssh_user, ss_ssh_pass)
             '''Start preconfigured docker container'''
-            sshclient.exec_command('docker run -p3001:3001 -dt --rm --name cssim410_test cssim410_test', sudo=True)
+            os.system('sudo docker run -p3001:3001 -dt --rm --name cssim410_test cssim410_test')
             '''Restart xroad-signer service'''
             sshclient.exec_command('service xroad-signer restart', sudo=True)
             wait_until_server_up(main.url)

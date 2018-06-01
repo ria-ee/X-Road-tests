@@ -88,7 +88,7 @@ def logout(self, url=None):
     """
 
     if url is None:
-        self.driver.get(self.url)
+        self.go(self.url)
         time.sleep(3)
         user_info = None
         try:
@@ -98,11 +98,11 @@ def logout(self, url=None):
 
         if user_info is not None:
             # Get the driver to go to logout URL. Fails if no driver is present.
-            self.driver.get('{0}{1}'.format(self.url, login_constants.LOGOUT_URL))
+            self.go('{0}{1}'.format(self.url, login_constants.LOGOUT_URL))
         else:
-            self.driver.get('{0}'.format(self.url))
+            self.go('{0}'.format(self.url))
     else:
-        self.driver.get(url)
+        self.go(url)
         time.sleep(3)
         user_info = None
         try:
@@ -111,6 +111,6 @@ def logout(self, url=None):
             pass
         if user_info is not None:
             # Get the driver to go to logout URL. Fails if no driver is present.
-            self.driver.get('{0}{1}'.format(url, login_constants.LOGOUT_URL))
+            self.go('{0}{1}'.format(url, login_constants.LOGOUT_URL))
         else:
-            self.driver.get('{0}'.format(url))
+            self.go('{0}'.format(url))

@@ -38,7 +38,7 @@ class XroadAddMembersToLocalGroup(unittest.TestCase):
             test_func = xroad_local_group.test_add_member_to_local_group(client_name=client_name, subsystem=subsystem)
             test_func(main)
         except:
-            main.log('XroadAddMemberToLocalGroup: Failed to add member to a local group')
+            main.log('XroadAddMembersToLocalGroup: Failed to add member to a local group')
             main.save_exception_data()
             assert False
         finally:

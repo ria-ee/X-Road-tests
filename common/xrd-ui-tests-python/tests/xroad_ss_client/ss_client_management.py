@@ -7,6 +7,40 @@ from view_models import log_constants, clients_table_vm, popups
 from view_models.clients_table_vm import DETAILS_TAB_CSS
 from view_models.log_constants import REGISTER_CLIENT
 
+def add_ss_client(self, member_code, member_class, subsystem_code):
+    """
+    Try to add security server client
+    :param self: MainController object
+    :param member_code: str - member code
+    :param member_class: str - member class
+    :param subsystem_code: str - member subsystem code
+    :return: None
+    """
+    # Add a client
+    self.log('Click on "ADD CLIENT" button')
+    self.wait_until_visible(type=By.ID, element=clients_table_vm.ADD_CLIENT_BTN_ID).click()
+
+    # Add a member
+    self.log('Set member code: {0}'.format(member_code))
+    input_code = self.wait_until_visible(type=By.ID, element=popups.ADD_CLIENT_POPUP_MEMBER_CODE_AREA_ID)
+    self.input(input_code, member_code)
+
+    # Set member class
+    self.log('Set member class: {0}'.format(member_class))
+    self.select(element=popups.ADD_CLIENT_POPUP_MEMBER_CLASS_DROPDOWN_ID, type=By.ID, value=member_class)
+
+    # Add a subsystem code
+    self.log('Set subsystem code: {0}'.format(subsystem_code))
+    subsystem_input = self.wait_until_visible(type=By.XPATH,
+                                              element=popups.ADD_CLIENT_POPUP_SUBSYSTEM_CODE_AREA_XPATH)
+    self.input(subsystem_input, subsystem_code)
+
+    # Save the client data
+    self.log('Try to save client data')
+    self.wait_until_visible(type=By.XPATH, element=popups.ADD_CLIENT_POPUP_OK_BTN_XPATH).click()
+
+    self.wait_jquery()
+
 
 def edit_client(self, client_row):
     """

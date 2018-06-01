@@ -15,6 +15,7 @@ from view_models.popups import CONFIRM_POPUP_TEXT_AREA_ID, CONFIRM_POPUP_CANCEL_
 
 def delete_key_from_configuration(self, key_label, sshclient, try_cancel=False, log_checker=None,
                                   unregister_request_fail=False, request_sending_fail=False, has_auth_certs=True):
+    self.log('*** SS_35 Delete a Key from the System Configuration')
     self.log('Get authentication keys in system configuration')
     key_count = get_key_conf_keys_count(sshclient, "AUTHENTICATION")
     current_log_lines = None
@@ -72,7 +73,7 @@ def delete_key_from_configuration(self, key_label, sshclient, try_cancel=False, 
             self.log('SS_35 4a. The process of unregistering certificates terminated with an error message:\n{}'.format(
                 expected_error_msg))
             error_msg = self.wait_until_visible(type=By.CSS_SELECTOR, element=ERROR_MESSAGE_CSS).text
-            self.is_true(re.match(expected_error_msg, error_msg))
+            self.is_true(re.match(expected_error_msg, error_msg), msg='Expected error message regex: {}\nGot: {}'.format(expected_error_msg, error_msg))
             if current_log_lines:
                 expected_log_msg = DELETE_KEY_FAIL
                 self.log('SS_35 4a.2 System logs the event "{}"'.format(expected_log_msg))
@@ -100,11 +101,26 @@ def delete_key_from_configuration(self, key_label, sshclient, try_cancel=False, 
                 self.is_true(key_count_after < key_count)
 
 
-def wait_until_proxy_up(address):
+def wait_until_proxy_up(address, self, timeout=1200):
+    start_time = int(time.time())
+    self.log('Waiting for xroad-proxy startup (timeout {} s)...'.format(timeout))
     while True:
         try:
             requests.get(address, verify=False)
-        except Exception as e:
-            if e.message.message and 'SSL' in e.message.message.strerror:
+        except TypeError:
+            # If we get a TypeError, we have an older version of Requests/urllib3 that fails when checking the
+            # certificate returns an error. Although a workaround, this is also an expected outcome.
+            self.log('xroad-proxy started up')
+            return
+        except requests.HTTPError as e:
+            if e.message and 'SSL' in e.strerror:
+                self.log('xroad-proxy started up')
                 return
             pass
+        except Exception as e:
+            if start_time != -1 and int(time.time()) - start_time > timeout:
+                self.log('Timeout ({} seconds) while waiting for xroad-proxy startup'.format(timeout))
+                self.log('Exception: {}'.format(e.message))
+                return
+            pass
+        time.sleep(1) # Do not flood the server with requests

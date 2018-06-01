@@ -18,6 +18,9 @@ class XroadSecurityServerCertImportGlobalConfExpired(unittest.TestCase):
 
     def test_securityServerGlobalConfExpired(self):
         main = MainController(self)
+        main.test_number = 'UC SS_30.3a'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss2.host')
         ss_username = main.config.get('ss2.user')
         ss_pass = main.config.get('ss2.pass')
@@ -47,8 +50,14 @@ class XroadSecurityServerCertImportGlobalConfExpired(unittest.TestCase):
             main.save_exception_data()
             raise
         finally:
-            start_xroad_conf_client()
-            delete_added_key(main, ss2_client, cancel_deletion=False)
+            try:
+                start_xroad_conf_client()
+            except:
+                main.log('Failed to start confclient')
+            try:
+                delete_added_key(main, ss2_client, cancel_deletion=False)
+            except:
+                main.log('Failed to delete added key')
             main.tearDown()
             main.log('Wait 1 minute so the configuration is up to date before running other tests')
             time.sleep(60)

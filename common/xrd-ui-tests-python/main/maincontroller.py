@@ -165,6 +165,15 @@ class MainController(AssertHelper):
         if self.mock_service_autostart:
             self.start_mock_service()
 
+    def go(self, url):
+        '''
+        Open URL in (an existing) WebDriver instance
+        :param url: str - url to open
+        :return: None
+        '''
+        self.log('Opening URL: {}'.format(url))
+        self.driver.get(url)
+
     def tearDown(self, save_exception=True):
         '''
         Test tearDown method, used for closing the test environment after successful or failed tests.
@@ -324,6 +333,7 @@ class MainController(AssertHelper):
         :param remove_directories: bool - remove directories, not only files
         :return: bool - True if everything was deleted; False is there was at least one error.
         '''
+        result = True
         for filename in file_list:
             result = True
             if not os.path.isabs(filename):
@@ -372,13 +382,17 @@ class MainController(AssertHelper):
 
         # Close the current WebDriver instance if it exists and we're asked to do so.
         if close_previous and self.driver is not None:
+            self.log('Closing WebDriver instance')
             self.driver.quit()
             self.driver = None
 
         # If WebDriver does not exist or we're asked to open a new instance, do it.
         if init_new_webdriver or self.driver is None:
             try:
-                self.driver = webdriver_init.get_webdriver(self.driver_type, download_dir=self.get_download_path(),
+                self.log('Starting WebDriver instance')
+                self.driver = webdriver_init.get_webdriver(self.driver_type,
+                                                           executable_path=self.config.get('config.geckodriver_path'),
+                                                           download_dir=self.get_download_path(),
                                                            log_dir=self.get_temp_path(self.browser_log),
                                                            marionette=self.config.get('config.marionette', False))
             except:
@@ -387,7 +401,7 @@ class MainController(AssertHelper):
 
         try:
             # Go to URL
-            self.driver.get(url)
+            self.go(url)
         except:
             assert False, 'MainController: WebDriver failed, URL: '.format(url)
 
@@ -546,7 +560,7 @@ class MainController(AssertHelper):
         driver_wait = WebDriverWait(self.driver, timeout)
         driver_wait.until(condition)
 
-    def wait_until_visible(self, element, type=None, timeout=10, multiple=False):
+    def wait_until_visible(self, element, type=None, timeout=30, multiple=False):
         """
         Waits until an element (or elements if multiple is True) is visible or timeout occurs, then returns the
          element(s). Element parameter can be a WebElement or a string in combination with type parameter that specifies
@@ -557,16 +571,20 @@ class MainController(AssertHelper):
         :param multiple: bool - True to return multiple elements; False to return the first one
         :return: WebElement|[WebElement] - element(s) found
         """
-        if type is None:
-            ui.WebDriverWait(self.driver, timeout=timeout).until(conditions.visibility_of(element))
-        else:
-            ui.WebDriverWait(self.driver, timeout=timeout).until(
-                conditions.visibility_of_element_located((type, element)))
-            if multiple:
-                element = self.driver.find_elements(type, element)
+        try:
+            if type is None:
+                ui.WebDriverWait(self.driver, timeout=timeout).until(conditions.visibility_of(element))
             else:
-                element = self.driver.find_element(type, element)
-        return element
+                ui.WebDriverWait(self.driver, timeout=timeout).until(
+                    conditions.visibility_of_element_located((type, element)))
+                if multiple:
+                    element = self.driver.find_elements(type, element)
+                else:
+                    element = self.driver.find_element(type, element)
+            return element
+        except:
+            self.log('Element not visible: {0}'.format(element))
+            raise
 
     def js(self, script, *args):
         '''
@@ -621,6 +639,7 @@ class MainController(AssertHelper):
             Resets webdriver with the same data as before.
             :return: None
         '''
+        self.log('Refreshing page')
         self.driver.refresh()
 
     def scroll_to(self, element):

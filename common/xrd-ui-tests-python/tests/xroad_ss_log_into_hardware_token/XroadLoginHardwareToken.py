@@ -26,18 +26,21 @@ class XroadLoginHardwareToken(unittest.TestCase):
 
 
 
-        ss_host = main.config.get('ss1.host')
-        ss_user = main.config.get('ss1.user')
-        ss_pass = main.config.get('ss1.pass')
+        ss_host = main.config.get('hwtoken.host')
+        ss_user = main.config.get('hwtoken.user')
+        ss_pass = main.config.get('hwtoken.pass')
+        ss_token_pin = main.config.get('hwtoken.token_pin')
 
-        ss_ssh_host = main.config.get('ss1.ssh_host')
-        ss_ssh_user = main.config.get('ss1.ssh_user')
-        ss_ssh_pass = main.config.get('ss1.ssh_pass')
+        ss_ssh_host = main.config.get('hwtoken.ssh_host')
+        ss_ssh_user = main.config.get('hwtoken.ssh_user')
+        ss_ssh_pass = main.config.get('hwtoken.ssh_pass')
+
+        docker_ip = '172.17.0.1'
 
 
         '''Configure the service'''
         test_ss_hardtoken_login = ht_management.test_hardtoken_login(case=main, ssh_host=ss_ssh_host, ssh_username=ss_ssh_user,
-                                                             ssh_password=ss_ssh_pass)
+                                                             ssh_password=ss_ssh_pass, pin=ss_token_pin, docker_ip=docker_ip)
 
         try:
             '''Open webdriver'''

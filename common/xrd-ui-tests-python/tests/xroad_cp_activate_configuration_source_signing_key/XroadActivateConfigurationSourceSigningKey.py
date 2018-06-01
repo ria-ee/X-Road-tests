@@ -16,6 +16,10 @@ class XroadActivateConfigurationSourceSigningKey(unittest.TestCase):
     """
     def test_activate_configuration_source_signing_key(self):
         main = MainController(self)
+
+        main.test_number = 'CP_10'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')

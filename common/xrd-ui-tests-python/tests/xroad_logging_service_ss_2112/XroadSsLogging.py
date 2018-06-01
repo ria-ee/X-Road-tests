@@ -69,7 +69,7 @@ class XroadLoggingInSecurityServer(unittest.TestCase):
         client_name = main.config.get('ss1.client2_name')
         wsdl_url = main.config.get('wsdl.remote_path').format(main.config.get('wsdl.service_wsdl'))
 
-        main.driver.get(main.url)
+        main.go(main.url)
         main.login(main.username, main.password)
         main.log('TEST: LOGGING TEST IN SECURITY SERVER')
         test_func = logging_service_ss.test_test(ssh_host=main.config.get('ss1.ssh_host'),
@@ -86,5 +86,10 @@ class XroadLoggingInSecurityServer(unittest.TestCase):
                                                  ca_ssh_password=main.config.get('ca.ssh_pass'),
                                                  users=users, client_id=client_id, client_name=client_name,
                                                  wsdl_url=wsdl_url)
-        test_func(main)
-        main.tearDown()
+        try:
+            test_func(main)
+        except:
+            main.save_exception_data()
+            raise
+        finally:
+            main.tearDown()

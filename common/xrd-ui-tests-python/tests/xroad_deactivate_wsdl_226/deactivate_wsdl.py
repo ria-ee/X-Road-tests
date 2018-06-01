@@ -32,7 +32,7 @@ def test_disable_wsdl(case, client=None, client_name=None, client_id=None, wsdl_
 
     wsdl_disabled_class = self.config.get_string('wsdl.disabled_class', 'disabled')
 
-    query_url = self.config.get('ss1.service_path')
+    query_url = self.config.get('ss1.service_path') # tempss0
     query_filename = self.config.get('services.request_template_filename')
     query = self.get_xml_query(query_filename)
 

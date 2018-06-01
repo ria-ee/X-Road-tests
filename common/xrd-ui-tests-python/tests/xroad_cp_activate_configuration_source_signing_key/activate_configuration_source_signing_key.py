@@ -21,7 +21,7 @@ def activate_signing_key(self, sshclient, conf_path, cp_identifier):
 
 def get_all_signing_keys(sshclient, conf_path):
     return [key_row.split(' = ')[1] for key_row in flatten(sshclient.exec_command(
-        'grep \'{0}\' {1}'.format(ALL_SIGNING_KEYS_REGEX, conf_path)))]
+        'sudo grep \'{0}\' {1}'.format(ALL_SIGNING_KEYS_REGEX, conf_path)))]
 
 
 def set_active_key(sshclient, active_key, inactive_key, conf_path):

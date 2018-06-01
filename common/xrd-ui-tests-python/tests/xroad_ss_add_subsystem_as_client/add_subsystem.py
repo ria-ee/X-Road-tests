@@ -128,7 +128,8 @@ def add_client_to_ss(self, client, retry_interval=0, retry_timeout=0, step='x.x.
 
 def add_client_to_ss_by_hand(self, client, check_send_errors=False, log_checker=None, sec_1_host=None, sec_1_user=None,
                              sec_1_pass=None,
-                             management_wsdl_url=None, management_client_id=None, exists_error=False, cancel_registration=False):
+                             management_wsdl_url=None, management_client_id=None, exists_error=False,
+                             cancel_registration=False):
     """
     Adds a client to security server without searching for it in lists.
     :param self: MainController object
@@ -240,7 +241,7 @@ def add_client_to_ss_by_hand(self, client, check_send_errors=False, log_checker=
 
 
 def test_add_client(case, client_name, client=None, client_id=None, duplicate_client=None, check_errors=False,
-                    log_checker=None):
+                    log_checker=None, delete_added=False, check_status=clients_table_vm.CLIENT_STATUS_SAVED):
     """
     UC MEMBER_47 main test method. Tries to add a new client to a security server and check logs if
     ssh_host is set.
@@ -254,7 +255,8 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
     :param ssh_host: str|None - if set, Central Server SSH host for checking the audit.log; if None, no log check
     :param ssh_user: str|None - CS SSH username, needed if cs_ssh_host is set
     :param ssh_pass: str|None - CS SSH password, needed if cs_ssh_host is set
-    :param client_unregistered: bool|None - if True, client will always be confirmed (skip a few tests)
+    :param delete_added: bool|None - if True, added clients will be deleted
+    :param check_status: str|False - status to check for after registering client, False to skip this check
     :return:
     """
     self = case
@@ -299,6 +301,10 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
             # UC MEMBER_47 3a - check for erroneous inputs / parse user input
             check_values += check_value_errors
             self.log('MEMBER_47 3a - check for erroneous inputs')
+        else:
+            check_values += [
+                [[client_data['code'], client_data['class'], client_data['subsystem']], None, False]
+            ]
         if duplicate_client:
             # UC MEMBER_47 4 - verify that a client does not already exist
             self.log('MEMBER_47 4a - verify that the client does not already exist')
@@ -306,7 +312,9 @@ def test_add_client(case, client_name, client=None, client_id=None, duplicate_cl
                                '{0}'.format(duplicate_client['subsystem'])], 'Client already exists', False]]
 
         # Try adding the client with different parameters (delete all added clients)
-        add_clients(self, check_values, instance=client_data['instance'], delete=False)
+        add_clients(self, check_values, instance=client_data['instance'], delete=delete_added,
+                    unregister_before_delete=delete_added,
+                    check_status=check_status)
 
         if current_log_lines:
             # UC MEMBER_47 3a, 4a, 7 -  Check logs for entries
@@ -355,13 +363,16 @@ def add_ss_client(self, member_code, member_class, subsystem_code):
     self.wait_jquery()
 
 
-def add_clients(self, check_values, instance=None, delete=False):
+def add_clients(self, check_values, instance=None, delete=False, unregister_before_delete=False,
+                check_status=clients_table_vm.CLIENT_STATUS_SAVED):
     """
     Tries to add a client with different values. Deletes the added client if instructed to.
     :param self: MainController object
     :param check_values: [list] - list of client parameters, see source code for example
     :param instance: str - instance identifier
     :param delete: bool - delete all successfully added clients after adding them
+    :param unregister_before_delete: bool - unregister the client before deleting
+    :param check_status: str|False - status to check for after registering client, False to skip this check
     :return: (int, int) - number of successful additions, number of unsuccessful additions
     """
     # Open security server clients tab
@@ -465,24 +476,27 @@ def add_clients(self, check_values, instance=None, delete=False):
                 self.is_true(member_code in client_id_text and subsystem_code in client_id_text,
                              msg='Client should have been added but not found.')
 
-            # UC MEMBER_47 6 - Check if client status is "saved"
-            self.log('MEMBER_47 6 - Check if client status is "saved"')
             client_row = clients_table_vm.get_client_row_element(self, client=added_client_data)
-            status_title = get_client_status(self, client=added_client_data)
+            if check_status != False:
+                # UC MEMBER_47 6 - Check if client status is "saved"
+                self.log('MEMBER_47 6 - Check if client status is "{}"'.format(check_status))
+                status_title = get_client_status(self, client=added_client_data)
 
-            self.is_equal(status_title, clients_table_vm.CLIENT_STATUS_SAVED,
-                          'MEMBER_47 6 - Expected client status "{0}", found "{1}"'.format(
-                              clients_table_vm.CLIENT_STATUS_SAVED,
-                              status_title))
+                self.is_equal(status_title, check_status,
+                              'MEMBER_47 6 - Expected client status "{0}", found "{1}"'.format(
+                                  check_status,
+                                  status_title))
+            else:
+                self.log('Skipping status check (MEMBER_47 6)')
 
             if delete:
                 # Delete the added client
                 edit_client(self, client_row)
-                delete_client(self)
+                delete_client(self, unregister=unregister_before_delete)
                 self.logdata.append(log_constants.DELETE_CLIENT)
 
             if confirm_client and not client_confirm_ok:
-                self.is_true(False, msg='MEMBER_47 5a Non-existant member confirmation dialog was not displayed')
+                self.is_true(False, msg='MEMBER_47 5a Non-existent member confirmation dialog was not displayed')
 
         counter += 1
 

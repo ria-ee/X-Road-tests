@@ -27,15 +27,15 @@ class XroadSsServiceLocalGroupsView(unittest.TestCase):
         ss_pass = main.config.get('ss2.pass')
 
         '''Configure the service'''
-        test_logout = view_management.test_verify_local_group_client(case=main)
+        test_view_groups = view_management.test_verify_local_group_client(case=main)
 
         try:
             '''Open webdriver'''
             main.reload_webdriver(url=ss_host, username=ss_user, password=ss_pass)
             '''Run the test'''
-            test_logout()
+            test_view_groups()
         except:
-            main.log('Xroad_log_out_hardware_token: Failed to View the Local Groups of a Security Server Client')
+            main.log('XroadSsServiceLocalGroupsView: Failed to View the Local Groups of a Security Server Client')
             main.save_exception_data()
             assert False
         finally:

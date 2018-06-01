@@ -3,6 +3,7 @@ from main.maincontroller import MainController
 from helpers import ssh_client, xroad
 from view_models import configuration_proxy
 import re
+import time
 
 
 class XroadViewTrustedAnchor(unittest.TestCase):
@@ -14,8 +15,11 @@ class XroadViewTrustedAnchor(unittest.TestCase):
     X-Road version: 6.16.0
     """
 
-    def test_log_out_from_software_token(self):
+    def test_view_trusted_anchor(self):
         main = MainController(self)
+        main.test_number = 'CP_12'
+        main.test_name = self.__class__.__name__
+
         cp_ssh_host = main.config.get('cp.ssh_host')
         cp_ssh_user = main.config.get('cp.ssh_user')
         cp_ssh_pass = main.config.get('cp.ssh_pass')
@@ -33,7 +37,7 @@ class XroadViewTrustedAnchor(unittest.TestCase):
         sshclient = ssh_client.SSHClient(cp_ssh_host, cp_ssh_user, cp_ssh_pass)
         main.log('CP_12 1. CP administrator selects to view trusted anchor.')
         main.log('CP_12 2. System displays the anchor file content.')
-
+        time.sleep(3)
         generated_at = sshclient.exec_command("grep -o -P '(?<=<generatedAt>).*(?=</generatedAt>)' {0}".format(anchor_path))[0][0]
         instance_identifier = sshclient.exec_command(
             "grep -o -P '(?<=<instanceIdentifier>).*?(?=</instanceIdentifier>)' {0}".format(anchor_path))[0][0]

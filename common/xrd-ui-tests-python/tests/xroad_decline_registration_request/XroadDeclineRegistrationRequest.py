@@ -20,6 +20,10 @@ class XroadDeclineRegistrationRequest(unittest.TestCase):
     """
     def test_decline_registration_request(self):
         main = MainController(self)
+
+        main.test_number = 'UC MEMBER_38'
+        main.test_name = self.__class__.__name__
+
         ss_host = main.config.get('ss1.host')
         ss_user = main.config.get('ss1.user')
         ss_pass = main.config.get('ss1.pass')
@@ -56,6 +60,10 @@ class XroadDeclineRegistrationRequest(unittest.TestCase):
             main.save_exception_data()
             raise
         finally:
-            main.log('MEMBER_38 Decline a Registration Request')
-            decline_request(main, log_checker=log_checker)()
-            main.tearDown()
+            try:
+                main.log('MEMBER_38 Decline a Registration Request')
+                decline_request(main, log_checker=log_checker)()
+            except:
+                main.log('MEMBER_38 Failed to decline a registration request')
+            finally:
+                main.tearDown()

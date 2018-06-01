@@ -21,6 +21,9 @@ class XroadApproveRequests(unittest.TestCase):
 
     def test_approve_requests(self):
         main = MainController(self)
+        main.test_number = 'MEMBER_37'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -52,6 +55,8 @@ class XroadApproveRequests(unittest.TestCase):
         ss2_client_name = main.config.get('ss2.client_name')
         ss_2_client = {'name': ss2_client_name, 'class': ss2_client['class'], 'code': ss2_client['code'],
                        'subsystem_code': ss2_client['subsystem'], 'server_name': ss2_server_name}
+        approve_ss2_client1 = False
+
         ss2_client_2 = xroad.split_xroad_id(main.config.get('ss2.client2_id'))
         ss2_client_2_name = main.config.get('ss2.client2_name')
         ss_2_client_2 = {'name': ss2_client_2_name, 'class': ss2_client_2['class'], 'code': ss2_client_2['code'],
@@ -61,9 +66,13 @@ class XroadApproveRequests(unittest.TestCase):
             approve_requests(main, cancel_confirmation=True, use_case='MEMBER_37', log_checker=log_checker)
             approve_requests(main, use_case='MEMBER_37')
             main.reload_webdriver(cs_host, cs_user, cs_pass)
-            check_client_in_cs(main, [ss_1_client, ss_2_client])
-            main.reload_webdriver(cs_host, cs_user, cs_pass)
-            check_client_in_cs(main, [ss_2_client, ss_1_client])
+
+            check_client_in_cs(main, [ss_1_client])
+            if approve_ss2_client1:
+                main.reload_webdriver(cs_host, cs_user, cs_pass)
+                check_client_in_cs(main, [ss_2_client])
+
+
             main.log('Waiting until servers synced')
             time.sleep(120)
 
@@ -72,7 +81,8 @@ class XroadApproveRequests(unittest.TestCase):
             check_client_registration_status(main, ss_1_client_2)
 
             main.reload_webdriver(ss2_host, ss2_user, ss2_pass)
-            check_client_registration_status(main, ss_2_client)
+            if approve_ss2_client1:
+                check_client_registration_status(main, ss_2_client)
             check_client_registration_status(main, ss_2_client_2)
 
         except:

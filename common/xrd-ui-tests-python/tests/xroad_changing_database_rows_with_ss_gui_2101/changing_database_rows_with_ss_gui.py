@@ -138,7 +138,7 @@ def user_1_actions(self, user, client):
 
     # UC SS_01 1-4. Log in with user1
     self.log('SS_01 1-4. Log in with user1')
-    self.driver.get(self.url)
+    self.go(self.url)
     self.login(username=user[USERNAME], password=user[PASSWORD])
 
     # UC MEMBER_47 1. Select to add security server client

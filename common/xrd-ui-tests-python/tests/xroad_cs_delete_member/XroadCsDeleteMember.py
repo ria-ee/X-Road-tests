@@ -20,6 +20,9 @@ class XroadCsDeleteMember(unittest.TestCase):
 
     def test_a_delete_member(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_26.a'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
@@ -45,6 +48,8 @@ class XroadCsDeleteMember(unittest.TestCase):
 
     def test_b_xroad_cs_delete_member_with_subsystem(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_26.b'
+        main.test_name = self.__class__.__name__
 
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
@@ -70,6 +75,8 @@ class XroadCsDeleteMember(unittest.TestCase):
 
     def test_c_xroad_cs_delete_member_with_global_group(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_26.c'
+        main.test_name = self.__class__.__name__
 
         main.url = main.config.get('cs.host')
         main.username = main.config.get('cs.user')
@@ -96,6 +103,7 @@ class XroadCsDeleteMember(unittest.TestCase):
             main.reload_webdriver(url=cs_host, username=cs_username, password=cs_password)
             remove_member(main, client, group=test_group_name)
         except:
+            main.save_exception_data()
             assert False
         finally:
             main.tearDown()

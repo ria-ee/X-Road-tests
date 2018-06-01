@@ -18,6 +18,10 @@ class XroadDeleteClient(unittest.TestCase):
     def test_delete_client(self):
         main = MainController(self)
 
+        # Set test name and number
+        main.test_number = 'MEMBER_53'
+        main.test_name = self.__class__.__name__
+
         ss1_host = main.config.get('ss1.host')
         ss1_user = main.config.get('ss1.user')
         ss1_pass = main.config.get('ss1.pass')
@@ -42,7 +46,7 @@ class XroadDeleteClient(unittest.TestCase):
             main.log('Wait until client state is unregistered from cs subsystem deletion')
             time.sleep(120)
             main.reload_webdriver(ss2_host, ss2_user, ss2_pass)
-            remove_client(main, ss2_client, delete_cert=True)
+            remove_client(main, ss2_client, delete_cert=False)
             remove_client(main, ss2_client_2)
         except:
             main.save_exception_data()

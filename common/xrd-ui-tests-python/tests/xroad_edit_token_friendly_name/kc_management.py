@@ -57,7 +57,7 @@ def clicking_buttons(self):
     '''Click on "Details" button'''
     self.log('Click on "Details" button')
     self.wait_until_visible(type=By.ID, element=keys_and_certificates_table.DETAILS_BTN_ID).click()
-    self.wait_jquery
+    self.wait_jquery()
 
 
 def successful_edit(self):

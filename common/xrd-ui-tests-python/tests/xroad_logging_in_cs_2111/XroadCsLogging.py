@@ -76,10 +76,9 @@ class XroadLoggingInCentralServer(unittest.TestCase):
                                             client_name=client_name, client_name2=client_name2, users=users,
                                             existing_client_id=existing_client_id,
                                             existing_client_name=existing_client_name)
-        test_func(main)
-        main.tearDown()
-
-
-if __name__ == "__main__":
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(XroadLoggingInCentralServer)
-    unittest.TextTestRunner().run(suite)
+        try:
+            test_func(main)
+        except:
+            main.save_exception_data()
+        finally:
+            main.tearDown()

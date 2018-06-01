@@ -17,11 +17,13 @@ class XroadDeleteSubsystem(unittest.TestCase):
 
     def test_delete_subsystem_with_global_group(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_14'
+        main.test_name = self.__class__.__name__
 
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')
-        global_group = main.config.get('cs.global_group')
+        global_group = main.config.get('cs.global_group_1')
         cs_ssh_host = main.config.get('cs.ssh_host')
         cs_ssh_user = main.config.get('cs.ssh_user')
         cs_ssh_pass = main.config.get('cs.ssh_pass')
@@ -43,6 +45,9 @@ class XroadDeleteSubsystem(unittest.TestCase):
 
     def test_delete_subsystem(self):
         main = MainController(self)
+        main.test_number = 'UC MEMBER_14'
+        main.test_name = self.__class__.__name__
+
         cs_host = main.config.get('cs.host')
         cs_user = main.config.get('cs.user')
         cs_pass = main.config.get('cs.pass')

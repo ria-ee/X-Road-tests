@@ -81,17 +81,17 @@ def test_ss_backup_conf(case, ssh_host=None, ssh_username=None, ssh_password=Non
         self.wait_jquery()
 
         '''Click "Delete"'''
-        self.by_xpath(ss_system_parameters.DELETE).click()
+        #self.by_xpath(ss_system_parameters.DELETE).click()
 
         '''Confirm delete'''
-        popups.confirm_dialog_click(self)
+        #popups.confirm_dialog_click(self)
 
         '''Save delete message'''
-        success_deletion = messages.get_notice_message(self)
+        #success_deletion = messages.get_notice_message(self)
 
         '''Verify successful delete'''
-        self.is_true(success_deletion == messages.SS_SUCCESSFUL_DELETE,
-                     msg='Wrong message for deleted backup')
+        #self.is_true(success_deletion == messages.SS_SUCCESSFUL_DELETE,
+        #             msg='Wrong message for deleted backup')
 
         self.logdata = []
 
@@ -600,7 +600,7 @@ def test_ss_restore_backup_conf(case, ssh_host=None, ssh_username=None, ssh_pass
         '''Get file name'''
         corrupt_file_name = ss_system_parameters.BACKUP_CORRUPTION_FILE2.split('/')[-1]
 
-        self.log('SS_15 4a.1System displays the error message {0}'.format(error_message))
+        self.log('SS_15 4a.1 System displays the error message {0}'.format(error_message))
 
         '''Verify error message'''
         self.is_true(error_message == messages.RESTORE_CONFIGURATION_FAILED.format(corrupt_file_name),

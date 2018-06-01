@@ -104,7 +104,7 @@ def fill_upload_input(self, upload_button_element, local_path):
     self.js('arguments[0].removeAttribute("class");', upload_button_element)
 
     # Find the file input inside the upload element
-    file_input = upload_button_element.find_element_by_xpath('.//input[@type="file"]')
+    file_input = self.wait_until_visible(upload_button_element.find_element_by_xpath('.//input[@type="file"]'))
 
     # Send the path to the input. This should fill the field with a valid file path.
     file_input.send_keys(local_path)
